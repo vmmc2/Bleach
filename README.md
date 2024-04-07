@@ -8,3 +8,8 @@
 ## What is Bleach?
 
 ## Why use Bleach?
+
+## Setup
+```shell
+cmake ../llvm -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=~/llvm-project/build -DBUILD_SHARED_LIBS=on -DLLVM_EBABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Debug
+```
