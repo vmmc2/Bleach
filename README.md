@@ -59,6 +59,16 @@
 - [ ] Inheritance
 
 
+## Things that are going to be tricky to implement
+- [ ] Multi-line comments
+- [ ] Ternary Operator
+- [ ] ```str``` type (immutability like python, not allow assignment, which methods to include)
+- [ ] ```list``` type (which methods to include)
+- [ ] ```dict``` type (which methods to include)
+- [ ] ```lambda``` anonymous functions
+- [ ] Native functions (std::io, std::math, std::utils)
+- [ ] Multiple inheritance (is it worth it? Take a look at how Python implements it)
+
 ## Setup
 1. On the root folder of your machine:
 ```shell
