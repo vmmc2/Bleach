@@ -66,8 +66,8 @@
 - [ ] ```do-while``` loop
 - [ ] ```break``` and ```continue``` keywords inside a loop
 - [ ] ```str``` type (immutability like python, not allow assignment, which methods to include)
-- [ ] ```list``` type (which methods to include)
-- [ ] ```dict``` type (which methods to include)
+- [ ] ```list``` type (which methods to include and how to traverse values of such type)
+- [ ] ```dict``` type (which methods to include and how to traverse values of such type)
 - [ ] ```lambda``` anonymous functions
 - [ ] Native functions (```std::io```, ```std::math```, ```std::utils```)
 - [ ] Multiple inheritance (is it worth it? Take a look at how Python implements it)
