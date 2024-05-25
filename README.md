@@ -60,9 +60,9 @@
 
 
 ## Things that are going to be tricky to implement
-- [ ] Multi-line comments
-- [ ] Ternary Operator
-- [ ] ```elsif``` keyword available along with ```if``` and ```else``` keywords
+- [ ] Multi-line comments (```/* */```)
+- [ ] Ternary Operator (```expression ? value1 : value2```)
+- [ ] ```elif``` keyword available along with ```if``` and ```else``` keywords
 - [ ] ```do-while``` loop
 - [ ] ```break``` and ```continue``` keywords inside a loop
 - [ ] ```str``` type (immutability like python, not allow assignment, which methods to include)
