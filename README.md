@@ -47,16 +47,16 @@
 
 
 ## Roadmap
-- [ ] Scanning
-- [ ] Representing Code
-- [ ] Parsing Expressions
-- [ ] Evaluating Expressions
-- [ ] Statements and State
-- [ ] Control Flow
-- [ ] Functions
-- [ ] Resolving and Binding
-- [ ] Classes
-- [ ] Inheritance
+- [ ] Scanning (Review Implementation)
+- [ ] Representing Code (Review Implementation)
+- [ ] Parsing Expressions (Review Implementation)
+- [ ] Evaluating Expressions (Review Implementation)
+- [ ] Statements and State (Review Implementation)
+- [ ] Control Flow (Review Implementation)
+- [ ] Functions (Review Implementation)
+- [ ] Resolving and Binding (Review Implementation)
+- [ ] Classes (Review Implementation)
+- [ ] Inheritance (Review Implementation)
 
 
 ## Things that are going to be tricky to implement
