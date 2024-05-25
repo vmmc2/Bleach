@@ -47,6 +47,8 @@ class Token{
      * value converted to a string.
      *
      * @return The string representation of the Token instance.
+     * 
+     * @note This method is a const method. Which means it doesn't modify the state of the object it is called on.
     **/
     std::string toString() const{
       std::string literalAsStr;
