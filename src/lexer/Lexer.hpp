@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "../error/Error.hpp"
 #include "../utils/Token.hpp"
 
 
@@ -27,7 +28,7 @@ class Lexer{
     std::string_view sourceCode; /**< Variable that represents the source code written inside a Bleach file, which the Lexer will lex. */
     std::vector<Token> tokens; /**< Variable that represents the list of tokens that will be generated after the lexical analysis is done by the Lexer. */
     int start = 0; /**< Variable that points to the first/start character of the lexeme that is being consumed (This index is in relation to the 'sourceCode' variable). */
-    int current = 0; /**< Variable that points to the character that is currently being considered. */
+    int current = 0; /**< Variable that points to the character that is the next one to be consumed by the lexer. */
     int line = 1; /**< Variable that holds the information about which line the lexer is currently at with respect to the source code file. It helps the lexer to generate tokens that know their location in the source code file. */
 
     /**
@@ -85,8 +86,8 @@ class Lexer{
     }
 
     /**
-     * @brief This method is responsible for indirectly creating a token, whose literal value is guaranteed 
-     * to be null, and inserting into the sequence of tokens.
+     * @brief Indirectly creates a token, whose literal value is guaranteed to be null, and inserting
+     * into the sequence of tokens.
      * 
      * This method, based on the latest consumed lexeme (which is guaranteed to be a token whose literal 
      * object is nullptr), is responsible for calling the method that actually creates such token and 
@@ -102,6 +103,31 @@ class Lexer{
 
       return;
     }
+
+    /**
+     * @brief Works like a conditional version of the 'advance' method from this same class.
+     * 
+     * This method is responsible for working like a conditional 'advance' method. It receives an expected
+     * character and checks whether the next unconsumed character by the lexer (the one pointed by the variable
+     * 'current') is equal to the expected one. If that's the case, then the character pointed by 'current' is
+     * also consumed. Otherwise, it's not consumed.
+     * 
+     * @param expected A char that represents the next character expected to be consumed by the lexer (the one
+     * currently being pointed by the 'current' variable).
+     * 
+     * @return A boolean that signals whether the expected character was consumed by the lexer or not.
+    **/
+   bool match(char expected){
+      if(isAtEnd()){
+        return false;
+      }
+      if(sourceCode[current] != expected){
+        return false;
+      }
+      current++;
+
+      return true;
+   }
 
     /**
      * @brief 
@@ -157,7 +183,20 @@ class Lexer{
           break;
         case('/'):
           break;
+        case('!'):
+          addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
+          break;
+        case('='):
+          addToken(match('=') ? TokenType::EQUAL_EQUAL : TokenType::EQUAL);
+          break;
+        case('>'):
+          addToken(match('=') ? TokenType::GREATER_EQUAL : TokenType::GREATER);
+          break;
+        case('<'):
+          addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+          break;
         default:
+          error(line, "Unexpected character not supported by the Bleach language: " + c);
           break;
       }
 
