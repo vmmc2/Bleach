@@ -130,23 +130,75 @@ class Lexer{
     }
 
     /**
-     * @brief Works like the 'advance' method. However, it doesn't consume the next character yet
-     * to be consumed by the lexer.
+     * @brief
      * 
-     * This method is responsible for returning the next character yet to be consumed by the lexer. In other
-     * words, this method returns the character that the 'current' variable currently points to.
+     * This method is responsible for
      * 
-     * @return The char that is being currently being pointed by the 'current' variable. That is, the next char
-     * that has not been consumed by the lexer yet.
+     * @param
+     * 
+     * @return
      * 
      * @note If the lexer has reached the end of the 'sourceCode' string variable, then it returns the '\0' character.
     **/
-    char peek(){
-      if(isAtEnd()){
+    char peek(int offset){
+      if(current + offset >= sourceCode.length()){
         return '\0';
       }
 
-      return sourceCode[current];
+      return sourceCode[current + offset];
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    void multilineComment(){ // Bleach addopts the same rules of C++ when it comes to multi-line comments.
+      while(!isAtEnd()){
+        if(peek(0) == '\n'){
+          line++;
+        }else if(peek(0) == '*' && peek(1) == '/'){
+          advance();
+          advance();
+          return;
+        }
+        advance();
+      }
+
+      if(isAtEnd()){
+        error(line, "Unterminated multi-line comment.");
+        return;
+      }
+      return;
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    void string(){
+      while(peek(0) != '"' && !isAtEnd()){
+        if(peek(0) == '\n'){ // This is interesting. This is what allows multi-line string in the Bleach language.
+          line++;
+        }
+        advance();
+      }
+
+      if(isAtEnd()){
+        error(line, "Unterminated string.");
+        return;
+      }
+
+      advance();
+      std::string literal{sourceCode.substr(start + 1, current - start - 2)};
+      addToken(TokenType::STRING, literal);
+
+      return;
     }
 
     /**
@@ -203,9 +255,9 @@ class Lexer{
           break;
         case('/'):
           if(match('/')){ // Single-Line comment.
-            while(peek() != '\n' && !isAtEnd()) advance();
+            while(peek(0) != '\n' && !isAtEnd()) advance();
           }else if(match('*')){ // Multi-Line comment.
-
+            multilineComment();
           }else{ // Division operator.
             addToken(TokenType::SLASH);
           }
@@ -228,6 +280,9 @@ class Lexer{
           break; // The lexer ignore whitespace characters.
         case('\n'):
           line++;
+          break;
+        case('"'):
+          string();
           break;
         default:
           error(line, "Unexpected character not supported by the Bleach language: " + c);
