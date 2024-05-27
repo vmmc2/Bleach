@@ -26,8 +26,8 @@ enum TokenType{
 
   // Keywords.
   AND, BREAK, CLASS, CONTINUE, DO, ELSE, ELIF,
-  FALSE, FUNCTION, FOR, IF, IN, LAMBDA, LET, METHOD,
-  NIL, OR, PRINT, RETURN, SUPER, THIS, TRUE, WHILE,
+  FALSE, FOR, FUNCTION, IF, IN, LAMBDA, LET, METHOD,
+  NIL, OR, PRINT, RETURN, STATIC, SUPER, THIS, TRUE, WHILE,
 
   // File End.
   FILE_END
@@ -55,8 +55,8 @@ std::string toString(TokenType type){
     "LESS", "LESS_EQUAL",
     "IDENTIFIER", "NUMBER", "STRING",
     "AND", "BREAK", "CLASS", "CONTINUE", "DO", "ELSE", "ELIF",
-    "FALSE", "FUNCTION", "FOR", "IF", "IN", "LAMBDA", "LET", "METHOD",
-    "NIL", "OR", "PRINT", "RETURN", "SUPER", "THIS", "TRUE", "WHILE",
+    "FALSE", "FOR", "FUNCTION", "IF", "IN", "LAMBDA", "LET", "METHOD",
+    "NIL", "OR", "PRINT", "RETURN", "STATIC", "SUPER", "THIS", "TRUE", "WHILE",
     "FILE_END"
   };
 
