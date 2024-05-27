@@ -22,7 +22,7 @@
  *
  * @note The lexer assumes that the input is syntactically valid up to the point of lexical analysis
  * and does not handle syntax errors beyond tokenization.
- */
+**/
 class Lexer{
   private:
     std::string_view sourceCode; /**< Variable that represents the source code written inside a Bleach file, which the Lexer will lex. */
@@ -68,7 +68,7 @@ class Lexer{
      * 
      * @return A boolean that signals whether the lexer has reached the end of the string of the
      * source code or not.
-     */
+    **/
     bool isAtEnd(){
       return current >= sourceCode.length();
     }
@@ -418,7 +418,7 @@ class Lexer{
      * provided as a string.
      *
      * @note The sourceCode parameter is moved into the Lexer object to avoid unnecessary copies.
-     */
+    **/
     Lexer(std::string_view sourceCode)
       : sourceCode{std::move(sourceCode)}
     {}
