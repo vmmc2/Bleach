@@ -117,7 +117,7 @@ class Lexer{
      * 
      * @return A boolean that signals whether the expected character was consumed by the lexer or not.
     **/
-   bool match(char expected){
+    bool match(char expected){
       if(isAtEnd()){
         return false;
       }
@@ -127,7 +127,27 @@ class Lexer{
       current++;
 
       return true;
-   }
+    }
+
+    /**
+     * @brief Works like the 'advance' method. However, it doesn't consume the next character yet
+     * to be consumed by the lexer.
+     * 
+     * This method is responsible for returning the next character yet to be consumed by the lexer. In other
+     * words, this method returns the character that the 'current' variable currently points to.
+     * 
+     * @return The char that is being currently being pointed by the 'current' variable. That is, the next char
+     * that has not been consumed by the lexer yet.
+     * 
+     * @note If the lexer has reached the end of the 'sourceCode' string variable, then it returns the '\0' character.
+    **/
+    char peek(){
+      if(isAtEnd()){
+        return '\0';
+      }
+
+      return sourceCode[current];
+    }
 
     /**
      * @brief 
@@ -182,6 +202,13 @@ class Lexer{
           addToken(TokenType::STAR);
           break;
         case('/'):
+          if(match('/')){ // Single-Line comment.
+            while(peek() != '\n' && !isAtEnd()) advance();
+          }else if(match('*')){ // Multi-Line comment.
+
+          }else{ // Division operator.
+            addToken(TokenType::SLASH);
+          }
           break;
         case('!'):
           addToken(match('=') ? TokenType::BANG_EQUAL : TokenType::BANG);
@@ -194,6 +221,13 @@ class Lexer{
           break;
         case('<'):
           addToken(match('=') ? TokenType::LESS_EQUAL : TokenType::LESS);
+          break;
+        case(' '):
+        case('\r'):
+        case('\t'):
+          break; // The lexer ignore whitespace characters.
+        case('\n'):
+          line++;
           break;
         default:
           error(line, "Unexpected character not supported by the Bleach language: " + c);
@@ -241,5 +275,4 @@ class Lexer{
 
       return tokens;
     }
-
 };
