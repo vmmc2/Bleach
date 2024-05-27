@@ -30,6 +30,32 @@ class Lexer{
     int start = 0; /**< Variable that points to the first/start character of the lexeme that is being consumed (This index is in relation to the 'sourceCode' variable). */
     int current = 0; /**< Variable that points to the character that is the next one to be consumed by the lexer. */
     int line = 1; /**< Variable that holds the information about which line the lexer is currently at with respect to the source code file. It helps the lexer to generate tokens that know their location in the source code file. */
+    std::map<std::string, TokenType> keywords = { /** Variable that maps string values of Bleach keywords to its respective TokenType enum values. */
+        {"and",           TokenType::AND},
+        {"break",         TokenType::BREAK},
+        {"class",         TokenType::CLASS},
+        {"continue",      TokenType::CONTINUE},
+        {"do",            TokenType::DO},
+        {"else",          TokenType::ELSE},
+        {"elif",          TokenType::ELIF},
+        {"false",         TokenType::FALSE},
+        {"for",           TokenType::FOR},
+        {"function",      TokenType::FUNCTION},
+        {"if",            TokenType::IF},
+        {"in",            TokenType::IN},
+        {"lambda",        TokenType::LAMBDA},
+        {"let",           TokenType::LET},
+        {"method",        TokenType::METHOD},
+        {"nil",           TokenType::NIL},
+        {"or",            TokenType::OR},
+        {"print",         TokenType::PRINT},
+        {"return",        TokenType::RETURN},
+        {"static",        TokenType::STATIC},
+        {"super",         TokenType::SUPER},
+        {"this",          TokenType::THIS},
+        {"true",          TokenType::TRUE},
+        {"while",         TokenType::WHILE},
+    };
 
     /**
      * @brief Signals whether the lexer has reached the end of the source code file or not.
@@ -153,6 +179,41 @@ class Lexer{
      * 
      * This method
      * 
+     * @param
+     * 
+     * @return
+    **/
+    bool isDigit(char c){
+      return (c >= '0' && c <= '9');
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    bool isAlpha(char c){
+      return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    bool isAlphaNumeric(char c){
+      return (isDigit(c) || isAlpha(c));
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
      * @return Nothing (void).
     **/
     void multilineComment(){ // Bleach addopts the same rules of C++ when it comes to multi-line comments.
@@ -171,6 +232,54 @@ class Lexer{
         error(line, "Unterminated multi-line comment.");
         return;
       }
+      return;
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    void identifier(){
+      while(isAlphaNumeric(peek(0))){
+        advance();
+      }
+
+      TokenType type;
+      std::string lexeme = std::string{sourceCode.substr(start, current - start)};
+      if(keywords.find(lexeme) != keywords.end()){
+        type = keywords[lexeme];
+      }else{
+        type = TokenType::IDENTIFIER;
+      }
+      addToken(type);
+
+      return;
+    }
+
+    /**
+     * @brief 
+     * 
+     * This method
+     * 
+     * @return Nothing (void).
+    **/
+    void number(){
+      while(isDigit(peek(0))){
+        advance();
+      }
+
+      if(peek(0) == '.' && isDigit(peek(1))){ // We look to check whether the number has a fractional part (this distinguishes an integer literal from a floating-point literal).
+        advance(); // Consume the '.' character and continue to pass through the fractional part of the number.
+        while(isDigit(peek(0))){ // Passing through the fractional part of the number.
+          advance();
+        }
+      }
+
+      addToken(TokenType::NUMBER, std::stod(std::string{sourceCode.substr(start, current - start)})); // A good example of literal to understand this is '123.'
+
       return;
     }
 
@@ -285,7 +394,13 @@ class Lexer{
           string();
           break;
         default:
-          error(line, "Unexpected character not supported by the Bleach language: " + c);
+          if(isDigit(c)){
+            number();
+          }else if(isAlpha(c)){
+            identifier();
+          }else{
+            error(line, "Unexpected character not supported by the Bleach language: " + c);
+          }
           break;
       }
 
