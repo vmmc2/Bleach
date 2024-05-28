@@ -36,8 +36,8 @@ class Lexer{
       {"class",         TokenType::CLASS},
       {"continue",      TokenType::CONTINUE},
       {"do",            TokenType::DO},
-      {"else",          TokenType::ELSE},
       {"elif",          TokenType::ELIF},
+      {"else",          TokenType::ELSE},
       {"false",         TokenType::FALSE},
       {"for",           TokenType::FOR},
       {"function",      TokenType::FUNCTION},
@@ -179,12 +179,10 @@ class Lexer{
      * 
      * This method
      * 
-     * @param
-     * 
-     * @return
+     * @return Nothing (void).
     **/
-    bool isDigit(char c){
-      return (c >= '0' && c <= '9');
+    bool isAlpha(char c){
+      return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
     }
 
     /**
@@ -192,10 +190,12 @@ class Lexer{
      * 
      * This method
      * 
-     * @return Nothing (void).
+     * @param
+     * 
+     * @return
     **/
-    bool isAlpha(char c){
-      return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
+    bool isDigit(char c){
+      return (c >= '0' && c <= '9');
     }
 
     /**
