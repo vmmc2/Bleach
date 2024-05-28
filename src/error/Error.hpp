@@ -1,8 +1,12 @@
 #pragma once 
 
 #include <iostream>
+#include <string>
 #include <string_view>
 
+
+const std::string RED = "\033[31m"; /**< Constant that allows the BLEACH Interpreter to display red colored error messages. */
+const std::string WHITE = "\033[37m"; /**< Constant that allows the BLEACH Interpreter to reset the terminal output color back to white after displaying an error message. */
 
 inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpreter will not execute code if there's a syntax error in the source code. */
 
@@ -16,7 +20,11 @@ inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpr
  * @return Nothing (void).
 **/
 static void report(int errorLine, std::string_view errorLocation, std::string_view errorMessage){
-  std::cerr << "[BLEACH Interpreter Error]: " << "Error occurred at Line: " << errorLine << " - Error happened at location " << errorLocation << " - Error Message: " << errorMessage << "." << std::endl;
+  if(errorLocation.length() != 0){
+    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Error occurred at Line: " << errorLine << " - Error happened at location " << errorLocation << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
+  }else{
+    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Error occurred at Line: " << errorLine << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
+  }
   hadError = true;
 
   return;

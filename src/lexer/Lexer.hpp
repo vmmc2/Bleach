@@ -399,7 +399,7 @@ class Lexer{
           }else if(isAlpha(c)){
             identifier();
           }else{
-            error(line, "Unexpected character not supported by the Bleach language: " + c);
+            error(line, "Unexpected character not supported by the Bleach language: " + std::string{c});
           }
           break;
       }

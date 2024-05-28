@@ -12,7 +12,7 @@ std::string readFile(std::string_view filePath){
   std::ifstream file{filePath.data(), std::ios::in | std::ios::binary | std::ios::ate};
 
   if(!file){
-    std::cerr << "\033[31m [BLEACH Interpreter Error]: Failed to open file '" << filePath << "': " << std::strerror(errno) << std::endl;
+    std::cerr << RED << "[BLEACH Interpreter Error]: Failed to open file '" << filePath << "': " << std::strerror(errno) << WHITE << std::endl;
     std::exit(74); 
   }
 
@@ -48,14 +48,13 @@ void runFile(std::string_view filePath){
   return;
 }
 
-void runPrompt(){
-  std::string line;
-
-  std::cout << "> ";
-  while(std::getline(std::cin, line)){
+void runPrompt() {
+  for (;;) {
+    std::cout << "> ";
+    std::string line;
+    if (!std::getline(std::cin, line)) break;
     run(line);
     hadError = false;
-    std::cout << "> ";
   }
 
   return;
@@ -67,10 +66,10 @@ int main(int argc, char* argv[]){
   }else if(argc == 1){
     runPrompt();
   }else{
-    std::cerr << "\033[31m [BLEACH Interpreter Error] Incorrect use of the interpreter. \033[0m" << std::endl;
-    std::cerr << "\033[31m There are two options for you to run the interprter: \033[0m" << std::endl;
-    std::cerr << "\033[31m 1) Starting up the interactive interpreter through the command: ./BleachInterpreter \033[0m" << std::endl;
-    std::cerr << "\033[31m 2) Passing a Bleach file to the interpreter so it can execute it through the command: ./BleachInterpreter file_name.bah \033[0m" << std::endl;
+    std::cout << RED << "[BLEACH Interpreter Error] Incorrect use of the interpreter." << std::endl;
+    std::cout << "There are two options for you to run the interprter:" << std::endl;
+    std::cout << " 1) Starting up the interactive interpreter through the command: ./BleachInterpreter" << std::endl;
+    std::cout << " 2) Passing a Bleach file to the interpreter so it can execute it through the command: ./BleachInterpreter file_name.bah" << WHITE << std::endl;
     std::exit(64);
   }
 
