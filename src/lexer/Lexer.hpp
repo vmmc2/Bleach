@@ -175,14 +175,14 @@ class Lexer{
     }
 
     /**
-     * @brief Receives a char and return true or false if it's a lowercase letter, an uppercase letter or an
+     * @brief Receives a char and returns true or false if it's a lowercase letter, an uppercase letter or an
      * underscore.
      * 
-     * This method receives a char as its input and simply makes a check to see if its value if a lowercase
-     * letter, an uppercase letter or an underscore.
+     * This method is responsible for receiving a char as its input and simply makes a check to see if its 
+     * value is a lowercase letter, an uppercase letter or an underscore.
      * 
-     * @param c The character that we are going to check to see if it's a lowercase letter, an uppercase letter
-     * or an underscore.
+     * @param c The character the method is going to check to see if it's a lowercase letter, an uppercase
+     * letter or an underscore.
      * 
      * @return A boolean that signals if the received character is a lowercase letter, an uppercase letter or
      * an underscore.
@@ -192,24 +192,35 @@ class Lexer{
     }
 
     /**
-     * @brief 
+     * @brief Receives a char and returns true or false if it's a digit between '0' and '9' (inclusive in both
+     * sides).
      * 
-     * This method
+     * This method is responsible for receiving a char as its input and making a check to see if its value is
+     * a digit between '0' and '9' (inclusive in both sides).
      * 
-     * @param
+     * @param c The character the method is going to check to see if it's a digit between '0' and '9'
+     * (inclusive in both sides).
      * 
-     * @return
+     * @return A boolean that signals if the received character is a digit between '0' and '9' (inclusive
+     * in both sides).
     **/
     bool isDigit(char c){
       return (c >= '0' && c <= '9');
     }
 
     /**
-     * @brief 
+     * @brief Receives a char and returns true or false if it's a lowercase letter, an uppercase letter, an
+     * underscore or a digit between '0' and '9' (inclusive in both sides).
      * 
-     * This method
+     * This method is responsible for receiving a char as its input and making a check to see if its value
+     * is a lowercase letter, an uppercase letter, an underscore or a digit between '0' and '9' (inclusive
+     * in both sides).
      * 
-     * @return Nothing (void).
+     * @param c The character the method is going to check to see if it's a lowercase letter, an uppercase
+     * letter, an underscore or a digit between '0' and '9' (inclusive in both sides).
+     * 
+     * @return A boolean that signals if the received character is a lowercase letter, an uppercase letter,
+     * an underscore or a digit between '0' and '9' (inclusive in both sides).
     **/
     bool isAlphaNumeric(char c){
       return (isDigit(c) || isAlpha(c));
