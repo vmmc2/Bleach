@@ -7,7 +7,13 @@
 #include "error/Error.hpp"
 #include "lexer/Lexer.hpp"
 
-
+/**
+ * @brief 
+ * 
+ * @param 
+ * 
+ * @return 
+**/
 std::string readFile(std::string_view filePath){
   std::ifstream file{filePath.data(), std::ios::in | std::ios::binary | std::ios::ate};
 
@@ -26,6 +32,13 @@ std::string readFile(std::string_view filePath){
   return fileContent;
 }
 
+/**
+ * @brief 
+ * 
+ * @param 
+ * 
+ * @return 
+**/
 void run(std::string_view sourceCode){
   Lexer lexer{sourceCode};
   std::vector<Token> tokens = lexer.lexTokens();
@@ -37,6 +50,13 @@ void run(std::string_view sourceCode){
   return;
 }
 
+/**
+ * @brief 
+ * 
+ * @param 
+ * 
+ * @return 
+**/
 void runFile(std::string_view filePath){
   std::string fileContent = readFile(filePath);
   run(fileContent);
@@ -48,6 +68,13 @@ void runFile(std::string_view filePath){
   return;
 }
 
+/**
+ * @brief 
+ * 
+ * @param 
+ * 
+ * @return 
+**/
 void runPrompt() {
   for (;;) {
     std::cout << "> ";
@@ -60,6 +87,13 @@ void runPrompt() {
   return;
 }
 
+/**
+ * @brief 
+ * 
+ * @param 
+ * 
+ * @return 
+**/
 int main(int argc, char* argv[]){
   if(argc == 2){
     runFile(argv[1]);
