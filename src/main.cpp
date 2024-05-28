@@ -6,14 +6,13 @@
 
 #include "error/Error.hpp"
 #include "lexer/Lexer.hpp"
-#include "utils/Token.hpp"
 
 
 std::string readFile(std::string_view filePath){
   std::ifstream file{filePath.data(), std::ios::in | std::ios::binary | std::ios::ate};
 
   if(!file){
-    std::cerr << "ERROR: Failed to open file '" << filePath << "'. " << std::strerror(errno) << std::endl;
+    std::cerr << "\033[31m [BLEACH Interpreter Error]: Failed to open file '" << filePath << "': " << std::strerror(errno) << std::endl;
     std::exit(74); 
   }
 
@@ -68,7 +67,7 @@ int main(int argc, char* argv[]){
   }else if(argc == 1){
     runPrompt();
   }else{
-    std::cerr << "\033[31m Incorrect use of the Bleach Interpreter. \033[0m" << std::endl;
+    std::cerr << "\033[31m [BLEACH Interpreter Error] Incorrect use of the interpreter. \033[0m" << std::endl;
     std::cerr << "\033[31m There are two options for you to run the interprter: \033[0m" << std::endl;
     std::cerr << "\033[31m 1) Starting up the interactive interpreter through the command: ./BleachInterpreter \033[0m" << std::endl;
     std::cerr << "\033[31m 2) Passing a Bleach file to the interpreter so it can execute it through the command: ./BleachInterpreter file_name.bah \033[0m" << std::endl;
