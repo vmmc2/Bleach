@@ -141,7 +141,7 @@ class Lexer{
      * @param expected A char that represents the next character expected to be consumed by the lexer (the one
      * currently being pointed by the 'current' variable).
      * 
-     * @return A boolean that signals whether the expected character was consumed by the lexer or not.
+     * @return A boolean that signals whether or not the expected character was consumed by the lexer.
     **/
     bool match(char expected){
       if(isAtEnd()){
@@ -175,11 +175,17 @@ class Lexer{
     }
 
     /**
-     * @brief 
+     * @brief Receives a char and return true or false if it's a lowercase letter, an uppercase letter or an
+     * underscore.
      * 
-     * This method
+     * This method receives a char as its input and simply makes a check to see if its value if a lowercase
+     * letter, an uppercase letter or an underscore.
      * 
-     * @return Nothing (void).
+     * @param c The character that we are going to check to see if it's a lowercase letter, an uppercase letter
+     * or an underscore.
+     * 
+     * @return A boolean that signals if the received character is a lowercase letter, an uppercase letter or
+     * an underscore.
     **/
     bool isAlpha(char c){
       return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == '_'));
