@@ -4,7 +4,7 @@
 #include <string_view>
 
 
-inline int hadError = false; /**< Variable that ensures that the BLEACH Interpreter will not execute code if there's a syntax error in the source code. */
+inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpreter will not execute code if there's a syntax error in the source code. */
 
 /**
  * @brief Reports the occcurrence of a syntax error to the user through the standard error stream (usually is the console).
@@ -32,5 +32,6 @@ static void report(int errorLine, std::string_view errorLocation, std::string_vi
 **/
 static void error(int errorLine, std::string_view errorMessage){
   report(errorLine, "", errorMessage);
+  
   return;
 }
