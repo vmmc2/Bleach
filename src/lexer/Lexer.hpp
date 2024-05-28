@@ -156,15 +156,21 @@ class Lexer{
     }
 
     /**
-     * @brief
+     * @brief Receives an integer that will be stored inside the 'offset' variable and returns a character
+     * that has not been consumed by the lexer yet by creating a temporary pointer to an index of the 
+     * 'sourceCode' variable by adding the values of 'offset' and 'current'.
      * 
-     * This method is responsible for
+     * This method is responsible for receiving an integer which will be stored inside the 'offset' variable.
+     * This value is used to return a character that has not been consumed by the lexer yet, by adding its 
+     * value to the value currently stored inside the 'current' variable.
      * 
-     * @param
+     * @param offset An integer that is used to create a new temporary pointer to an index of 'sourceCode'
+     * by adding its value to the value currently stored inside the 'current' variable.
      * 
-     * @return
+     * @return The char that is being stored at 'sourceCode[current + offset]'.
      * 
-     * @note If the lexer has reached the end of the 'sourceCode' string variable, then it returns the '\0' character.
+     * @note If the sum 'current + offset' is equal to (or bigger than) the length of the string stored inside
+     * the 'sourceCode' variable, then this method returns the '\0' character.
     **/
     char peek(int offset){
       if(current + offset >= sourceCode.length()){
