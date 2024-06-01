@@ -141,7 +141,97 @@ class Parser{
      * @return 
     **/
     std::shared_ptr<Expr> comparison(){
+      std::shared_ptr<Expr> expr = term();
 
+      while(match(TokenType::LESS, TokenType::LESS_EQUAL, TokenType::GREATER, TokenType::GREATER_EQUAL)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = term();
+        expr = std::make_shared<Binary>(expr, op, right); // The left-to-right associativity of the '<', '<=', '>' and '>=' operators is made evident here.
+      }
+
+      return expr;
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    std::shared_ptr<Expr> term(){
+      std::shared_ptr<Expr> expr = factor();
+
+      while(match(TokenType::PLUS, TokenType::MINUS)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = factor();
+        expr = std::make_shared<Binary>(expr, op, right); // The left-to-right associativity of the '+' and '-' operators is made evident here.
+      }
+
+      return expr;
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    std::shared_ptr<Expr> factor(){
+      std::shared_ptr<Expr> expr = unary();
+
+      while(match(TokenType::STAR, TokenType::SLASH)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = unary();
+        expr = std::make_shared<Binary>(expr, op, right); // The left-to-right associativity of the '*' and '/' operators is made evident here.
+      }
+
+      return expr;
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    std::shared_ptr<Expr> unary(){
+      if(match(TokenType::BANG, TokenType::MINUS)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = unary();
+        return std::make_shared<Unary>(op, right); // The right-to-left associativity of the '!' and '-' operators is made evident here.
+      }
+
+      return primary();
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    std::shared_ptr<Expr> primary(){
+      if(match(TokenType::FALSE)){
+        return std::make_shared<Literal>(false);
+      }
+      if(match(TokenType::TRUE)){
+        return std::make_shared<Literal>(true);
+      }
+      if(match(TokenType::NIL)){
+        return std::make_shared<Literal>(nullptr);
+      }
+      if(match(TokenType::NUMBER, TokenType::STRING)){
+        return std::make_shared<Literal>(previous().literal);
+      }
+      if(match(TokenType::LEFT_PAREN)){
+        std::shared_ptr<Expr> expr = expression();
+        consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression.");
+        return std::make_shared<Grouping>(expr);
+      }
     }
 
   public:
@@ -157,5 +247,4 @@ class Parser{
     Parser(const std::vector<Token>& tokens)
       : tokens{tokens}
     {}
-  
 };
