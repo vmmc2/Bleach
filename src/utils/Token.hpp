@@ -15,13 +15,12 @@
  * during lexical analysis (lexing/scanning) phase in the Bleach Interpreter.
  */
 class Token{
-  private:
+  public:
     const TokenType type; /**< Variable that represents the type of the token. */
     const std::string lexeme; /**< Variable that represents the string representation of the token. */
     const std::any literal; /**< Variable that contains the lexeme's runtime value of the token. */
     const int line; /**< Variable that indicates at which line of the source code the token appeared. Useful for error messages. */
 
-  public:
     /**
      * @brief Constructs a Token with the specified type, lexeme, literal, and line number.
      *
