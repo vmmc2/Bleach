@@ -10,16 +10,16 @@
 
 
 /**
- * @brief Receives a path to a file, checks whether the file exists and if it is a Bleach file, extracts all of
- * its content and stores it in a string. Then, return such string.
+ * @brief Receives a path to a file (absolute or relative), checks whether the file exists and if it is a Bleach
+ * file, extracts all of its content and stores it in a string. Then, return such string.
  * 
- * This function is responsible for receiving the relative file path of a supposed Bleach file. Then, it checks
- * whether the file exists and whether it is, indeeed, a Bleach file. Then, it tries to open the said file. If
- * everything went okay, then this function extracts the whole content of the file, stores it inside a string
- * (std::string) variable called "fileContent" and returns it.
+ * This function is responsible for receiving the absolute of relative file path of a supposed Bleach file. 
+ * Then, it checks whether the file exists and whether it is, indeeed, a Bleach file. Then, it tries to open 
+ * the said file. If everything went okay, then this function extracts the whole content of the file, stores it 
+ * inside a string (std::string) variable called "fileContent" and returns it.
  * 
- * @param filePath A string (std::string_view) that stores the relative file path to the Bleach file that will
- * be interpreted.
+ * @param filePath A string (std::string_view) that stores the absolute or relative file path to the Bleach file
+ * that will be interpreted.
  * 
  * @return A string (std::string) that contains the content (source code) written inside the file pointed by the
  * provided file path.
@@ -82,16 +82,16 @@ void run(std::string_view sourceCode){
 }
 
 /**
- * @brief Receives the relative file path to a Bleach file, opens such file, reads its content and pass it to
- * another function, so it can be executed/interpreted.
+ * @brief Receives the absolute or relative file path to a Bleach file, opens such file, reads its content and 
+ * pass it to another function, so it can be executed/interpreted.
  * 
- * This function is responsible for receiving the relative path to a Bleach file as a string (std::string_view),
- * then it will call the auxiliar function 'readFile' to get the content of such file. Finally, it will call the
- * 'run' function to execute/interpret the contents present inside the file pointed by the received relative
- * file path.
+ * This function is responsible for receiving the absolute or relative path to a Bleach file as a string 
+ * (std::string_view), then it will call the auxiliar function 'readFile' to get the content of such file. 
+ * Finally, it will call the 'run' function to execute/interpret the contents present inside the file pointed 
+ * by the received absolute or relative file path.
  * 
- * @param filePath A string (std::string_view) that represents the relative path to a Bleach file, whose content
- * will be executed by the BLEACH Interpreter.
+ * @param filePath A string (std::string_view) that represents the absolute or relative path to a Bleach file, 
+ * whose content will be executed by the BLEACH Interpreter.
  * 
  * @return Nothing (void).
 **/
@@ -135,8 +135,8 @@ void runPrompt() {
  * This function is responsible for being the entry point of the BLEACH interpreter. It starts up the interpreter
  * in two possible modes ("File Mode" or "REPL Mode").
  * To start up the interpreter in the "File Mode", you must compile the project using the provided Makefile and
- * then provide the relative path of the Bleach file you want to compile as the only argument when executing
- * the generated binary.
+ * then provide the absolute or relative path to the Bleach file you want to interpret as the only argument when
+ * executing the generated binary.
  * To start up the interpreter in the "REPL Mode", you must compile the project using the provided Makefile and
  * then just execute the generated binary.
  * 
