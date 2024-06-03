@@ -2,9 +2,13 @@
 
 #include <cassert>
 #include <memory>
+#include <stdexcept>
+#include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "../error/Error.hpp"
 #include "../utils/Expr.hpp"
 #include "../utils/Token.hpp"
 
@@ -18,6 +22,9 @@
 **/
 class Parser{
   private:
+    struct ParseError : public std::runtime_error{ /**< Variable. */
+      using std::runtime_error::runtime_error;
+    };
     int current = 0; /**< Variable that points to the next token that has not been consumed yet by the parser. */
     const std::vector<Token>& tokens; /**< Variable that represents the sequence of tokens received by the parser from the lexer. Such sequence will be parsed into an AST. */
 
@@ -67,6 +74,66 @@ class Parser{
       }
 
       return peek().type == type;
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    ParseError error(const Token& token, std::string_view message){
+      ::error(token, message);
+      return ParseError{""};
+    }
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    void synchronize(){
+      advance();
+
+      while(!isAtEnd()){
+        if(previous().type == TokenType::SEMICOLON){ // If the token that has just been consumed is a semicolon (;), then it means we're about to enter a new statement.
+          return;
+        }
+
+        switch(peek().type){ // If the next token about to be consumed is one of these shown below, then we're also about to enter a new statement.
+          case(TokenType::CLASS):
+          case(TokenType::FOR):
+          case(TokenType::FUNCTION):
+          case(TokenType::IF):
+          case(TokenType::LET):
+          case(TokenType::PRINT):
+          case(TokenType::RETURN):
+          case(TokenType::WHILE):
+            return;
+        }
+
+        advance();
+      }
+
+      return;
+    }    
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    Token consume(TokenType type, std::string_view message){
+      if(check(type)){
+        return advance();
+      }
+
+      throw error(peek(), message);
     }
 
     /**
@@ -232,6 +299,8 @@ class Parser{
         consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression.");
         return std::make_shared<Grouping>(expr);
       }
+
+      throw error(peek(), "Expected an expression");
     }
 
   public:
@@ -247,4 +316,19 @@ class Parser{
     Parser(const std::vector<Token>& tokens)
       : tokens{tokens}
     {}
+
+    /**
+     * @brief 
+     *
+     * This method 
+     * 
+     * @return 
+    **/
+    std::shared_ptr<Expr> parse(){
+      try{
+        return expression();
+      }catch(ParseError parseError){
+        return nullptr;
+      }
+    }
 };
