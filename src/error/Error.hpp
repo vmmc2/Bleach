@@ -49,15 +49,15 @@ static void error(int errorLine, std::string_view errorMessage){
  * @brief Calls the "report" function to register the occurrence of a syntax error (found in the parser) in the source code file.
  * 
  * @param token: The token in the source code file (from the sequence of tokens) where the syntax (parsing) error has happened.
- * @param message: The error message related to the syntax (parsing) error that has happened.
+ * @param errorMessage: The error message related to the syntax (parsing) error that has happened.
  * 
  * @return Nothing (void).
 **/
-static void error(const Token& token, std::string_view message){
+static void error(const Token& token, std::string_view errorMessage){
   if(token.type == TokenType::FILE_END){
-    report(token.line, "at the end of the file.", message);
+    report(token.line, "at the end of the file.", errorMessage);
   }else{
-    report(token.line, "'" + token.lexeme + "'.", message);
+    report(token.line, "'" + token.lexeme + "'.", errorMessage);
   }
 
   return;
