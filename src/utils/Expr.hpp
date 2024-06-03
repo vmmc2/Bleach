@@ -10,6 +10,7 @@
 struct Binary;
 struct Grouping;
 struct Literal;
+struct Ternary;
 struct Unary;
 
 /**
@@ -22,6 +23,7 @@ struct ExprVisitor{
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
   virtual std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
+  virtual std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) = 0;
   virtual std::any visitUnaryExpr(std::shared_ptr<Unary> expr) = 0;
   virtual ~ExprVisitor() = default;
 };
@@ -89,6 +91,26 @@ struct Literal : Expr, public std::enable_shared_from_this<Literal>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitLiteralExpr(shared_from_this());
+  }
+};
+
+/**
+ * @struct Ternary
+ * @brief Represents 
+ *
+ * The Ternary struct
+ */
+struct Ternary : Expr, public std::enable_shared_from_this<Ternary>{
+  const std::shared_ptr<Expr> condition;
+  const std::shared_ptr<Expr> truthyResult;
+  const std::shared_ptr<Expr> falsyResult;
+
+  Ternary(std::shared_ptr<Expr> condition, std::shared_ptr<Expr> truthyResult, std::shared_ptr<Expr> falsyResult)
+    : condition{std::move(condition)}, truthyResult{std::move(truthyResult)}, falsyResult{std::move(falsyResult)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitTernaryExpr(shared_from_this());
   }
 };
 
