@@ -1,8 +1,9 @@
 #pragma once 
 
 #include <iostream>
-#include <string>
 #include <string_view>
+
+#include "../utils/Token.hpp"
 
 
 const std::string RED = "\033[31m"; /**< Constant that allows the BLEACH Interpreter to display red colored error messages. */
@@ -31,7 +32,7 @@ static void report(int errorLine, std::string_view errorLocation, std::string_vi
 }
 
 /**
- * @brief Calls the "report" function to register the occurrence of a syntax error in the source code file.
+ * @brief Calls the "report" function to register the occurrence of a syntax error (found in the lexer) in the source code file.
  * 
  * @param errorLine: The line in the source code file where the syntax error happened.
  * @param errorMessage: The error message related to the syntax error that has happened.
@@ -41,5 +42,23 @@ static void report(int errorLine, std::string_view errorLocation, std::string_vi
 static void error(int errorLine, std::string_view errorMessage){
   report(errorLine, "", errorMessage);
   
+  return;
+}
+
+/**
+ * @brief Calls the "report" function to register the occurrence of a syntax error (found in the parser) in the source code file.
+ * 
+ * @param 
+ * @param 
+ * 
+ * @return 
+**/
+static void error(const Token& token, std::string_view message){
+  if(token.type == TokenType::FILE_END){
+    report(token.line, "at the end of the file.", message);
+  }else{
+    report(token.line, "'" + token.lexeme + "'.", message);
+  }
+
   return;
 }
