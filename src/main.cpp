@@ -6,6 +6,7 @@
 
 #include "error/Error.hpp"
 #include "lexer/Lexer.hpp"
+#include "parser/Parser.hpp"
 
 /**
  * @brief 
@@ -40,12 +41,28 @@ std::string readFile(std::string_view filePath){
  * @return 
 **/
 void run(std::string_view sourceCode){
+  /* First Step: Lexing */
   Lexer lexer{sourceCode};
   std::vector<Token> tokens = lexer.lexTokens();
+
+  if(hadError){
+    std::exit(65);
+  }
 
   for(const Token& token : tokens){
     std::cout << token.toString() << std::endl;
   }
+
+  /* Second Step: Parsing */
+  Parser parser{tokens};
+  std::shared_ptr<Expr> expression = parser.parse();
+
+  if(hadError){
+    std::exit(65);
+  }
+
+  /* Third Step: Interpret */
+
 
   return;
 }
