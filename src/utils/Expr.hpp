@@ -7,6 +7,7 @@
 
 #include "./Token.hpp"
 
+// Necessary forward declarations of certain structs so they can be used inside the 'ExprVisitor' struct below.
 struct Binary;
 struct Grouping;
 struct Literal;
@@ -15,9 +16,16 @@ struct Unary;
 
 /**
  * @struct ExprVisitor
- * @brief Represents 
+ * 
+ * @brief Defines an interface for visiting different types of nodes from the Bleach AST (Abstract Syntax Tree).
  *
- * The ExprVisitor struct
+ * The ExprVisitor struct defines an abstract class which is responsible for working as an interface whose
+ * functions are responsible for visiting the different expression nodes of the Bleach language AST (Abstract
+ * Syntax Tree). Such struct has a set of pure virtual functions that represent different operations on the 
+ * mentioned expression nodes. This same struct also has a virtual destructor that ensures the destructor of
+ * a derived class is called correctly when an object is deleted through a pointer to the base class.
+ * In practice, each of the expression nodes are going to be visited by an instance of a class that derives
+ * from 'ExprVisitor'.
  */
 struct ExprVisitor{
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
