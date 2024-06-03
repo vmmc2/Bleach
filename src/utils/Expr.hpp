@@ -7,6 +7,7 @@
 
 #include "./Token.hpp"
 
+
 // Necessary forward declarations of certain structs so they can be used inside the 'ExprVisitor' struct below.
 struct Binary;
 struct Grouping;
@@ -19,13 +20,13 @@ struct Unary;
  * 
  * @brief Defines an interface for visiting different types of nodes from the Bleach AST (Abstract Syntax Tree).
  *
- * The ExprVisitor struct defines an abstract class which is responsible for working as an interface whose
+ * The ExprVisitor struct defines an abstract struct that is responsible for working as an interface whose
  * functions are responsible for visiting the different expression nodes of the Bleach language AST (Abstract
  * Syntax Tree). Such struct has a set of pure virtual functions that represent different operations on the 
  * mentioned expression nodes. This same struct also has a virtual destructor that ensures the destructor of
- * a derived class is called correctly when an object is deleted through a pointer to the base class.
- * In practice, each of the expression nodes are going to be visited by an instance of a class that derives
- * from 'ExprVisitor'.
+ * a derived class/struct is called correctly when an object is deleted through a pointer to the base 
+ * class/struct. In practice, each of the expression nodes are going to be visited by an instance of a 
+ * struct/class that derives from 'ExprVisitor'.
  */
 struct ExprVisitor{
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
@@ -38,9 +39,14 @@ struct ExprVisitor{
 
 /**
  * @struct Expr
- * @brief Represents 
+ * 
+ * @brief Defines an abstract struct which will be used as a base struct for derived structs that represent
+ * different kinds of expression nodes in the AST (Abstract Syntax Tree) of the Bleach language.
  *
- * The Expr struct
+ * The Expr struct defines an abstract struct that is responsible for working as the base struct from which all
+ * structs that represent different types of AST nodes will derive from. This struct has only a pure virtual
+ * function called 'accept'. This function will be overridden by the derived structs where each kind of struct
+ * will have its own implementation for such function.
  */
 struct Expr{
   virtual std::any accept(ExprVisitor& visitor) = 0;
@@ -48,9 +54,13 @@ struct Expr{
 
 /**
  * @struct Binary
- * @brief Represents 
+ * 
+ * @brief Defines a struct to represent a binary expression node from the AST of the Bleach language.
  *
- * The Binary struct
+ * The Binary struct defines a struct that is responsible for representing a binary expression node from the
+ * AST (Abstract Syntax Tree) of the Bleach language. Such struct has three attributes: two that represents the
+ * operands of a binary expression ('left' and 'right') and another one that represents the kind of operation
+ * that will be performed on the two operands.
  */
 struct Binary : Expr, public std::enable_shared_from_this<Binary>{
   const std::shared_ptr<Expr> left;
@@ -68,9 +78,12 @@ struct Binary : Expr, public std::enable_shared_from_this<Binary>{
 
 /**
  * @struct Grouping
- * @brief Represents 
+ * 
+ * @brief Defines a struct to represent a grouping expression node from the AST of the Bleach language.
  *
- * The Grouping struct
+ * The Grouping struct defines a struct to represent a grouping expression node from the AST (Abstract Syntax 
+ * Tree) of the Bleach language. A grouping expression is just an expression that is enclosed by parentheses.
+ * This struct has only one field called 'expression' that represents the expression inside the parentheses.
  */
 struct Grouping : Expr, public std::enable_shared_from_this<Grouping>{
   const std::shared_ptr<Expr> expression;
@@ -86,9 +99,12 @@ struct Grouping : Expr, public std::enable_shared_from_this<Grouping>{
 
 /**
  * @struct Literal
- * @brief Represents 
+ * 
+ * @brief Defines a struct to represent a literal expression node from the AST of the Bleach language.
  *
- * The Literal struct
+ * The Literal struct defines a struct to represent a literal expression node from the AST (Abstract Syntax
+ * Tree) of the Bleach language. A literal expression is an expression that is just a value. This struct has
+ * only one attribute called 'value' that represents the literal value present inside such struct.
  */
 struct Literal : Expr, public std::enable_shared_from_this<Literal>{
   std::any value;
@@ -104,9 +120,15 @@ struct Literal : Expr, public std::enable_shared_from_this<Literal>{
 
 /**
  * @struct Ternary
- * @brief Represents 
+ * 
+ * @brief Defines a struct to represent a ternary expression node from the AST of the Bleach language.
  *
- * The Ternary struct
+ * The Ternary struct defines a struct to represent a ternary expression node from the AST (Abstract Syntax
+ * Tree) of the Bleach language. A ternary expression is an expression that has three operands, as its name
+ * suggests. Such struct has three attributes: one called 'condition' which will be evaluated to true or false,
+ * and other two attributes called 'truthyResult' and 'falsyResult'. If the 'condition' attribute is evaluated
+ * to true, then the attribute 'truthyResult' will be evaluated. Otherwise, the 'falsyResult' is the one that
+ * will be evaluated.
  */
 struct Ternary : Expr, public std::enable_shared_from_this<Ternary>{
   const std::shared_ptr<Expr> condition;
@@ -124,9 +146,13 @@ struct Ternary : Expr, public std::enable_shared_from_this<Ternary>{
 
 /**
  * @struct Unary
- * @brief Represents 
+ * 
+ * @brief Defines a struct to represent an unary expression node from the AST of the Bleach language.
  *
- * The Unary struct
+ * The Unary struct defines a struct to represent an unary expression node from the AST (Abstract Syntax Tree)
+ * of the Bleach language. An unary expression is an expression that has only one operand, as its name suggests.
+ * Such struct has only two attributes: one called 'op' that represents the operator of the unary expression and
+ * another called 'right' that represents the operand on which the operator will be applied on.
  */
 struct Unary : Expr, public std::enable_shared_from_this<Unary>{
   const Token op;
