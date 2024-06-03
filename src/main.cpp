@@ -1,4 +1,5 @@
 #include <cstring>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,8 +26,13 @@
  * provided file path.
 **/
 std::string readFile(std::string_view filePath){
-  std::ifstream file{filePath.data(), std::ios::in | std::ios::binary | std::ios::ate};
+  std::filesystem::path path{filePath};
+  if(path.extension() != ".bah"){
+    std::cerr << RED << "[BLEACH Interpreter Error]: Cannot execute the provided file because it's not a Bleach file: '" << filePath << "'. " << WHITE << std::endl;
+    std::exit(74); 
+  }
 
+  std::ifstream file{filePath.data(), std::ios::in | std::ios::binary | std::ios::ate};
   if(!file){
     std::cerr << RED << "[BLEACH Interpreter Error]: Failed to open file '" << filePath << "': " << std::strerror(errno) << WHITE << std::endl;
     std::exit(74); 
