@@ -8,6 +8,7 @@
 #include "lexer/Lexer.hpp"
 #include "parser/Parser.hpp"
 
+
 /**
  * @brief Receives a path to a file, checks whether the file exists and if it is a Bleach file, extracts all of
  * its content and stores it in a string. Then, return such string.
@@ -42,11 +43,16 @@ std::string readFile(std::string_view filePath){
 }
 
 /**
- * @brief 
+ * @brief This function lexes, parse, analyze and execute/interpret the source code present inside a Bleach file
+ * provided in the "sourceCode" variable.
  * 
- * @param 
+ * This function is responsible for instantiating (step-by-step) the lexer, parser, static analyzer and 
+ * interpreter/runtime of the Bleach language. This function will perform each step of the interpreter pipeline
+ * and, if an error is found during one of these steps, then the whole process will be interrupted.
  * 
- * @return 
+ * @param sourceCode A string (std::string_view) that contains the source code of a Bleach file.
+ * 
+ * @return Nothing (void).
 **/
 void run(std::string_view sourceCode){
   /* First Step: Lexing */
@@ -76,11 +82,18 @@ void run(std::string_view sourceCode){
 }
 
 /**
- * @brief 
+ * @brief Receives the relative file path to a Bleach file, opens such file, reads its content and pass it to
+ * another function, so it can be executed/interpreted.
  * 
- * @param 
+ * This function is responsible for receiving the relative path to a Bleach file as a string (std::string_view),
+ * then it will call the auxiliar function 'readFile' to get the content of such file. Finally, it will call the
+ * 'run' function to execute/interpret the contents present inside the file pointed by the received relative
+ * file path.
  * 
- * @return 
+ * @param filePath A string (std::string_view) that represents the relative path to a Bleach file, whose content
+ * will be executed by the BLEACH Interpreter.
+ * 
+ * @return Nothing (void).
 **/
 void runFile(std::string_view filePath){
   std::string fileContent = readFile(filePath);
@@ -94,11 +107,14 @@ void runFile(std::string_view filePath){
 }
 
 /**
- * @brief 
+ * @brief Starts up the BLEACH Interpreter in the "REPL Mode".
  * 
- * @param 
+ * This function is responsible for starting up the BLEACH Interpreter in its "REPL Mode". By doing so, it
+ * enters an infinite loop, where it expects Bleach statements. When a statement is provided, it is read by
+ * the interpreter, then evaluated (interpreted) and the loop starts again. To interrupt the BLEACH Interpreter
+ * in the "REPL Mode", just press Ctrl+C or Ctrl+D.
  * 
- * @return 
+ * @return Nothing (void).
 **/
 void runPrompt() {
   for (;;) {
@@ -125,7 +141,7 @@ void runPrompt() {
  * then just execute the generated binary.
  * 
  * @param argc: The int that represents the number of arguments passed when running the executable.
- * @param argv: The array of strings (char*[]) that stores the values of each of the passed arguments.
+ * @param argv: The array of strings (char* []) that stores the values of each of the passed arguments.
  * 
  * @return An int that denotes whether the 'main' function executed without problems (0) or with problems (a number different from 0).
 **/
