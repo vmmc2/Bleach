@@ -152,11 +152,13 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Checks whether the next to be consumed token has a type equal to one of the provided types.
      *
-     * This method 
+     * This method receives a list/sequence of TokenTypes and checks whether the next token (the token that has
+     * not been consumed by the parser yet) has a TokenType equal to one of the provided TokenTypes.
      * 
-     * @return 
+     * @return A boolean that signals whether the next token (that hasn't been consumed by the parser yet) has
+     * a TokenType that is equal to one of the TokenTypes provided as arguments to this function.
     **/
     template<class... T>
     bool match(T... type){
@@ -176,18 +178,19 @@ class Parser{
      * This method is responsible for representing the 'expression' from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language.
+     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> expression(){
       return equality();
     }
 
     /**
-     * @brief 
+     * @brief Represents the 'equality' rule inside the CFG of the Bleach language.
      *
-     * This method 
+     * This method is responsible for representing the 'equality' from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return 
+     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> equality(){
       std::shared_ptr<Expr> expr = comparison();
