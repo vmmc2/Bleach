@@ -171,11 +171,12 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Represents the 'expression' rule inside the CFG of the Bleach language.
      *
-     * This method 
+     * This method is responsible for representing the 'expression' from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return 
+     * @return An Abstract Syntax Tree (AST) of the Bleach language.
     **/
     std::shared_ptr<Expr> expression(){
       return equality();
