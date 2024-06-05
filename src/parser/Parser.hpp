@@ -31,7 +31,7 @@ class Parser{
     /**
      * @brief Returns the token that has just been consumed by the parser.
      *
-     * This method is responsible for returning the token that has just been consumed by the parser.
+     * This method is responsible for returning the most recently consumed token by the parser.
      * 
      * @return A token: the token that has just been consumed by the parser.
     **/
@@ -42,8 +42,8 @@ class Parser{
     /**
      * @brief Returns the token that is just about to be consumed by the parser.
      *
-     * This method is responsible for returning the token that is just about to be consumed by the parser. In
-     * other words, the token that is being currently pointed by the 'current' attribute of the 'Parser' class.
+     * This method is responsible for returning the token that the parser has yet to consume. In other words, 
+     * the token that is being currently pointed by the 'current' attribute of the 'Parser' class.
      * 
      * @return A Token: the next token that has not been consumed yet by the parser. In other words, the token 
      * that is currently being pointed by the 'current' attribute of the 'Parser' class.
