@@ -194,7 +194,7 @@ class Parser{
      * This method is responsible for representing the 'expression' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> expression(){
       return equality();
@@ -206,7 +206,7 @@ class Parser{
      * This method is responsible for representing the 'equality' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> equality(){
       std::shared_ptr<Expr> expr = comparison();
@@ -226,7 +226,7 @@ class Parser{
      * This method is responsible for representing the 'comparison' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> comparison(){
       std::shared_ptr<Expr> expr = term();
@@ -246,7 +246,7 @@ class Parser{
      * This method is responsible for representing the 'term' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> term(){
       std::shared_ptr<Expr> expr = factor();
@@ -266,7 +266,7 @@ class Parser{
      * This method is responsible for representing the 'factor' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return An Abstract Syntax Tree (AST) of the Bleach language for this rule.
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> factor(){
       std::shared_ptr<Expr> expr = unary();
@@ -281,11 +281,12 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Represents the 'unary' rule inside the CFG of the Bleach language.
      *
-     * This method 
+     * This method is responsible for representing the 'unary' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return 
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> unary(){
       if(match(TokenType::BANG, TokenType::MINUS)){
@@ -298,11 +299,12 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Represents the 'primary' rule inside the CFG of the Bleach language.
      *
-     * This method 
+     * This method is responsible for representing the 'primary' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return 
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for this rule.
     **/
     std::shared_ptr<Expr> primary(){
       if(match(TokenType::FALSE)){
