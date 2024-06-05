@@ -155,7 +155,9 @@ class Parser{
      * @brief Checks whether the next to be consumed token has a type equal to one of the provided types.
      *
      * This method receives a list/sequence of TokenTypes and checks whether the next token (the token that has
-     * not been consumed by the parser yet) has a TokenType equal to one of the provided TokenTypes.
+     * not been consumed by the parser yet) has a TokenType equal to one of the provided TokenTypes. If it has
+     * then, the token is consumed and returns true. Otherwise, the token is not consumed and the function
+     * returns false.
      * 
      * @return A boolean that signals whether the next token (that hasn't been consumed by the parser yet) has
      * a TokenType that is equal to one of the TokenTypes provided as arguments to this function.
