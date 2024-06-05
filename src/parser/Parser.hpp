@@ -29,33 +29,35 @@ class Parser{
     const std::vector<Token>& tokens; /**< Variable that represents the sequence of tokens received by the parser from the lexer. Such sequence will be parsed into an AST. */
 
     /**
-     * @brief 
+     * @brief Returns the token that has just been consumed by the parser.
      *
-     * This method 
+     * This method is responsible for returning the token that has just been consumed by the parser.
      * 
-     * @return 
+     * @return A token: the token that has just been consumed by the parser.
     **/
     Token previous(){
       return tokens[current - 1];
     }
 
     /**
-     * @brief 
+     * @brief Returns the token that is just about to be consumed by the parser.
      *
-     * This method 
+     * This method is responsible for returning the token that is just about to be consumed by the parser. In
+     * other words, the token that is being currently pointed by the 'current' attribute of the 'Parser' class.
      * 
-     * @return 
+     * @return A Token: the next token that has not been consumed yet by the parser. In other words, the token 
+     * that is currently being pointed by the 'current' attribute of the 'Parser' class.
     **/
     Token peek(){
       return tokens[current];
     }
 
     /**
-     * @brief 
+     * @brief Checks whether or not the parser has reached the end of its token sequence.
      *
-     * This method 
+     * This method is responsible for checking if the parser has reached the end of its tokens sequence.
      * 
-     * @return 
+     * @return A boolean that signals whether or not the parser has reached the end of the tokens sequence.
     **/
     bool isAtEnd(){
       return peek().type == TokenType::FILE_END;
