@@ -102,7 +102,7 @@ class Parser{
      *
      * This method 
      * 
-     * @return 
+     * @return Nothing (void).
     **/
     void synchronize(){
       advance();
@@ -131,18 +131,30 @@ class Parser{
     }    
 
     /**
-     * @brief 
+     * @brief Checks to see if the next token to be consumed is of the given type. If so, it consumes the token
+     * and everything is fine. Otherwise, a syntax error is reported and thrown.
      *
-     * This method 
+     * This method is responsible for checking whether the next token to be consumed by the parser is of the
+     * given type. If that's the case, then the parser consumes it and goes on with the parsing process.
+     * Otherwise, it means the parser has found a syntax error (a parsing error) and, thus, such error is
+     * reported and thrown.
      * 
-     * @return 
+     * @param type: The type of Token that the parser expects the token that's about to be consumed to have.
+     * @param errorMessage: The error message that must be shown to the user in the console (terminal) if the
+     * token that's about to be consumed doesn't have the expected type.
+     * 
+     * @return The Token that has just been consumed by the parser. Note that this just happens if such token
+     * is of the same type as the provided type.
+     * 
+     * @note If the token that's about to be consumed by the parser isn't of the same type as the provided type,
+     * then a syntax error is reported and thrown by the 'Parser' class.
     **/
-    Token consume(TokenType type, std::string_view message){
+    Token consume(TokenType type, std::string_view errorMessage){
       if(check(type)){
         return advance();
       }
 
-      throw error(peek(), message);
+      throw error(peek(), errorMessage);
     }
 
     /**
