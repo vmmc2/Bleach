@@ -62,11 +62,18 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Checks whether or not the next token that has not been consumed yet has a token type equal to the
+     * provided token type.
      *
-     * This method 
+     * This method is responsible for receiving a TokenType through the 'type' parameter and checking whether
+     * this type is equal to the type of the next token that has not been consumed yet by the parser. Pay 
+     * attention to the fact that this method never consumes a token. It only looks at it.
      * 
-     * @return 
+     * @param type: A TokenType value which we will use to check whether or not the next token has such value
+     * as its TokenType.
+     * 
+     * @return A boolean that signals whether or not the next token that has not been consumed yet has the same
+     * type of the provided type.
     **/
     bool check(TokenType type){
       if(isAtEnd()){
@@ -137,11 +144,14 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Checks whether the parser has reached the end of the token sequence, consumes the next token on
+     * the sequence if any, and returns it.
      *
-     * This method 
+     * This method is responsible for checking whether the parser has reached the end of the token sequence.
+     * If that's not the case, then it consumes the token pointed by the 'current' attribute and returns it
+     * through the use of the 'previous' method.
      * 
-     * @return 
+     * @return The latest token that has been consumed by the parser.
     **/
     Token advance(){
       if(!isAtEnd()){
@@ -158,6 +168,8 @@ class Parser{
      * not been consumed by the parser yet) has a TokenType equal to one of the provided TokenTypes. If it has
      * then, the token is consumed and returns true. Otherwise, the token is not consumed and the function
      * returns false.
+     * 
+     * @param type: A sequence of comma separated TokenType values.
      * 
      * @return A boolean that signals whether the next token (that hasn't been consumed by the parser yet) has
      * a TokenType that is equal to one of the TokenTypes provided as arguments to this function.
