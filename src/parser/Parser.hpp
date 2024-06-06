@@ -86,14 +86,21 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Reports a syntax error (parsing error) and returns a 'ParseError' instance back to its caller.
      *
-     * This method 
+     * This method is responsible for reporting a syntax error (parsing error) to the user through the console
+     * (terminal) and also returning an instance of the 'ParseError' class back to its caller. 
      * 
-     * @return 
+     * @param token: The const reference (const Token&) to the Token that is the cause of the syntax error 
+     * (parsing error) that was discovered by the parser.
+     * @param errorMessage: The string (std::string_view) that has the contents of the error message that must
+     * be shown to the user in the console (terminal) if the token that's about to be consumed doesn't have the
+     * expected type.
+     * 
+     * @return A ParseError instance with an empty message.
     **/
-    ParseError error(const Token& token, std::string_view message){
-      ::error(token, message);
+    ParseError error(const Token& token, std::string_view errorMessage){
+      ::error(token, errorMessage);
       return ParseError{""};
     }
 
@@ -139,9 +146,10 @@ class Parser{
      * Otherwise, it means the parser has found a syntax error (a parsing error) and, thus, such error is
      * reported and thrown.
      * 
-     * @param type: The type of Token that the parser expects the token that's about to be consumed to have.
-     * @param errorMessage: The error message that must be shown to the user in the console (terminal) if the
-     * token that's about to be consumed doesn't have the expected type.
+     * @param type: The TokenType that the parser expects the token that's about to be consumed to have.
+     * @param errorMessage: The string (std::string_view) that has the contents of the error message that must
+     * be shown to the user in the console (terminal) if the token that's about to be consumed doesn't have the
+     * expected type.
      * 
      * @return The Token that has just been consumed by the parser. Note that this just happens if such token
      * is of the same type as the provided type.
