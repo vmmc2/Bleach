@@ -365,11 +365,12 @@ class Parser{
     {}
 
     /**
-     * @brief 
+     * @brief Starts the parsing step of the interpreter.
      *
-     * This method 
+     * This method is responsible for starting the parsing process of the interpreter.
      * 
-     * @return 
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language 
+     * generated from the whole sequence of tokens.
     **/
     std::shared_ptr<Expr> parse(){
       try{
