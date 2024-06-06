@@ -22,7 +22,7 @@
 **/
 class Parser{
   private:
-    struct ParseError : public std::runtime_error{ /**< Variable. */
+    struct ParseError : public std::runtime_error{ /**< Struct that represents a syntax error (parsing error). It basically works as a sentinel struct that is used to unwind the parser when a syntax error is found, so it can execute its synchronization process. */
       using std::runtime_error::runtime_error;
     };
     int current = 0; /**< Variable that points to the next token that has not been consumed yet by the parser. */
