@@ -105,9 +105,11 @@ class Parser{
     }
 
     /**
-     * @brief 
+     * @brief Discards tokens from the sequence of tokens that haven't been consumed yet by the parser until
+     * it hits what is most likely a statement boundary or the end of the tokens sequence
      *
-     * This method 
+     * This method is responsible for discarding tokens that haven't been consumed yet from the sequence of
+     * tokens until it hits what is most likely a statement boundary or the end of the tokens sequence.
      * 
      * @return Nothing (void).
     **/
@@ -115,11 +117,11 @@ class Parser{
       advance();
 
       while(!isAtEnd()){
-        if(previous().type == TokenType::SEMICOLON){ // If the token that has just been consumed is a semicolon (;), then it means we're about to enter a new statement.
+        if(previous().type == TokenType::SEMICOLON){ // If the token that has just been consumed is a semicolon (;), then it means the parser is about to enter a new statement.
           return;
         }
 
-        switch(peek().type){ // If the next token about to be consumed is one of these shown below, then we're also about to enter a new statement.
+        switch(peek().type){ // If the next token about to be consumed is one of these shown below, then the parser is also about to enter a new statement.
           case(TokenType::CLASS):
           case(TokenType::FOR):
           case(TokenType::FUNCTION):
