@@ -47,10 +47,10 @@
 
 
 ## Roadmap
-- [ ] Scanning (Review Implementation)
-- [ ] Representing Code (Review Implementation)
-- [ ] Parsing Expressions (Review Implementation)
-- [ ] Evaluating Expressions (Review Implementation)
+- [x] Scanning (Review Implementation)
+- [x] Representing Code (Review Implementation)
+- [x] Parsing Expressions (Review Implementation)
+- [x] Evaluating Expressions (Review Implementation)
 - [ ] Statements and State (Review Implementation)
 - [ ] Control Flow (Review Implementation)
 - [ ] Functions (Review Implementation)
@@ -62,6 +62,7 @@
 ## Things that are going to be tricky to implement
 - [ ] Multi-line comments (```/* */```)
 - [ ] Ternary Operator (```expression ? value1 : value2```)
+- [ ] Make comparison and equality operators more robust with respect to its operands
 - [ ] ```elif``` keyword available along with ```if``` and ```else``` keywords
 - [ ] ```do-while``` loop
 - [ ] ```break``` and ```continue``` keywords inside a loop
