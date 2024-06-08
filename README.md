@@ -63,6 +63,7 @@
 - [x] Multi-line comments (```/* */```)
 - [ ] Ternary Operator (```expression ? value1 : value2```)
 - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand).
+- [ ] Some of the suggestions present at the end of Chapter 7
 - [ ] ```elif``` keyword available along with ```if``` and ```else``` keywords
 - [ ] ```do-while``` loop
 - [ ] ```break``` and ```continue``` keywords inside a loop
