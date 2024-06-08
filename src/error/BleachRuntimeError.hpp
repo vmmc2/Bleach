@@ -19,7 +19,7 @@ class BleachRuntimeError : public std::runtime_error{
     const Token& token; /**< Variable that represents the token that triggered the runtime error. */
     
     /**
-     * @brief Constructs a BleachRuntimeErorr with the token that was responsible for causing the runtime error. 
+     * @brief Constructs a BleachRuntimeError with the token that was responsible for causing the runtime error. 
      *
      * This constructor initializes a BleachRuntimeError object with the token that was the cause to trigger such
      * an error, represented as a const Token&.
