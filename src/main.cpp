@@ -6,9 +6,12 @@
 #include <vector>
 
 #include "error/Error.hpp"
+#include "interpreter/Interpreter.hpp"
 #include "lexer/Lexer.hpp"
 #include "parser/Parser.hpp"
 
+
+Interpreter interpreter{};
 
 /**
  * @brief Receives a path to a file (absolute or relative), checks whether the file exists and if it is a Bleach
@@ -82,7 +85,7 @@ void run(std::string_view sourceCode){
   }
 
   /* Third Step: Interpret */
-
+  interpreter.interpret(expression);
 
   return;
 }
@@ -107,6 +110,9 @@ void runFile(std::string_view filePath){
 
   if(hadError){
     std::exit(65);
+  }
+  if(hadRuntimeError){
+    std::exit(70);
   }
 
   return;
