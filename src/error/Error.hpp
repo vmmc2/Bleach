@@ -66,9 +66,10 @@ static void error(const Token& token, std::string_view errorMessage){
 }
 
 /**
- * @brief 
+ * @brief Reports the ocurrence of a runtime error when executing the code present in the source code file.
  * 
- * @param error:
+ * @param error: The BleachRuntimeError that has occured when executing the code and that must be reported the 
+ * user.
  * 
  * @return Nothing (void).
 **/
