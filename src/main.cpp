@@ -11,7 +11,7 @@
 #include "parser/Parser.hpp"
 
 
-Interpreter interpreter{};
+Interpreter interpreter{}; /* Variable that represents the instance of the BLEACH Interpreter. This variable must be declared as global because, so sucessful calls to the 'run' function inside a REPL session reuse the same Interpreter instance. Remember that things must persist through a REPL session. */
 
 /**
  * @brief Receives a path to a file (absolute or relative), checks whether the file exists and if it is a Bleach
