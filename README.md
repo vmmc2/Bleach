@@ -51,7 +51,7 @@
 - [x] Representing Code (Review Implementation)
 - [x] Parsing Expressions (Review Implementation)
 - [x] Evaluating Expressions (Review Implementation)
-- [ ] Statements and State (Review Implementation)
+- [x] Statements and State (Review Implementation)
 - [ ] Control Flow (Review Implementation)
 - [ ] Functions (Review Implementation)
 - [ ] Resolving and Binding (Review Implementation)
@@ -60,7 +60,7 @@
 
 
 ## Things that are going to be tricky to implement
-- [ ] Multi-line comments (```/* */```)
+- [x] Multi-line comments (```/* */```)
 - [ ] Ternary Operator (```expression ? value1 : value2```)
 - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand).
 - [ ] ```elif``` keyword available along with ```if``` and ```else``` keywords
