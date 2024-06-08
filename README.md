@@ -62,7 +62,7 @@
 ## Things that are going to be tricky to implement
 - [ ] Multi-line comments (```/* */```)
 - [ ] Ternary Operator (```expression ? value1 : value2```)
-- [ ] Make comparison and equality operators more robust with respect to its operands
+- [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand).
 - [ ] ```elif``` keyword available along with ```if``` and ```else``` keywords
 - [ ] ```do-while``` loop
 - [ ] ```break``` and ```continue``` keywords inside a loop
