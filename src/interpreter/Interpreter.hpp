@@ -228,6 +228,9 @@ class Interpreter : public ExprVisitor{
           checkNumberOperands(expr->op, left, right);
           return std::any_cast<double>(left) / std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
       }
+
+      // Unreachable
+      return {};
     }
 
     /**
