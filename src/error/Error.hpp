@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string_view>
 
+#include "./BleachRuntimeError.hpp"
 #include "../utils/Token.hpp"
 
 
@@ -10,6 +11,7 @@ const std::string RED = "\033[31m"; /**< Constant that allows the BLEACH Interpr
 const std::string WHITE = "\033[37m"; /**< Constant that allows the BLEACH Interpreter to reset the terminal output color back to white after displaying an error message. */
 
 inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpreter will not execute code if there's a syntax error in the source code. */
+inline bool hadRuntimeError = false; /**< Variable that signals that the BLEACH Interpreter threw a runtime error when executing the source code. */
 
 /**
  * @brief Reports the occcurrence of a syntax error to the user through the standard error stream (usually is the console).
@@ -22,9 +24,9 @@ inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpr
 **/
 static void report(int errorLine, std::string_view errorLocation, std::string_view errorMessage){
   if(errorLocation.length() != 0){
-    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Error occurred at Line: " << errorLine << " - Error happened at location " << errorLocation << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
+    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Static Error occurred at Line: " << errorLine << " - Error happened at location " << errorLocation << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
   }else{
-    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Error occurred at Line: " << errorLine << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
+    std::cerr << RED << "[BLEACH Interpreter Error]: " << "Static Error occurred at Line: " << errorLine << " - Error Message: " << errorMessage << "." << WHITE << std::endl;
   }
   hadError = true;
 
@@ -59,6 +61,20 @@ static void error(const Token& token, std::string_view errorMessage){
   }else{
     report(token.line, "'" + token.lexeme + "'.", errorMessage);
   }
+
+  return;
+}
+
+/**
+ * @brief 
+ * 
+ * @param error:
+ * 
+ * @return Nothing (void).
+**/
+static void runtimeError(const BleachRuntimeError& error){
+  std::cerr << RED << "[BLEACH Interpreter Error]: Runtime Error occured at Line " << error.token.line << ". - Error happened at location: " << error.token.lexeme << ". - Error Message: " << error.what() << WHITE << std::endl;
+  hadRuntimeError = true;
 
   return;
 }
