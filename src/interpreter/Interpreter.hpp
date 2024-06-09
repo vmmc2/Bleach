@@ -12,11 +12,16 @@
 
 /**
  * @class Interpreter
- * @brief Performs the
+ * 
+ * @brief Performs the interpreting stage of the BLEACH Interpreter.
+ * 
+ * The Interpter class is responsible for traversing the generated Bleach AST in a post-order manner and
+ * evaluating and executing each node present in such AST. Such behavior is the program execution. In other
+ * words, it's the final step of the interpreting pipeline.
  *
- * The Interpter class is responsible for...
- *
- * @note The interpreter
+ * @note If the BLEACH Interpreter encounters an error during the traversal of the AST (program execution), then
+ * it means that it has found a runtime error and, therefore, such traversal will be stopped and the error will
+ * be reported to the user.
 **/
 class Interpreter : public ExprVisitor{
   private:
