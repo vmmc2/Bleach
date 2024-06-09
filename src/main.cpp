@@ -69,7 +69,7 @@ void run(std::string_view sourceCode){
   std::vector<Token> tokens = lexer.lexTokens();
 
   if(hadError){
-    std::exit(65);
+    return;
   }
 
   for(const Token& token : tokens){
@@ -81,7 +81,7 @@ void run(std::string_view sourceCode){
   std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
 
   if(hadError){
-    std::exit(65);
+    return;
   }
 
   /* Third Step: Interpret */

@@ -225,7 +225,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing (void).
      */
-    void interpret(std::vector<std::shared_ptr<Stmt>>& statements){
+    void interpret(const std::vector<std::shared_ptr<Stmt>>& statements){
       try{
         for(const std::shared_ptr<Stmt>& statement : statements){
           execute(statement);
