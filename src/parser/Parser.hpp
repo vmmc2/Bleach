@@ -10,6 +10,7 @@
 
 #include "../error/Error.hpp"
 #include "../utils/Expr.hpp"
+#include "../utils/Stmt.hpp"
 #include "../utils/Token.hpp"
 
 
@@ -376,14 +377,17 @@ class Parser{
      *
      * This method is responsible for starting the parsing process of the interpreter.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language 
-     * generated from the whole sequence of tokens.
+     * @return A std::vector<std::shared_ptr<Stmt>> representing the list of ASTs of the Bleach language 
+     * generated from the whole sequence of tokens. In this scenario, each of these ASTs is the syntax tree
+     * representation of a statement.
     **/
-    std::shared_ptr<Expr> parse(){
-      try{
-        return expression();
-      }catch(ParseError parseError){
-        return nullptr;
+    std::vector<std::shared_ptr<Stmt>> parse(){
+      std::vector<std::shared_ptr<Stmt>> statements;
+
+      while(!isAtEnd()){
+        statements.push_back(statement());
       }
+
+      return statements;
     }
 };
