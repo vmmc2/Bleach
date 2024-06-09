@@ -206,13 +206,15 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Visits a Binary expression node of the Bleach AST and produces the corresponding value. 
      *
-     * This method
+     * This method is responsible for visiting a Binary expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Binary expression node.
      * 
-     * @param expr:
+     * @param expr: The node of the Bleach AST that is a Binary expression node. This variable is of type 
+     * std::shared_ptr<Binary>.
      * 
-     * @return
+     * @return The value obtained from the visit (evaluation) to a Binary expression node of the Bleach AST.
      * 
      * @note This method is an overridden version of the 'visitBinaryExpr' method from the 'ExprVisitor' struct.
      */
@@ -261,58 +263,70 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Visits a Grouping (parenthesized) expression node of the Bleach AST and produces the 
+     * corresponding value. 
      *
-     * This method
+     * This method is responsible for visiting a Grouping expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Grouping expression node.
      * 
-     * @param expr:
+     * @param expr: The node of the Bleach AST that is a Grouping expression node. This variable is of type 
+     * std::shared_ptr<Grouping>.
      * 
-     * @return
+     * @return The value obtained from the visit (evaluation) to a Grouping expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitGroupingExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the 'visitGroupingExpr' method from the 'ExprVisitor' 
+     * struct.
      */
     std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) override{
       return evaluate(expr->expression);
     }
 
     /**
-     * @brief Defines 
+     * @brief Visits a Literal expression node of the Bleach AST and produces the corresponding value. 
      *
-     * This method
+     * This method is responsible for visiting a Literal expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Literal expression node.
      * 
-     * @param expr:
+     * @param expr: The node of the Bleach AST that is a Literal expression node. This variable is of type 
+     * std::shared_ptr<Literal>.
      * 
-     * @return
+     * @return The value obtained from the visit (evaluation) to a Literal expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitLiteralExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the 'visitLiteralExpr' method from the 'ExprVisitor' 
+     * struct.
      */
     std::any visitLiteralExpr(std::shared_ptr<Literal> expr) override{
       return expr->value;
     }
 
     /**
-     * @brief Defines 
+     * @brief Visits a Ternary expression node of the Bleach AST and produces the corresponding value. 
      *
-     * This method
+     * This method is responsible for visiting a Ternary expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Ternary expression node.
      * 
-     * @param expr:
+     * @param expr: The node of the Bleach AST that is a Grouping expression node. This variable is of type 
+     * std::shared_ptr<Ternary>.
      * 
-     * @return
+     * @return The value obtained from the visit (evaluation) to a Ternary expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitTernaryExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the 'visitTernaryExpr' method from the 'ExprVisitor' 
+     * struct.
      */
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
       return {};
     }
 
     /**
-     * @brief Defines 
+     * @brief Visits a Unary expression node of the Bleach AST and produces the corresponding value. 
      *
-     * This method
+     * This method is responsible for visiting a Unary expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Unary expression node.
      * 
-     * @param expr:
+     * @param expr: The node of the Bleach AST that is a Unary expression node. This variable is of type 
+     * std::shared_ptr<Unary>.
      * 
-     * @return
+     * @return The value obtained from the visit (evaluation) to a Unary expression node of the Bleach AST.
      * 
      * @note This method is an overridden version of the 'visitUnaryExpr' method from the 'ExprVisitor' struct.
      */
