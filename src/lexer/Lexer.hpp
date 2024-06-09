@@ -13,6 +13,7 @@
 
 /**
  * @class Lexer
+ * 
  * @brief Performs the lexical analysis stage of the Bleach Interpreter.
  *
  * The Lexer class is responsible for scanning the contents of the source code from a Bleach file
