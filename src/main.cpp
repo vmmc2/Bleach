@@ -78,14 +78,14 @@ void run(std::string_view sourceCode){
 
   /* Second Step: Parsing */
   Parser parser{tokens};
-  std::shared_ptr<Expr> expression = parser.parse();
+  std::vector<std::shared_ptr<Stmt>> statements = parser.parse();
 
   if(hadError){
     std::exit(65);
   }
 
   /* Third Step: Interpret */
-  interpreter.interpret(expression);
+  interpreter.interpret(statements);
 
   return;
 }
