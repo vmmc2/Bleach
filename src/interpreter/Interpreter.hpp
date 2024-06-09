@@ -8,6 +8,7 @@
 #include "../error/BleachRuntimeError.hpp"
 #include "../error/Error.hpp"
 #include "../utils/Expr.hpp"
+#include "../utils/Stmt.hpp"
 
 
 /**
@@ -23,7 +24,7 @@
  * it means that it has found a runtime error and, therefore, such traversal will be stopped and the error will
  * be reported to the user.
 **/
-class Interpreter : public ExprVisitor{
+class Interpreter : public ExprVisitor, public StmtVisitor{
   private:
     /**
      * @brief Checks whether the provided operand of the unary operator ("-") is a value of type double. 
@@ -213,6 +214,47 @@ class Interpreter : public ExprVisitor{
       }
 
       return;
+    }
+
+    /**
+     * @brief Visits a Expression Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Expression Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Expression Statement node. This variable is of type 
+     * std::shared_ptr<Expression>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitExpressionStmt' method from the 'StmtVisitor'
+     * struct.
+     */
+    std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) override{
+      evaluate(stmt->expression);
+
+      return {};
+    }
+
+    /**
+     * @brief Visits a Print Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Print Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Print Statement node. This variable is of type 
+     * std::shared_ptr<Print>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitPrintStmt' method from the 'StmtVisitor' struct.
+     */
+    std::any visitPrintStmt(std::shared_ptr<Print> stmt) override{
+      std::any value = evaluate(stmt->expression);
+
+      std::cout << stringify(value) << std::endl;
+
+      return {};
     }
 
     /**
