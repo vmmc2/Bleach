@@ -21,9 +21,9 @@
 class Interpreter : public ExprVisitor{
   private:
     /**
-     * @brief Checks whether the provided operand of the unary operatior ("-") is a value of type double. 
+     * @brief Checks whether the provided operand of the unary operator ("-") is a value of type double. 
      *
-     * This method is responsible for checking whether the operand of the unary operation ("-") is of type 
+     * This method is responsible for checking whether the operand of the unary operator ("-") is of type 
      * double.
      * 
      * @param op: The token that represents the unary operator ("-") (TokenType::MINUS). This variable is of type
@@ -45,11 +45,11 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Checks whether the provided operands of the following binary operations ("-", "*", "/", ">",
+     * @brief Checks whether the provided operands of the following binary operators ("-", "*", "/", ">",
      * ">=", "<", "<=") are values of type double.
      *
-     * This method is responsible for checking whether the operands of the following binary operations ("-") 
-     * are of type double.
+     * This method is responsible for checking whether the operands of the following binary operators ("-", 
+     * "*", "/", ">", ">=", "<", "<=") are of type double.
      * 
      * @param op: The token that represents any binary operator that is not "==" or "!=". This variable is of 
      * type const Token&.
@@ -83,13 +83,15 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Checks whether the provided operands of the following operator ("==") are equal in value. 
      *
-     * This method
+     * This method is responsible for checking whether the operands of the following binary operator ("==") are
+     * of type double.
      * 
-     * @param expr:
+     * @param left: The value of the left operand of the "==" operator. This variable is of type std::any&.
+     * @param right: The value of the right operand of the "==" operator. This variable is of type std::any&.
      * 
-     * @return
+     * @return A boolean that signal whether the two provided values are equal or not.
      */
     bool isEqual(const std::any& left, const std::any& right){
       if(left.type() == typeid(nullptr) && right.type() == typeid(nullptr)){
@@ -113,13 +115,15 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Checks whether the value of the a Bleach object is considered "truthy" or not.
      *
-     * This method
+     * This method is responsible for checking whether the value of the provided Bleach object is considered
+     * "truthy" or not. For more context, Bleach follows Ruby convention: false and nil are considered
+     * to be "falsey" values. Every other value is considered to be "truthy".
      * 
-     * @param expr:
+     * @param object: The value of a Bleach object which will be checked to see if it's "truthy" or not.
      * 
-     * @return
+     * @return A boolean that signal whether or not a value is considered to be "truthy" or not.
      */
     bool isTruthy(const std::any& object){
       if(object.type() == typeid(nullptr)){
