@@ -9,6 +9,7 @@
 #include "../error/Error.hpp"
 #include "../utils/Expr.hpp"
 
+
 /**
  * @class Interpreter
  * @brief Performs the
@@ -20,13 +21,20 @@
 class Interpreter : public ExprVisitor{
   private:
     /**
-     * @brief Defines 
+     * @brief Checks whether the provided operand of the unary operatior ("-") is a value of type double. 
      *
-     * This method
+     * This method is responsible for checking whether the operand of the unary operation ("-") is of type 
+     * double.
      * 
-     * @param expr:
+     * @param op: The token that represents the unary operator ("-") (TokenType::MINUS). This variable is of type
+     * const Token&.
+     * @param operand: The value of the right operand of the unary operator ("-"). This variable is of type
+     * std::any&.
      * 
-     * @return
+     * @return Nothing (void).
+     * 
+     * @note If the provided operand does not satisfy the conditions explained above, then an instance of a 
+     * BleachRuntimeError is thrown by the interpreter.
      */
     void checkNumberOperand(const Token& op, const std::any& operand){
       if(operand.type() == typeid(double)){
@@ -37,13 +45,21 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Checks whether the provided operands of the following binary operations ("-", "*", "/", ">",
+     * ">=", "<", "<=") are values of type double.
      *
-     * This method
+     * This method is responsible for checking whether the operands of the following binary operations ("-") 
+     * are of type double.
      * 
-     * @param expr:
+     * @param op: The token that represents any binary operator that is not "==" or "!=". This variable is of 
+     * type const Token&.
+     * @param left: The value of the left operand of the binary operator. This variable is of type std::any&.
+     * @param right: The value of the right operand of the binary operator. This variable is of type std::any&.
      * 
-     * @return
+     * @return Nothing (void).
+     * 
+     * @note If the provided operands do not satisfy the conditions explained above, then an instance of a 
+     * BleachRuntimeError is thrown by the interpreter.
      */
     void checkNumberOperands(const Token &op, const std::any& left, const std::any& right){
       if(left.type() == typeid(double) && right.type() == typeid(double)){
