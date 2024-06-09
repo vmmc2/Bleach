@@ -75,13 +75,18 @@ class Interpreter : public ExprVisitor{
     }
 
     /**
-     * @brief Defines 
+     * @brief Works as a helper method that simply sends back the AST node back into the appropriate visit
+     * method of the interpreter. 
      *
-     * This method
+     * This method works as a helper method responsible for receiving a node of the AST, calling its accept
+     * method and passing the current instance of the interpreter to it, so the node can call its appropriate
+     * visit method and evaluate its "inner" result.
      * 
-     * @param expr:
+     * @param expr: A node of the AST (Abstract Syntax Tree) that represents a program written in the Bleach 
+     * language. Such variable is of type std::shared_ptr<Expr>.
      * 
-     * @return
+     * @return The value obtained from the evaluation of the AST node that was passed to this method as its
+     * argument.
      */
     std::any evaluate(std::shared_ptr<Expr> expr){
       return expr->accept(*this);
