@@ -14,6 +14,7 @@ struct Grouping;
 struct Literal;
 struct Ternary;
 struct Unary;
+struct Variable;
 
 /**
  * @struct ExprVisitor
@@ -34,6 +35,7 @@ struct ExprVisitor{
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
   virtual std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) = 0;
   virtual std::any visitUnaryExpr(std::shared_ptr<Unary> expr) = 0;
+  virtual std::any visitVariableExpr(std::shared_ptr<Variable> expr) = 0;
   virtual ~ExprVisitor() = default;
 };
 
@@ -218,5 +220,18 @@ struct Unary : Expr, public std::enable_shared_from_this<Unary>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitUnaryExpr(shared_from_this());
+  }
+};
+
+// Variable Expression
+struct Variable : Expr, public std::enable_shared_from_this<Variable>{
+  const Token name;
+
+  Variable(Token name)
+    : name{std::move(name)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitVariableExpr(shared_from_this());
   }
 };
