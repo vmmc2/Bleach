@@ -8,6 +8,7 @@
 
 #include "../error/BleachRuntimeError.hpp"
 #include "../error/Error.hpp"
+#include "../utils/Environment.hpp"
 #include "../utils/Expr.hpp"
 #include "../utils/Stmt.hpp"
 
@@ -27,6 +28,8 @@
 **/
 class Interpreter : public ExprVisitor, public StmtVisitor{
   private:
+    std::shared_ptr<Environment> environment {new Environment}; /**< Variable that represents the current environment of the interpreter instance. */
+
     /**
      * @brief Checks whether the provided operand of the unary operator ("-") is a value of type double. 
      *
@@ -278,6 +281,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitVarStmt(std::shared_ptr<Var> stmt) override{
+      std::string variableName = stmt->name.lexeme;
+      std::any initialValue = nullptr;
+
+      if(stmt->initializer != nullptr){
+        initialValue = evaluate(stmt->initializer);
+      }
+
+      environment->define(variableName, std::move(initialValue));
+
+      return {};
+    }
+
     /**
      * @brief Visits a Binary expression node of the Bleach AST and produces the corresponding value. 
      *
@@ -416,5 +432,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       // Unreachable
       return {};
+    }
+
+    std::any visitVariableExpr(std::shared_ptr<Variable> expr) override{
+      return environment->get(expr->name);
     }
 };
