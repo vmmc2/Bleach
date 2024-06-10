@@ -9,6 +9,7 @@
 
 
 // Necessary forward declarations of certain structs so they can be used inside the 'ExprVisitor' struct below.
+struct Assign;
 struct Binary;
 struct Grouping;
 struct Literal;
@@ -30,6 +31,7 @@ struct Variable;
  * struct/class that derives from 'ExprVisitor'.
  */
 struct ExprVisitor{
+  virtual std::any visitAssignExpr(std::shared_ptr<Assign> expr) = 0;
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
   virtual std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
@@ -52,6 +54,20 @@ struct ExprVisitor{
  */
 struct Expr{
   virtual std::any accept(ExprVisitor& visitor) = 0;
+};
+
+
+struct Assign : Expr, public std::enable_shared_from_this<Assign>{
+  const Token name;
+  const std::shared_ptr<Expr> value;
+
+  Assign(Token name, std::shared_ptr<Expr> value)
+    : name{std::move(name)}, value{std::move(value)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitAssignExpr(shared_from_this());
+  }
 };
 
 /**
