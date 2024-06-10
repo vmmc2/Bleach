@@ -254,7 +254,7 @@ class Parser{
     **/
     std::shared_ptr<Stmt> printStatement(){
       std::shared_ptr<Expr> value = expression();
-      consume(TokenType::SEMICOLON, "Expected ';' at the end of a 'print' statement.");
+      consume(TokenType::SEMICOLON, "Expected ';' at the end of a 'print' statement");
       
       return std::make_shared<Print>(value);
     }
@@ -270,20 +270,20 @@ class Parser{
     **/
     std::shared_ptr<Stmt> expressionStatement(){
       std::shared_ptr<Expr> value = expression();
-      consume(TokenType::SEMICOLON, "Expected a ';' after a expression.");
+      consume(TokenType::SEMICOLON, "Expected a ';' after an expression");
 
       return std::make_shared<Expression>(value);
     }
 
     std::shared_ptr<Stmt> varDeclStatement(){
-      Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after 'let' keyword.");
+      Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after 'let' keyword");
       std::shared_ptr<Expr> initializer = nullptr;
 
       if(match(TokenType::EQUAL)){
         initializer = expression();
       }
 
-      consume(TokenType::SEMICOLON, "Expected a ';' after a variable declaration statement.");
+      consume(TokenType::SEMICOLON, "Expected a ';' after a variable declaration statement");
 
       return std::make_shared<Var>(name, initializer);
     }
@@ -431,7 +431,7 @@ class Parser{
       }
       if(match(TokenType::LEFT_PAREN)){
         std::shared_ptr<Expr> expr = expression();
-        consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression.");
+        consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression");
         return std::make_shared<Grouping>(expr);
       }
 
