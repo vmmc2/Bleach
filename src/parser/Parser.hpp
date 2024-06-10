@@ -228,11 +228,19 @@ class Parser{
      * this rule.
     **/
     std::shared_ptr<Stmt> statement(){
-      if(match(TokenType::PRINT)){
-        return printStatement();
+      try{
+        if(match(TokenType::LET)){
+          return varDeclStatement();
+        }
+        if(match(TokenType::PRINT)){
+          return printStatement();
+        }
+        return expressionStatement();
+      }catch(ParseError error){
+        synchronize();
+        
+        return nullptr;
       }
-
-      return expressionStatement();
     }
 
     /**
@@ -265,6 +273,19 @@ class Parser{
       consume(TokenType::SEMICOLON, "Expected a ';' after a expression.");
 
       return std::make_shared<Expression>(value);
+    }
+
+    std::shared_ptr<Stmt> varDeclStatement(){
+      Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after 'let' keyword.");
+      std::shared_ptr<Expr> initializer = nullptr;
+
+      if(match(TokenType::EQUAL)){
+        initializer = expression();
+      }
+
+      consume(TokenType::SEMICOLON, "Expected a ';' after a variable declaration statement.");
+
+      return std::make_shared<Var>(name, initializer);
     }
 
     /**
@@ -404,6 +425,9 @@ class Parser{
       }
       if(match(TokenType::NUMBER, TokenType::STRING)){
         return std::make_shared<Literal>(previous().literal);
+      }
+      if(match(TokenType::IDENTIFIER)){ // Parses a variable expression.
+        return std::make_shared<Variable>(previous());
       }
       if(match(TokenType::LEFT_PAREN)){
         std::shared_ptr<Expr> expr = expression();
