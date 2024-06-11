@@ -302,7 +302,21 @@ class Parser{
     }
 
     std::shared_ptr<Expr> assignment(){
+      std::shared_ptr<Expr> expr = equality(); // It's expected that the it will encounter a 'Variable' expression.
+    
+      if(match(TokenType::EQUAL)){
+        Token equals = previous(); // Grab the assignment operator ('=').
+        std::shared_ptr<Expr> value = assignment(); // This here is what makes the left-to-right associativity of the assignment operator evident. 
+
+        if(Variable* e = dynamic_cast<Variable*>(expr.get())){
+          Token name = e->name;
+          return std::make_shared<Assign>(std::move(name), value); // This also makes the left-to-right associativity of assignment evident.
+        }
       
+        error(equals, "Invalid assignment target");
+      }
+    
+      return expr;
     }
 
     /**
