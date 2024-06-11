@@ -294,6 +294,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
+      std::any value = evaluate(expr->value);
+      environment->assign(expr->name, value);
+
+      return value;
+    }
+
     /**
      * @brief Visits a Binary expression node of the Bleach AST and produces the corresponding value. 
      *
