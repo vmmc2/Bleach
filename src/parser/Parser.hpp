@@ -298,7 +298,11 @@ class Parser{
      * this rule.
     **/
     std::shared_ptr<Expr> expression(){
-      return equality();
+      return assignment();
+    }
+
+    std::shared_ptr<Expr> assignment(){
+      
     }
 
     /**
