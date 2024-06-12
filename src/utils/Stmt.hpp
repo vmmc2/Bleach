@@ -3,16 +3,19 @@
 #include <any>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "./Expr.hpp"
 
 
 // Necessary forward declarations of certain structs so they can be used inside the 'StmtVisitor' struct below.
+struct Block;
 struct Expression;
 struct Print;
 struct Var; // Variable declaration statement.
 
 struct StmtVisitor{
+  virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
   virtual std::any visitPrintStmt(std::shared_ptr<Print> stmt) = 0;
   virtual std::any visitVarStmt(std::shared_ptr<Var> stmt) = 0;
@@ -21,6 +24,18 @@ struct StmtVisitor{
 
 struct Stmt{
   virtual std::any accept(StmtVisitor& visitor) = 0;
+};
+
+struct Block : Stmt, public std::enable_shared_from_this<Block>{
+  const std::vector<std::shared_ptr<Stmt>> statements;
+
+  Block(std::vector<std::shared_ptr<Stmt>> statements)
+    : statements{std::move(statements)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitBlockStmt(shared_from_this());
+  }
 };
 
 struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
