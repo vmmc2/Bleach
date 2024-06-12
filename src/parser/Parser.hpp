@@ -229,6 +229,9 @@ class Parser{
     **/
     std::shared_ptr<Stmt> statement(){
       try{
+        if(match(TokenType::LEFT_BRACE)){
+          return std::make_shared<Block>(block());
+        }
         if(match(TokenType::LET)){
           return varDeclStatement();
         }
@@ -241,6 +244,18 @@ class Parser{
         
         return nullptr;
       }
+    }
+
+    std::vector<std::shared_ptr<Stmt>> block(){
+      std::vector<std::shared_ptr<Stmt>> statements;
+
+      while(!check(TokenType::RIGHT_BRACE) && !isAtEnd()){
+        statements.push_back(statement());
+      }
+
+      consume(TokenType::RIGHT_BRACE, "Expected a '}' after a block");
+
+      return statements;
     }
 
     /**
