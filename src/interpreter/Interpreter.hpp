@@ -240,6 +240,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return;
     }
 
+    void executeBlock(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment){
+      std::shared_ptr<Environment> previous = this->environment;
+
+      try{
+        this->environment = environment;
+
+        for(const std::shared_ptr<Stmt>& stmt : statements){
+          execute(stmt);
+        }
+      }catch(...){
+        this->environment = previous;
+        throw;
+      }
+
+      this->environment = previous;
+
+      return;
+    }
+
+    std::any visitBlockStmt(std::shared_ptr<Block> stmt) override{
+      executeBlock(stmt->statements, std::make_shared<Environment>(environment));
+
+      return {};
+    }
+
     /**
      * @brief Visits a Expression Statement node of the Bleach AST and performs the associated actions. 
      *
