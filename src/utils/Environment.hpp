@@ -2,6 +2,7 @@
 
 #include <any>
 #include <map>
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -12,13 +13,27 @@
 class Environment{
   private:
     std::map<std::string,std::any> values;
+    std::shared_ptr<Environment> enclosing;
 
   public:
+    Environment()
+      : enclosing{nullptr}
+    {}
+
+    Environment(std::shared_ptr<Environment> enclosing)
+      : enclosing{std::move(enclosing)}
+    {}
+
     void assign(const Token& name, std::any value){
       auto elem = values.find(name.lexeme);
 
       if(elem != values.end()){
         values[name.lexeme] = std::move(value);
+        return;
+      }
+
+      if(enclosing != nullptr){
+        enclosing->assign(name, std::move(value));
         return;
       }
 
@@ -37,6 +52,10 @@ class Environment{
 
       if(elem != values.end()){
         return values[name.lexeme];
+      }
+      
+      if(enclosing != nullptr){
+        return enclosing->get(name);
       }
 
       throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};
