@@ -235,6 +235,9 @@ class Parser{
         if(match(TokenType::LET)){
           return varDeclStatement();
         }
+        if(match(TokenType::IF)){
+          return ifStatement();
+        }
         if(match(TokenType::PRINT)){
           return printStatement();
         }
@@ -290,8 +293,35 @@ class Parser{
       return std::make_shared<Expression>(value);
     }
 
+    std::shared_ptr<Stmt> ifStatement(){
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'if' keyword");
+      std::shared_ptr<Expr> ifCondition = expression();
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'if' condition");
+      std::shared_ptr<Stmt> ifBranch = statement();
+
+      std::vector<std::shared_ptr<Expr>> elifConditions;
+      std::vector<std::shared_ptr<Stmt>> elifBranches;
+      std::shared_ptr<Stmt> elseBranch = nullptr;
+
+      while(match(TokenType::ELIF)){
+        consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'elif' keyword");
+        std::shared_ptr<Expr> currElifCondition = expression();
+        consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'elif' condition");
+        std::shared_ptr<Stmt> currElifBranch = statement();
+
+        elifConditions.push_back(currElifCondition);
+        elifBranches.push_back(currElifBranch);
+      }
+
+      if(match(TokenType::ELSE)){
+        elseBranch = statement();
+      }
+
+      return std::make_shared<If>(ifCondition, ifBranch, elifConditions, elifBranches, elseBranch);
+    }
+
     std::shared_ptr<Stmt> varDeclStatement(){
-      Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after 'let' keyword");
+      Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after the 'let' keyword");
       std::shared_ptr<Expr> initializer = nullptr;
 
       if(match(TokenType::EQUAL)){
