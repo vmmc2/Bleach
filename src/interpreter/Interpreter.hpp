@@ -285,6 +285,24 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitIfStmt(std::shared_ptr<If> stmt) override{
+      if(isTruthy(evaluate(stmt->ifCondition))){
+        execute(stmt->ifBranch);
+        return {};
+      }
+      for(int i = 0; i < stmt->elifConditions.size(); i++){
+        if(isTruthy(evaluate(stmt->elifConditions[i]))){
+          execute(stmt->elifBranches[i]);
+          return {};
+        }
+      }
+      if(stmt->elseBranch != nullptr){
+        execute(stmt->elseBranch);
+      }
+
+      return {};
+    }
+
     /**
      * @brief Visits a Print Statement node of the Bleach AST and performs the associated actions. 
      *
