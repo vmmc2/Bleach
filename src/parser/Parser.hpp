@@ -347,7 +347,7 @@ class Parser{
     }
 
     std::shared_ptr<Expr> assignment(){
-      std::shared_ptr<Expr> expr = equality(); // It's expected that the it will encounter a 'Variable' expression.
+      std::shared_ptr<Expr> expr = logicalOr(); // It's expected that the it will encounter a 'Variable' expression.
     
       if(match(TokenType::EQUAL)){
         Token equals = previous(); // Grab the assignment operator ('=').
@@ -361,6 +361,30 @@ class Parser{
         error(equals, "Invalid assignment target");
       }
     
+      return expr;
+    }
+
+    std::shared_ptr<Expr> logicalOr(){
+      std::shared_ptr<Expr> expr = logicalAnd();
+
+      while(match(TokenType::OR)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = logicalAnd();
+        expr = std::make_shared<Logical>(expr, std::move(op), right);
+      }
+
+      return expr;
+    }
+
+    std::shared_ptr<Expr> logicalAnd(){
+      std::shared_ptr<Expr> expr = equality();
+
+      while(match(TokenType::AND)){
+        Token op = previous();
+        std::shared_ptr<Expr> right = equality();
+        expr = std::make_shared<Logical>(expr, std::move(op), right);
+      }
+
       return expr;
     }
 
