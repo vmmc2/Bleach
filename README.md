@@ -52,11 +52,11 @@
 - [x] Chapter 5: Representing Code (Review Implementation)
 - [x] Chapter 6: Parsing Expressions (Review Implementation)
 - [x] Chapter 7: Evaluating Expressions (Review Implementation)
-  - [ ] Add support to the ternary Operator (```expression ? value1 : value2```)
-  - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand).
+  - [ ] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
+  - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand). __This might be overkill for the purpose of the language, right?__
 - [x] Chapter 8: Statements and State (Review Implementation)
-- [ ] Chapter 9: Control Flow (Review Implementation)
-  - [ ] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
+- [x] Chapter 9: Control Flow (Review Implementation)
+  - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
   - [ ] Add support to ```do-while``` loop
   - [ ] Add ```break``` and ```continue``` keywords make them usable only inside loops
   - [ ] Make the ```str``` type more robuts (immutability like python, not allow assignment, which methods to include)
@@ -69,7 +69,7 @@
 - [ ] Chapter 11: Resolving and Binding (Review Implementation)
 - [ ] Chapter 12: Classes (Review Implementation)
 - [ ] Chapter 13: Inheritance (Review Implementation)
-  - [ ] Add support to the definition of static methods inside a class.
+  - [ ] Add support to the definition of static methods inside a class. (Not sure if it's worth it)
   - [ ] Add support to multiple inheritance (is it worth it? Take a look at how Python implements it)
 
 
