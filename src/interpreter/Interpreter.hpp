@@ -438,6 +438,24 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return expr->value;
     }
 
+    // Pay attention to the fact that logical operators do not return "true" or "false".
+    // Instead, they return the value itself.
+    std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
+      std::any left = evaluate(expr->left);
+
+      if(expr->op.type == TokenType::AND){
+        if(!isTruthy(left)){
+          return left;
+        }
+      }else if(expr->op.type == TokenType::OR){
+        if(isTruthy(left)){
+          return left;
+        }
+      }
+
+      return evaluate(expr->right);
+    }
+
     /**
      * @brief Visits a Ternary expression node of the Bleach AST and produces the corresponding value. 
      *
