@@ -14,6 +14,7 @@ struct Expression; // Expression statement (Used in function and method calls).
 struct If;
 struct Print;
 struct Var; // Variable declaration statement.
+struct While;
 
 struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
@@ -21,6 +22,7 @@ struct StmtVisitor{
   virtual std::any visitIfStmt(std::shared_ptr<If> stmt) = 0;
   virtual std::any visitPrintStmt(std::shared_ptr<Print> stmt) = 0;
   virtual std::any visitVarStmt(std::shared_ptr<Var> stmt) = 0;
+  virtual std::any visitWhileStmt(std::shared_ptr<While> stmt) = 0;
   virtual ~StmtVisitor() = default;
 };
 
@@ -92,5 +94,18 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitVarStmt(shared_from_this());
+  }
+};
+
+struct While : Stmt, public std::enable_shared_from_this<While>{
+  const std::shared_ptr<Expr> condition;
+  const std::shared_ptr<Stmt> body;
+
+  While(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> body)
+    : condition{std::move(condition)}, body{std::move(body)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitWhileStmt(shared_from_this());
   }
 };
