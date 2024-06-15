@@ -241,6 +241,9 @@ class Parser{
         if(match(TokenType::PRINT)){
           return printStatement();
         }
+        if(match(TokenType::WHILE)){
+          return whileStatement();
+        }
         return expressionStatement();
       }catch(ParseError error){
         synchronize();
@@ -331,6 +334,16 @@ class Parser{
       consume(TokenType::SEMICOLON, "Expected a ';' after a variable declaration statement");
 
       return std::make_shared<Var>(name, initializer);
+    }
+
+    std::shared_ptr<Stmt> whileStatement(){
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
+      std::shared_ptr<Expr> condition = expression();
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'while' condition");
+
+      std::shared_ptr<Stmt> body = statement();
+
+      return std::make_shared<While>(condition, body);
     }
 
     /**
