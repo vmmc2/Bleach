@@ -337,6 +337,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
+      while(isTruthy(evaluate(stmt->condition))){
+        execute(stmt->body);
+      }
+
+      return {};
+    }
+
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       std::any value = evaluate(expr->value);
       environment->assign(expr->name, value);
