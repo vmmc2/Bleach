@@ -229,14 +229,20 @@ class Parser{
     **/
     std::shared_ptr<Stmt> statement(){
       try{
+        if(match(TokenType::DO)){
+          return doWhileStatement();
+        }
+        if(match(TokenType::FOR)){
+          return forStatement();
+        }
+        if(match(TokenType::IF)){
+          return ifStatement();
+        }
         if(match(TokenType::LEFT_BRACE)){
           return std::make_shared<Block>(block());
         }
         if(match(TokenType::LET)){
           return varDeclStatement();
-        }
-        if(match(TokenType::IF)){
-          return ifStatement();
         }
         if(match(TokenType::PRINT)){
           return printStatement();
@@ -262,6 +268,71 @@ class Parser{
       consume(TokenType::RIGHT_BRACE, "Expected a '}' after a block");
 
       return statements;
+    }
+
+    std::shared_ptr<Stmt> doWhileStatement(){
+      std::shared_ptr<Stmt> body = statement();
+
+      consume(TokenType::WHILE, "Expected the 'while' keyword after the body of the 'do-while' statement");
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
+      std::shared_ptr<Expr> condition = expression();
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'while' keyword");
+      consume(TokenType::SEMICOLON, "Expected a ';' after the 'do-while' statement");
+
+      return std::make_shared<DoWhile>(condition, body);
+    }
+
+    std::shared_ptr<Stmt> forStatement(){
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'for' keyword");
+
+      std::shared_ptr<Stmt> initializer;
+      if(match(TokenType::SEMICOLON)){
+        initializer = nullptr;
+      }else if(match(TokenType::LET)){
+        initializer = varDeclStatement();
+      }else{
+        initializer = expressionStatement();
+      }
+
+      std::shared_ptr<Expr> condition = nullptr;
+      if(!check(TokenType::SEMICOLON)){
+        condition = expression();
+      }
+      consume(TokenType::SEMICOLON, "Expected a ';' after the 'for' loop condition");
+
+
+      std::shared_ptr<Expr> increment = nullptr;
+      if(!check(TokenType::RIGHT_PAREN)){
+        increment = expression();
+      }
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'for' clauses");
+
+      std::shared_ptr<Stmt> body = statement();
+
+      if(increment != nullptr){
+        body = std::make_shared<Block>(
+          std::vector<std::shared_ptr<Stmt>>{
+            body,
+            std::make_shared<Expression>(increment) // Pay attention to the fact that we use the "Expression" type (Expression Statement) instead of the "Expr" type.
+          }
+        );
+      }
+
+      if(condition == nullptr){ // Remember, if the "for" loop does not have a condition, then it works like a "while(true){ ... }" loop.
+        condition = std::make_shared<Literal>(true); 
+      }
+      body = std::make_shared<While>(condition, body);
+
+      if(initializer != nullptr){ // If there is an initializer (a varDeclStmt or a expressionStmt), then we have to wrap the "while" look in a block, to have put such declared variable inside the scope.
+        body = std::make_shared<Block>(
+          std::vector<std::shared_ptr<Stmt>>{
+            initializer,
+            body
+          }
+        );
+      }
+
+      return body;
     }
 
     /**
