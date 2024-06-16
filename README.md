@@ -57,7 +57,7 @@
 - [x] Chapter 8: Statements and State (Review Implementation)
 - [x] Chapter 9: Control Flow (Review Implementation)
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
-  - [ ] Add support to ```do-while``` loop
+  - [x] Add support to the ```do-while``` loop
   - [ ] Add ```break``` and ```continue``` keywords make them usable only inside loops
   - [ ] Make the ```str``` type more robuts (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
