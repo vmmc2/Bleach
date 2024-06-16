@@ -57,9 +57,31 @@ struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
   }
 };
 
+/**
+ * @struct Expression
+ * 
+ * @brief Defines a struct to represent an expression statement node from the AST of the Bleach language.
+ *
+ * The Expression struct defines a struct to represent an expression statement node from the AST (Abstract 
+ * Syntax Tree) of the Bleach language. An expression statement is a statement that has only one attribute.
+ * Such attribute, called 'expression' represents the expression that will result in a side-effect to the state
+ * of the interpreter.
+ * Going more deep, an expression statement lets the user place an expression where a statement is expected.
+ * They are very common in popular languages like C and Java. For example, any time you see a function of method
+ * call followed by a ';', you are looking at an expression statement.
+ */
 struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
   const std::shared_ptr<Expr> expression;
 
+  /**
+   * @brief Constructs a Expression node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes an Expression object with the expression that is "wrapped" inside the
+   * statement.
+   *
+   * @param expression: The expression that is wrapped inside the expression statement (represented by the 
+   * std::shared_ptr<Expr> type).
+  **/
   Expression(std::shared_ptr<Expr> expression)
     : expression{std::move(expression)}
   {}
@@ -86,6 +108,14 @@ struct If : Stmt, public std::enable_shared_from_this<If>{
   }
 };
 
+/**
+ * @struct Print
+ * 
+ * @brief Defines a struct to represent a print statement node from the AST of the Bleach language.
+ *
+ * The Print struct defines a struct to represent a print statement node from the AST (Abstract Syntax Tree)
+ * of the Bleach language. A print statement is a statement that has 
+ */
 struct Print : Stmt, public std::enable_shared_from_this<Print>{
   const std::shared_ptr<Expr> expression;
 
