@@ -58,11 +58,36 @@ struct Expr{
   virtual std::any accept(ExprVisitor& visitor) = 0;
 };
 
-
+/**
+ * @struct Assign
+ * 
+ * @brief Defines a struct to represent an assignment expression node from the AST of the Bleach language.
+ *
+ * The Assign struct defines a struct that is responsible for representing an assignment expression node from 
+ * the AST (Abstract Syntax Tree) of the Bleach language. Such struct has two attributes: a token which 
+ * represents an identifier (a place, in-memory, which the assignment is going to be made to) and an expression
+ * whose value is going to be assigned to such place in-memory.
+ * When such expression is evaluated by the 'Interpreter' class, it "evaluates" the left-hand side operand to
+ * find out to which variable declaration that token (identifier) is referring to. Then, it evaluates the 
+ * right-hand side operand to produce a value. Finally, it assigns such produced value to referred variable and
+ * also return the produced value, since an assignment in Bleach is an expression.
+ */
 struct Assign : Expr, public std::enable_shared_from_this<Assign>{
   const Token name;
   const std::shared_ptr<Expr> value;
 
+  /**
+   * @brief Constructs an Assign node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes an Assign object with a token that corresponds to an identifier (the left-hand
+   * side of the assignment expression) and an expression (the right-hand side of the assignment expression) 
+   * that will later be evaluated to produce a value.
+   * 
+   * @param name: The left-hand side operand (represented by the Token type) of the assignment operation. Also
+   * known as "l-value"
+   * @param value: The right-hand side operand (represented by the std::shared_ptr<Expr> type) of the assignment
+   * operation. Also known as "r-value".
+  **/
   Assign(Token name, std::shared_ptr<Expr> value)
     : name{std::move(name)}, value{std::move(value)}
   {}
