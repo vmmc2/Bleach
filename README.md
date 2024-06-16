@@ -47,15 +47,16 @@
 
 
 ## Roadmap
-- [x] Chapter 4: Scanning (Review Implementation)
+- [x] __Chapter 4: Scanning (Review Implementation)__
   - [x] Add support Multi-line comments (```/* */```)
-- [x] Chapter 5: Representing Code (Review Implementation)
-- [x] Chapter 6: Parsing Expressions (Review Implementation)
-- [x] Chapter 7: Evaluating Expressions (Review Implementation)
-  - [ ] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
+- [x] __Chapter 5: Representing Code (Review Implementation)__
+- [x] __Chapter 6: Parsing Expressions (Review Implementation)__
+- [x] __Chapter 7: Evaluating Expressions (Review Implementation)__
+  - [x] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
   - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand). __This might be overkill for the purpose of the language, right?__
-- [x] Chapter 8: Statements and State (Review Implementation)
-- [x] Chapter 9: Control Flow (Review Implementation)
+  - [ ] Make division by ```0``` a runtime error
+- [x] __Chapter 8: Statements and State (Review Implementation)__
+- [x] __Chapter 9: Control Flow (Review Implementation)__
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
   - [x] Add support to the ```do-while``` loop
   - [ ] Add ```break``` and ```continue``` keywords make them usable only inside loops
@@ -63,12 +64,12 @@
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
   - [ ] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
-- [ ] Chapter 10: Functions (Review Implementation)
-  - [ ] Add support to the ```lambda``` keyword, which allow the creation of anonymous functions
+- [ ] __Chapter 10: Functions (Review Implementation)__
+  - [ ] Add support to the ```lambda``` keyword, which allows the creation of anonymous functions
   - [ ] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::utils```)
-- [ ] Chapter 11: Resolving and Binding (Review Implementation)
-- [ ] Chapter 12: Classes (Review Implementation)
-- [ ] Chapter 13: Inheritance (Review Implementation)
+- [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
+- [ ] __Chapter 12: Classes (Review Implementation)__
+- [ ] __Chapter 13: Inheritance (Review Implementation)__
   - [ ] Add support to the definition of static methods inside a class. (Not sure if it's worth it)
   - [ ] Add support to multiple inheritance (is it worth it? Take a look at how Python implements it)
 
