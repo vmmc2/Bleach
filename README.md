@@ -46,6 +46,34 @@
 * Both documentations can be found here (Insert a link later on).
 
 
+## Current State of the Bleach Language Context-Free Grammar
+```txt
+program → statement* EOF
+statement → block | doWhileStmt | exprStmt | forStmt | ifStmt | printStmt | varDeclStmt | whileStmt
+block → "{" statement* "}"
+doWhileStmt → "do" statement "while" "(" expression ")" ";"
+exprStmt → expression ";"
+forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement
+ifStmt → "if" "(" expression ")" statement
+         ( "elif" "(" expression ")" statement )*
+         ( "else" statement )?
+printStmt → "print" expression ";"
+varDeclStmt → "let" IDENTIFIER ( "=" expression )? ";"
+whileStmt → "while" "(" expression ")" statement
+expression → assignment
+assignment → IDENTIFIER "=" assignment | ternary
+ternary → logic_or ( "?" expression ":" expression )*
+logic_or → logic_and ( "or" logic_and )*
+logic_and → equality ( "and" equality )*
+equality → comparison ( ( "!=" | "==" ) comparison )*
+comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
+term → factor ( ( "-" | "+" ) factor )*
+factor → unary ( ( "/" | "*" ) unary )*
+unary → ( "!" | "-" ) unary | primary
+primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | IDENTIFIER
+```
+
+
 ## Roadmap
 - [x] __Chapter 4: Scanning (Review Implementation)__
   - [x] Add support Multi-line comments (```/* */```)
