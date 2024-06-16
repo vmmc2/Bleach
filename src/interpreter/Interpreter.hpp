@@ -487,6 +487,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
+      if(isTruthy(evaluate(expr->condition))){
+        return evaluate(expr->ifBranch);
+      }else{
+        return evaluate(expr->elseBranch);
+      }
+
+      // Unreachable
       return {};
     }
 
