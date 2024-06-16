@@ -195,8 +195,8 @@ struct Logical : Expr, public std::enable_shared_from_this<Logical>{
  */
 struct Ternary : Expr, public std::enable_shared_from_this<Ternary>{
   const std::shared_ptr<Expr> condition;
-  const std::shared_ptr<Expr> truthyResult;
-  const std::shared_ptr<Expr> falsyResult;
+  const std::shared_ptr<Expr> ifBranch;
+  const std::shared_ptr<Expr> elseBranch;
 
   /**
    * @brief Constructs a Ternary node of the Bleach AST (Abstract Syntax Tree). 
@@ -207,13 +207,13 @@ struct Ternary : Expr, public std::enable_shared_from_this<Ternary>{
    *
    * @param condition: The condition that must be evaluated as true of false (represented by the std::shared_ptr<Expr>
    * type).
-   * @param truthyResult: The resulting value that will be produced in case the condition is evaluated to true
+   * @param ifBranch: The resulting value that will be produced in case the condition is evaluated to true
    * (represented by the std::shared_ptr<Expr> type).
-   * @param falsyResult: The resulting value that will be produced in case the condition is evaluated to false
+   * @param elseBranch: The resulting value that will be produced in case the condition is evaluated to false
    * (represented by the std::shared_ptr<Expr> type).
   **/
-  Ternary(std::shared_ptr<Expr> condition, std::shared_ptr<Expr> truthyResult, std::shared_ptr<Expr> falsyResult)
-    : condition{std::move(condition)}, truthyResult{std::move(truthyResult)}, falsyResult{std::move(falsyResult)}
+  Ternary(std::shared_ptr<Expr> condition, std::shared_ptr<Expr> ifBranch, std::shared_ptr<Expr> elseBranch)
+    : condition{std::move(condition)}, ifBranch{std::move(ifBranch)}, elseBranch{std::move(elseBranch)}
   {}
 
   std::any accept(ExprVisitor& visitor) override{
