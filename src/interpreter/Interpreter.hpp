@@ -265,6 +265,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
+      do{
+        execute(stmt->body);
+      }while(isTruthy(evaluate(stmt->condition)));
+
+      return {};
+    }
+
     /**
      * @brief Visits a Expression Statement node of the Bleach AST and performs the associated actions. 
      *
