@@ -431,7 +431,7 @@ class Parser{
     }
 
     std::shared_ptr<Expr> assignment(){
-      std::shared_ptr<Expr> expr = logicalOr(); // It's expected that the it will encounter a 'Variable' expression.
+      std::shared_ptr<Expr> expr = ternary(); // It's expected that the it will encounter a 'Variable' expression.
     
       if(match(TokenType::EQUAL)){
         Token equals = previous(); // Grab the assignment operator ('=').
@@ -445,6 +445,19 @@ class Parser{
         error(equals, "Invalid assignment target");
       }
     
+      return expr;
+    }
+
+    std::shared_ptr<Expr> ternary(){
+      std::shared_ptr<Expr> expr = logicalOr();
+
+      if(match(TokenType::QUESTION_MARK)){
+        std::shared_ptr<Expr> ifBranch = expression();
+        consume(TokenType::COLON, "Expected a ':' after the 'if' branch of a ternary expression");
+        std::shared_ptr<Expr> elseBranch = expression();
+        expr = std::make_shared<Ternary>(expr, ifBranch, elseBranch);
+      }
+
       return expr;
     }
 
