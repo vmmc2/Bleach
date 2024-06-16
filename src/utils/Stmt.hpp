@@ -114,11 +114,20 @@ struct If : Stmt, public std::enable_shared_from_this<If>{
  * @brief Defines a struct to represent a print statement node from the AST of the Bleach language.
  *
  * The Print struct defines a struct to represent a print statement node from the AST (Abstract Syntax Tree)
- * of the Bleach language. A print statement is a statement that has 
+ * of the Bleach language. A print statement is a statement that has only one attribute an expression, whose
+ * value will be produced an then displayed to the user through the console/terminal.
  */
 struct Print : Stmt, public std::enable_shared_from_this<Print>{
   const std::shared_ptr<Expr> expression;
 
+  /**
+   * @brief Constructs a Print node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Print object with the expression that is "wrapped" inside the statement.
+   *
+   * @param expression: The expression that will be evaluated and displayed inside the console/terminal 
+   * (represented by the std::shared_ptr<Expr> type).
+  **/
   Print(std::shared_ptr<Expr> expression)
     : expression{std::move(expression)}
   {}
