@@ -430,16 +430,25 @@ class Parser{
       return assignment();
     }
 
+    /**
+     * @brief Represents the 'assignment' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'assignment' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Expr> assignment(){
-      std::shared_ptr<Expr> expr = ternary(); // It's expected that the it will encounter a 'Variable' expression.
+      std::shared_ptr<Expr> expr = ternary(); // It's expected that the it will encounter a 'Variable' expression. Remember, the left-hand side can be any expression of higher precedence.
     
-      if(match(TokenType::EQUAL)){
+      if(match(TokenType::EQUAL)){ // The interpreter has found the assignment operator ('='). This means we need to parse the right-hand side of the assignment expression. Remember that the assignment expression can reference itself (recursion).
         Token equals = previous(); // Grab the assignment operator ('=').
-        std::shared_ptr<Expr> value = assignment(); // This here is what makes the left-to-right associativity of the assignment operator evident. 
+        std::shared_ptr<Expr> value = assignment(); // This here is what makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
 
         if(Variable* e = dynamic_cast<Variable*>(expr.get())){
           Token name = e->name;
-          return std::make_shared<Assign>(std::move(name), value); // This also makes the left-to-right associativity of assignment evident.
+          return std::make_shared<Assign>(std::move(name), value); // This also makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
         }
       
         error(equals, "Invalid assignment target");
