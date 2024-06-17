@@ -224,7 +224,7 @@ class Parser{
      * This method is responsible for representing the 'statement' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Stmt> statement(){
@@ -336,28 +336,12 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'printStmt' rule inside the CFG of the Bleach language.
-     *
-     * This method is responsible for representing the 'printStmt' rule from the Context-Free Grammar of 
-     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
-     * 
-     * @return A std::shared_ptr<Stmt> representing the Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
-    **/
-    std::shared_ptr<Stmt> printStatement(){
-      std::shared_ptr<Expr> value = expression();
-      consume(TokenType::SEMICOLON, "Expected ';' at the end of a 'print' statement");
-      
-      return std::make_shared<Print>(value);
-    }
-
-    /**
      * @brief Represents the 'exprStmt' rule inside the CFG of the Bleach language.
      *
      * This method is responsible for representing the 'exprStmt' rule from the Context-Free Grammar of the 
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Stmt> expressionStatement(){
@@ -394,6 +378,22 @@ class Parser{
       return std::make_shared<If>(ifCondition, ifBranch, elifConditions, elifBranches, elseBranch);
     }
 
+    /**
+     * @brief Represents the 'printStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'printStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
+    std::shared_ptr<Stmt> printStatement(){
+      std::shared_ptr<Expr> value = expression();
+      consume(TokenType::SEMICOLON, "Expected ';' after the value of a 'print' statement");
+      
+      return std::make_shared<Print>(value);
+    }
+
     std::shared_ptr<Stmt> varDeclStatement(){
       Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after the 'let' keyword");
       std::shared_ptr<Expr> initializer = nullptr;
@@ -423,7 +423,7 @@ class Parser{
      * This method is responsible for representing the 'expression' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> expression(){
@@ -436,7 +436,7 @@ class Parser{
      * This method is responsible for representing the 'assignment' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> assignment(){
@@ -500,7 +500,7 @@ class Parser{
      * This method is responsible for representing the 'equality' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> equality(){
@@ -521,7 +521,7 @@ class Parser{
      * This method is responsible for representing the 'comparison' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> comparison(){
@@ -542,7 +542,7 @@ class Parser{
      * This method is responsible for representing the 'term' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> term(){
@@ -563,7 +563,7 @@ class Parser{
      * This method is responsible for representing the 'factor' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> factor(){
@@ -584,7 +584,7 @@ class Parser{
      * This method is responsible for representing the 'unary' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> unary(){
@@ -603,7 +603,7 @@ class Parser{
      * This method is responsible for representing the 'primary' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing the Abstract Syntax Tree (AST) of the Bleach language for 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/
     std::shared_ptr<Expr> primary(){
