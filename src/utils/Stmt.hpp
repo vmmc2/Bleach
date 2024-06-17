@@ -162,11 +162,32 @@ struct Print : Stmt, public std::enable_shared_from_this<Print>{
   }
 };
 
-// Variable declaration statement.
+/**
+ * @struct Var
+ * 
+ * @brief Defines a struct to represent a variable declaration statement node from the AST of the Bleach 
+ * language.
+ *
+ * The Var struct defines a struct to represent a variable declaration statement node from the AST (Abstract 
+ * Syntax Tree) of the Bleach language. A variable declaration statement is a statement that has two attributes. 
+ * The first attribute is "name", a Token that represents a variable name. The second attribute is "initializer",
+ * a std::shared_ptr<Expr> that represents the expression whose value will be used as the initial value of the 
+ * variable. If none is provided, then the default initial value of the variable will be nil.
+ */
 struct Var : Stmt, public std::enable_shared_from_this<Var>{
   const Token name;
   const std::shared_ptr<Expr> initializer;
 
+  /**
+   * @brief Constructs a Var node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Var object with the two attributes that were mentioned above.
+   *
+   * @param name: The token that holds the name of the varible being declared (represented by the Token type).
+   * @param initializer: The expression that will be evaluated and whose resulting value will be used as the
+   * initial value of the variable being declared (represented by the std::shared_ptr<Expr> type). If nullptr is
+   * provided as its value, then the variable will have nil as its initial value.
+  **/
   Var(Token name, std::shared_ptr<Expr> initializer)
     : name{std::move(name)}, initializer{std::move(initializer)}
   {}
