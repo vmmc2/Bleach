@@ -17,6 +17,20 @@ struct Print;
 struct Var; // Variable declaration statement.
 struct While;
 
+/**
+ * @struct StmtVisitor
+ * 
+ * @brief Defines an interface for visiting different types of statement nodes from the Bleach AST (Abstract 
+ * Syntax Tree).
+ *
+ * The StmtVisitor struct defines an abstract struct that is responsible for working as an interface whose
+ * functions are responsible for visiting the different statement nodes of the Bleach language AST (Abstract
+ * Syntax Tree). Such struct has a set of pure virtual functions that represent different operations on the 
+ * mentioned statement nodes. This same struct also has a virtual destructor that ensures the destructor of
+ * a derived class/struct is called correctly when an object is deleted through a pointer to the base 
+ * class/struct. In practice, each of the statement nodes are going to be visited by an instance of a 
+ * struct/class that derives from 'StmtVisitor'.
+ */
 struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
@@ -28,6 +42,17 @@ struct StmtVisitor{
   virtual ~StmtVisitor() = default;
 };
 
+/**
+ * @struct Stmt
+ * 
+ * @brief Defines an abstract struct which will be used as a base struct to implement derived structs that 
+ * represent different kinds of statement nodes in the AST (Abstract Syntax Tree) of the Bleach language.
+ *
+ * The Stmt struct defines an abstract struct that is responsible for working as the base struct from which all
+ * structs that represent different types of statement AST nodes will derive from. This struct has only a pure
+ * virtual method called 'accept'. This method will be overridden by the derived structs where each kind of
+ * struct will have its own implementation for such method.
+ */
 struct Stmt{
   virtual std::any accept(StmtVisitor& visitor) = 0;
 };
