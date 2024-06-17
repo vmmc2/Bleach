@@ -21,7 +21,8 @@ struct Variable;
 /**
  * @struct ExprVisitor
  * 
- * @brief Defines an interface for visiting different types of nodes from the Bleach AST (Abstract Syntax Tree).
+ * @brief Defines an interface for visiting different types of expression nodes from the Bleach AST (Abstract 
+ * Syntax Tree).
  *
  * The ExprVisitor struct defines an abstract struct that is responsible for working as an interface whose
  * functions are responsible for visiting the different expression nodes of the Bleach language AST (Abstract
@@ -46,13 +47,13 @@ struct ExprVisitor{
 /**
  * @struct Expr
  * 
- * @brief Defines an abstract struct which will be used as a base struct for derived structs that represent
- * different kinds of expression nodes in the AST (Abstract Syntax Tree) of the Bleach language.
+ * @brief Defines an abstract struct which will be used as a base struct to implement derived structs that 
+ * represent different kinds of expression nodes in the AST (Abstract Syntax Tree) of the Bleach language.
  *
  * The Expr struct defines an abstract struct that is responsible for working as the base struct from which all
- * structs that represent different types of AST nodes will derive from. This struct has only a pure virtual
- * function called 'accept'. This function will be overridden by the derived structs where each kind of struct
- * will have its own implementation for such function.
+ * structs that represent different types of expression AST nodes will derive from. This struct has only a pure
+ * virtual method called 'accept'. This method will be overridden by the derived structs where each kind of 
+ * struct will have its own implementation for such method.
  */
 struct Expr{
   virtual std::any accept(ExprVisitor& visitor) = 0;
@@ -280,10 +281,28 @@ struct Unary : Expr, public std::enable_shared_from_this<Unary>{
   }
 };
 
-// Variable Expression
+/**
+ * @struct Variable
+ * 
+ * @brief Defines a struct to represent a variable access expression node from the AST of the Bleach language.
+ *
+ * The Variable struct defines a struct to represent a variable access expression node from the AST (Abstract 
+ * Syntax Tree) of the Bleach language. A variable access expression is an expression that has only one 
+ * attribute: A token that refers to the name of a variable.
+ * 
+ * @note The act of accessing a variable is considered an expression because it produces a value: the value that
+ * is bound to the variable whose token "name" is referencing.
+ */
 struct Variable : Expr, public std::enable_shared_from_this<Variable>{
   const Token name;
 
+  /**
+   * @brief Constructs a Variable node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Variable object with the attribute that was mentioned above.
+   *
+   * @param name: The token whose lexeme stores the name of a variable (represented by the Token type).
+  **/
   Variable(Token name)
     : name{std::move(name)}
   {}
