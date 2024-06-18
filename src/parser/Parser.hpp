@@ -226,6 +226,14 @@ class Parser{
      * 
      * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
+     * 
+     * @note: This method is the one that is called repeatedly when parsing a series of statements inside a 
+     * script. Therefore, this is the right place to synchronize whenever the parser goes into panic mode 
+     * (founds a parsing error).
+     * You can see that the whole body of this method is wrapped inside a "try-catch" block in order to catch
+     * the exception that is thrown when the parser begins the error recovery process.
+     * This is what get the parser back to trying to parse the beginning of the next statement inside the 
+     * script.
     **/
     std::shared_ptr<Stmt> statement(){
       try{
@@ -394,6 +402,18 @@ class Parser{
       return std::make_shared<Print>(value);
     }
 
+    /**
+     * @brief Represents the 'varDeclStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'varDeclStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+     * 
+     * @note: If there is no initializer expression after the variable name, then its default value is nil.
+     * Look at the default value of the variable "initializer" shown below (nullptr).
+    **/
     std::shared_ptr<Stmt> varDeclStatement(){
       Token name = consume(TokenType::IDENTIFIER, "Expected a variable name after the 'let' keyword");
       std::shared_ptr<Expr> initializer = nullptr;
