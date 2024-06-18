@@ -18,7 +18,7 @@
  * 
  * @brief Performs the interpreting stage of the BLEACH Interpreter.
  * 
- * The Interpter class is responsible for traversing the generated Bleach AST in a post-order manner and
+ * The Interpreter class is responsible for traversing the generated Bleach AST in a post-order manner and
  * evaluating and executing each node present in such AST. Such behavior is the program execution. In other
  * words, it's the final step of the interpreting pipeline.
  *
