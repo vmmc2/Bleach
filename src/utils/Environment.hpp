@@ -61,11 +61,11 @@ class Environment{
      * @brief Defines a variable and associates a value to it inside the current environment. 
      *
      * This method works as a variable definition method. It essentialy binds the name of the variable to its
-     * respective value.
+     * respective value inside the current environment.
      * 
-     * @param name: The name of the variable being defined. Such variable is of type std::string&.
+     * @param name: The name of the variable being defined. Such variable is of type "std::string&".
      * @param value: The value associated with the name of the variable that is being defined. Such variable is
-     * of type std::any.
+     * of type "std::any".
      * 
      * @return Nothing (void).
      * 
@@ -78,7 +78,24 @@ class Environment{
       return;
     }
 
-
+    /**
+     * @brief Finds the variable whose name matches with the lexeme of the token (identifier) that has been
+     * passed and, then, returns the value that is bound to such variable. 
+     *
+     * This method works by receiving a token that is an identifier (a variable name) as its unique parameter,
+     * and then it searches for the lexeme of such token inside the current environment and inside the enclosing
+     * environments (if necessary). When such lexeme is found, it returns the value that is bound to such 
+     * variable name.
+     * 
+     * @param name: The token representing the name of the variable (identifier) whose value we need to retrieve.
+     * Such variable is of type "const Token&".
+     * 
+     * @return The value that is bound to the passed variable's name. The return value is of type "std::any". 
+     * 
+     * @note: Pay attention to the fact that Bleach has made an interesting semantic choice. If the name of the
+     * variable is not found in the current environment and in its enclosing environments, then it means that
+     * such variable was not declared. Therefore, a runtime error is thrown.
+     */
     std::any get(const Token& name){
       auto elem = values.find(name.lexeme);
 
