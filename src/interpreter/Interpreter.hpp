@@ -333,6 +333,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a Variable Declaration Statement node of the Bleach AST and performs the associated 
+     * actions. 
+     *
+     * This method is responsible for visiting a Variable Declaration Statement node of the Bleach AST and 
+     * performing the associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Variable Declaration Statement node. This variable is 
+     * of type std::shared_ptr<Var>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitVarStmt' method from the 'StmtVisitor' struct.
+     */
     std::any visitVarStmt(std::shared_ptr<Var> stmt) override{
       std::string variableName = stmt->name.lexeme;
       std::any initialValue = nullptr;
