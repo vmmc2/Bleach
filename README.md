@@ -74,6 +74,11 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 ```
 
 
+## Doubts
+* __What is the diference between using a variable and refering to a variable?__
+* __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
+
+
 ## Roadmap
 - [x] __Chapter 4: Scanning (Review Implementation)__
   - [x] Add support Multi-line comments (```/* */```)
