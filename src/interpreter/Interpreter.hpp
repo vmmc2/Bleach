@@ -544,9 +544,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @brief Visits a Variable expression node of the Bleach AST and produces the corresponding value. 
      *
      * This method is responsible for visiting a Variable expression node of the Bleach AST, producing a value
-     * that corresponds to the type of expression present inside such Variable expression node.
+     * that corresponds to the type of expression present inside such Variable expression node and returning it.
      * 
-     * @param expr: The node of the Bleach AST that is a Unary expression node. This variable is of type 
+     * @param expr: The node of the Bleach AST that is a Variable expression node. This variable is of type 
      * std::shared_ptr<Variable>.
      * 
      * @return The value obtained from the visit (evaluation) to a Variable expression node of the Bleach AST.
