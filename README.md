@@ -103,8 +103,6 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
-  - [ ] Add support to the definition of static methods inside a class. (Not sure if it's worth it)
-  - [ ] Add support to multiple inheritance (is it worth it? Take a look at how Python implements it)
 
 
 ## Setup
