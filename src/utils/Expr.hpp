@@ -65,13 +65,13 @@ struct Expr{
  * @brief Defines a struct to represent an assignment expression node from the AST of the Bleach language.
  *
  * The Assign struct defines a struct that is responsible for representing an assignment expression node from 
- * the AST (Abstract Syntax Tree) of the Bleach language. Such struct has two attributes: a token which 
+ * the AST (Abstract Syntax Tree) of the Bleach language. Such struct has two attributes: a token that 
  * represents an identifier (a place, in-memory, which the assignment is going to be made to) and an expression
  * whose value is going to be assigned to such place in-memory.
  * When such expression is evaluated by the 'Interpreter' class, it "evaluates" the left-hand side operand to
  * find out to which variable declaration that token (identifier) is referring to. Then, it evaluates the 
- * right-hand side operand to produce a value. Finally, it assigns such produced value to referred variable and
- * also return the produced value, since an assignment in Bleach is an expression.
+ * right-hand side operand to produce a value. Finally, it assigns such produced value to the referred variable
+ * and also returns the produced value, since an assignment in Bleach is an expression.
  */
 struct Assign : Expr, public std::enable_shared_from_this<Assign>{
   const Token name;
