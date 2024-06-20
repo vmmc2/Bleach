@@ -368,6 +368,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits an Assign expression node of the Bleach AST and produces the corresponding value. 
+     *
+     * This method is responsible for visiting an Assign expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Assign expression node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Assign expression node. This variable is of type 
+     * std::shared_ptr<Assign>.
+     * 
+     * @return The value obtained from the visit (evaluation) to a Assign expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the 'visitAssignExpr' method from the 'ExprVisitor' struct.
+     */
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       std::any value = evaluate(expr->value);
       environment->assign(expr->name, value);
