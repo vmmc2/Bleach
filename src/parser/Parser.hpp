@@ -466,7 +466,7 @@ class Parser{
         Token equals = previous(); // Grab the assignment operator ('=').
         std::shared_ptr<Expr> value = assignment(); // This here is what makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
 
-        if(Variable* e = dynamic_cast<Variable*>(expr.get())){
+        if(Variable* e = dynamic_cast<Variable*>(expr.get())){ // This cast is what certify us that the right-hand side operand of the assignment expression is, indeed, a 'Variable' expression.
           Token name = e->name;
           return std::make_shared<Assign>(std::move(name), value); // This also makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
         }
