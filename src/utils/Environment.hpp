@@ -40,7 +40,26 @@ class Environment{
       : enclosing{std::move(enclosing)}
     {}
 
-
+    /**
+     * @brief Assigns the received value to the variable which the lexeme of the received token refers to. 
+     *
+     * This method works as a variable assignment method. It essentialy assigns the new received value to the
+     * variable which the lexeme of received token refers to. Pay attention to the fact that, to find out which
+     * variable such lexeme is refering to, it starts searching for its lexeme in the current environment and
+     * it goes from enclosing environment to enclosing environment, until it finds the variable in an 
+     * environment or reaches the global scope.
+     * 
+     * @param name: The name of the variable which the passed value is going to be assigned to. Such variable 
+     * is of type "const Token&".
+     * @param value: The value which will be assigned to the variable whose the parameter "name" is refering
+     * to. Such variable is of type "std::any".
+     * 
+     * @return Nothing (void).
+     * 
+     * @note: Pay attention to the fact that if this method does not find the variable to which the lexeme of
+     * the received token is refering to, then it means such variable was never declared by the user in the 
+     * first place. Thus, a runtime error is thrown by the method.
+     */
     void assign(const Token& name, std::any value){
       auto elem = values.find(name.lexeme);
 
