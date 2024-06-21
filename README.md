@@ -77,6 +77,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 ## Doubts
 * __What is the diference between using a variable and refering to a variable?__
 * __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
+* __Differences between scopes and environments (the author says they are "close cousins"). Also, the author later mentions that scope is a concept/idea and environment is something concrete that implements such concept.__
 
 
 ## Roadmap
