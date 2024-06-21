@@ -266,14 +266,23 @@ class Parser{
       }
     }
 
+    /**
+     * @brief Represents the 'block' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'block' rule from the Context-Free Grammar of the Bleach
+     * language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::vector<std::shared_ptr<Stmt>> representing a series/sequence of Abstract Syntax Trees (AST)
+     * of the Bleach language for this rule.
+    **/
     std::vector<std::shared_ptr<Stmt>> block(){
       std::vector<std::shared_ptr<Stmt>> statements;
 
-      while(!check(TokenType::RIGHT_BRACE) && !isAtEnd()){
+      while(!check(TokenType::RIGHT_BRACE) && !isAtEnd()){ // It tries to parse individual statements until it finds the '}' token or reaches the end of the file. 
         statements.push_back(statement());
       }
 
-      consume(TokenType::RIGHT_BRACE, "Expected a '}' after a block");
+      consume(TokenType::RIGHT_BRACE, "Expected a '}' after a block"); // After the last statement of a block, the next expected token is '}'. If that's not the case, then the parser has found a parsing error (syntax error).
 
       return statements;
     }
