@@ -72,9 +72,9 @@ void run(std::string_view sourceCode){
     return;
   }
 
-  for(const Token& token : tokens){
-    std::cout << token.toString() << std::endl;
-  }
+  // for(const Token& token : tokens){
+  //   std::cout << token.toString() << std::endl;
+  // }
 
   /* Second Step: Parsing */
   Parser parser{tokens};
