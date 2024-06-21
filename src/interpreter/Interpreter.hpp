@@ -241,27 +241,57 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return;
     }
 
+    /**
+     * @brief Creates a new environment for a block statement that is about to be executed and executes each of
+     * its statements.
+     *
+     * This method acts as an auxiliary method to the 'visitBlockStmt' method from this same class. This method 
+     * is responsible for creating a brand new environment for the block statement that is about to be visited
+     * (during this creation, it stores the enclosing environment of the block inside the newly created environment
+     * for the block) and also for executing each of the statements that are present inside this block.
+     * 
+     * @param statements: The list of statements that the block statement that is about executed contains. This
+     * variable is of type const std::vector<std::shared_ptr<Stmt>>&.
+     * @param enviroment: The just created environment that represents the lexical scope (static scope) of the
+     * block statement that is about to be executed by the interpreter. This variable is of type 
+     * std::shared_ptr<Environment>.
+     * 
+     * @return Nothing ({}).
+     */
     void executeBlock(const std::vector<std::shared_ptr<Stmt>>& statements, std::shared_ptr<Environment> environment){
-      std::shared_ptr<Environment> previous = this->environment;
+      std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
 
       try{
-        this->environment = environment;
+        this->environment = environment; // Make the current environment that the interpreter is looking at be the environment of the block statement that is being visited.
 
         for(const std::shared_ptr<Stmt>& stmt : statements){
           execute(stmt);
         }
       }catch(...){
-        this->environment = previous;
+        this->environment = previous; // Restores the previous environment in case a runtime error is thrown while visiting the statements inside the block.
         throw;
       }
 
-      this->environment = previous;
+      this->environment = previous; // Restores the previous environment after visiting the statements inside the block.
 
       return;
     }
 
+    /**
+     * @brief Visits a Block Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Block Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Expression Statement node. This variable is of type 
+     * std::shared_ptr<Block>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitBlockStmt' method from the 'StmtVisitor' struct.
+     */
     std::any visitBlockStmt(std::shared_ptr<Block> stmt) override{
-      executeBlock(stmt->statements, std::make_shared<Environment>(environment));
+      executeBlock(stmt->statements, std::make_shared<Environment>(environment)); // In order to execute a 'Block' statement, the interpreter needs to create an environment that represents the lexical/static scope of the block and it also needs to execute each statement inside the block.
 
       return {};
     }
