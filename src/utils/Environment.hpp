@@ -27,15 +27,29 @@
 class Environment{
   private:
     std::map<std::string,std::any> values; /**< Variable that stores the bindings between variables' names and their associated values. */
-    std::shared_ptr<Environment> enclosing;
+    std::shared_ptr<Environment> enclosing; /**< Variable that points to its enclosing environment (the "parent" environment of this environment). */
 
   public:
-
+    /**
+     * @brief Constructs an Environment with no enclosing environment. 
+     *
+     * This constructor initializes an Environment object with no arguments (no enclosing environment). This
+     * constructor is used to the creation of the global environment, since it does not have any enclosing/parent
+     * environment. Therefore, such constructor assigns nullptr to the "enclosing" attribute.
+    **/
     Environment()
       : enclosing{nullptr}
     {}
 
-
+    /**
+     * @brief Constructs an Environment with an enclosing environment. 
+     *
+     * This constructor initializes an Environment object with only one argument (its enclosing environment). 
+     * The enclosing environment is represented as a std::shared_ptr<Environment>.
+     *
+     * @param enclosing: The pointer that points to the enclosing enviroment of the current Environment object
+     * that is being created.
+    **/
     Environment(std::shared_ptr<Environment> enclosing)
       : enclosing{std::move(enclosing)}
     {}
