@@ -57,9 +57,28 @@ struct Stmt{
   virtual std::any accept(StmtVisitor& visitor) = 0;
 };
 
+/**
+ * @struct Block
+ * 
+ * @brief Defines a struct to represent a block statement node from the AST of the Bleach language.
+ *
+ * The Block struct defines a struct to represent a block statement node from the AST (Abstract Syntax Tree) of
+ * the Bleach language. A block statement is a statement that essentialy creates a new scope (the block scope)
+ * and stores a (possibly empty) sequence of statements inside itself. 
+ * Therefore, this struct has only one attribute, called "statements", a std::vector<std::shared_ptr<Stmt>> that
+ * represents the sequence of statements the block contains.
+ */
 struct Block : Stmt, public std::enable_shared_from_this<Block>{
   const std::vector<std::shared_ptr<Stmt>> statements;
 
+  /**
+   * @brief Constructs a Block node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Block object with the list of statements that it will contain.
+   *
+   * @param statements: The list of statements that this block statements has. Such list is possibly empty 
+   * (represented by the std::vector<std::shared_ptr<Stmt>> type).
+  **/
   Block(std::vector<std::shared_ptr<Stmt>> statements)
     : statements{std::move(statements)}
   {}
