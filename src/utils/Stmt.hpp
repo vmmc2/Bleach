@@ -135,6 +135,26 @@ struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
   }
 };
 
+/**
+ * @struct If
+ * 
+ * @brief Defines a struct to represent an if statement node from the AST of the Bleach language.
+ *
+ * The If struct defines a struct to represent an if statement node from the AST (Abstract Syntax Tree) of
+ * the Bleach language. An if statement is a statement that must have an expression that works as its if condition.
+ * This means that, if such expression is truthy, then the statement associated to such condition (here called
+ * "ifBranch" will be executed). The if statement also has a (possibly empty) list of elif conditions, which
+ * are going to be evaluated in the order they appear in the code (from top to bottom) if any of them is truthy,
+ * then its associated statement will be executed. Finally, the if statement can also have an else condition.
+ * If such condition is truthy, then its associated statement will be executed.
+ * 
+ * @note: It's important to remember that, the verification of whether the conditions of an if statement are
+ * truthy or falsey is made from top to bottom. Which means that the condition associated to the "if" keyword
+ * is the first one to be evaluated. Then, the conditions associated to each "elif" keyword are evaluated, one
+ * by one, from top to bottom. Finally, the condition associated to the "else" keyword is evaluated. The first
+ * condition that evaluates to true will have its associated statement executed. After one of the statements is
+ * executed, the flow of the code "gets out" from the if statement.
+ */
 struct If : Stmt, public std::enable_shared_from_this<If>{
   const std::shared_ptr<Expr> ifCondition;
   const std::shared_ptr<Stmt> ifBranch;
@@ -142,6 +162,25 @@ struct If : Stmt, public std::enable_shared_from_this<If>{
   const std::vector<std::shared_ptr<Stmt>> elifBranches;
   const std::shared_ptr<Stmt> elseBranch;
 
+  /**
+   * @brief Constructs an If node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes an If object with the associated attributes that we've mentioned above.
+   *
+   * @param ifCondition: The expression that is associated to the "if" keyword present in an if statement. 
+   * (represented by the std::shared_ptr<Expr> type).
+   * @param ifBranch: The statement that is associated to the "if" keyword from an if statement. This is the
+   * statement that will be executed in case the expression associated to the "if" keyword is truthy. (represented
+   * by the std::shared_ptr<Stmt> type).
+   * @param elifConditions: The (possibly empty) list of expressions that are associated to each "elif" keyword 
+   * that are present inside an if statement. These conditions are going to be stored inside the list in the
+   * same order they appear in the code (represented by the std::vector<std::shared_ptr<Expr>> type).
+   * @param elifBranches: The (possibly empty) list of statements that are associate to each "elif" keyword that
+   * are present inside an if statement. These statements are going to be stored inside the list in the same 
+   * order they appear in the code (represented by the std::vector<std::shared_ptr<Stmt>> type).
+   * @param elseBranch: The (possibly non-existent) statement that is associated to the "else" keyword present
+   * in an if statement (represented by the std::shared_ptr<Stmt> type).
+  **/
   If(std::shared_ptr<Expr> ifCondition, std::shared_ptr<Stmt> ifBranch, std::vector<std::shared_ptr<Expr>> elifConditions, std::vector<std::shared_ptr<Stmt>> elifBranches, std::shared_ptr<Stmt> elseBranch)
     : ifCondition{std::move(ifCondition)}, ifBranch{std::move(ifBranch)}, elifConditions{std::move(elifConditions)}, elifBranches{std::move(elifBranches)}, elseBranch{std::move(elseBranch)}
   {}
