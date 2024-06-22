@@ -381,7 +381,7 @@ class Parser{
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'if' keyword");
       std::shared_ptr<Expr> ifCondition = expression();
       consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'if' condition");
-      std::shared_ptr<Stmt> ifBranch = statement();
+      std::shared_ptr<Stmt> ifBranch = statement(); // This line is what makes the "else" bound to nearest "if" that precedes it.
 
       std::vector<std::shared_ptr<Expr>> elifConditions;
       std::vector<std::shared_ptr<Stmt>> elifBranches;
