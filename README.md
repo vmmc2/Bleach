@@ -78,6 +78,10 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 * __What is the diference between using a variable and refering to a variable?__
 * __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
 * __Differences between scopes and environments (the author says they are "close cousins"). Also, the author later mentions that scope is a concept/idea and environment is something concrete that implements such concept.__
+* __What is necessary to claim that a programming language is Turing-Complete? In other words, what exactly is Turing-Completeness? According to the author, the programming language needs to have the following features implemented:__
+  * __Arithmetic__
+  * __A little control-flow (what does "little" even mean in this context?)__
+  * __The ability to allocate arbitrary amounts of memory__
 
 
 ## Roadmap
