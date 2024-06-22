@@ -517,10 +517,19 @@ class Parser{
       return expr;
     }
 
+    /**
+     * @brief Represents the 'logicalOr' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'logicalOr' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Expr> logicalOr(){
       std::shared_ptr<Expr> expr = logicalAnd();
 
-      while(match(TokenType::OR)){
+      while(match(TokenType::OR)){ // If a match happens, then it's expected that the parser has indeed found a 'logicalOr' expression. This loop is what makes the left-to-right associativity of this operator evident.
         Token op = previous();
         std::shared_ptr<Expr> right = logicalAnd();
         expr = std::make_shared<Logical>(expr, std::move(op), right);
