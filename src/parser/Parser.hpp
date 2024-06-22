@@ -445,12 +445,21 @@ class Parser{
       return std::make_shared<Var>(name, initializer);
     }
 
+    /**
+     * @brief Represents the 'whileStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'whileStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Stmt> whileStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
       std::shared_ptr<Expr> condition = expression();
       consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'while' condition");
 
-      std::shared_ptr<Stmt> body = statement();
+      std::shared_ptr<Stmt> body = statement(); // The body of a while statement can be any kind of statement.
 
       return std::make_shared<While>(condition, body);
     }
