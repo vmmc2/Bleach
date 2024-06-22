@@ -403,6 +403,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a While Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a While Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Print Statement node. This variable is of type 
+     * std::shared_ptr<While>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitWhileStmt' method from the 'StmtVisitor' struct.
+     */
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
       while(isTruthy(evaluate(stmt->condition))){
         execute(stmt->body);
