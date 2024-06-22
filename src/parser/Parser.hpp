@@ -495,10 +495,19 @@ class Parser{
       return expr;
     }
 
+    /**
+     * @brief Represents the 'ternary' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'ternary' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Expr> ternary(){
       std::shared_ptr<Expr> expr = logicalOr();
 
-      if(match(TokenType::QUESTION_MARK)){
+      if(match(TokenType::QUESTION_MARK)){ // Checks whether there is a "?" after "logicalOr". If that's the case, then it's expected that the parser finds a ternary expression.
         std::shared_ptr<Expr> ifBranch = expression();
         consume(TokenType::COLON, "Expected a ':' after the 'if' branch of a ternary expression");
         std::shared_ptr<Expr> elseBranch = expression();
