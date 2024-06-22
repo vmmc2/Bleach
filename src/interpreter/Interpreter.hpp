@@ -324,6 +324,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits an If Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting an If Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is an If Statement node. This variable is of type 
+     * std::shared_ptr<Expression>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitIfStmt' method from the 'StmtVisitor' struct.
+     */
     std::any visitIfStmt(std::shared_ptr<If> stmt) override{
       if(isTruthy(evaluate(stmt->ifCondition))){
         execute(stmt->ifBranch);
