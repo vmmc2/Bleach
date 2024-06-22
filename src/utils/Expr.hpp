@@ -105,8 +105,8 @@ struct Assign : Expr, public std::enable_shared_from_this<Assign>{
  *
  * The Binary struct defines a struct that is responsible for representing a binary expression node from the
  * AST (Abstract Syntax Tree) of the Bleach language. Such struct has three attributes: two that represents the
- * operands of a binary expression ('left' and 'right') and another one that represents the kind of operation
- * that will be performed on the two operands.
+ * operands of a binary expression ('left' and 'right') and another that represents the kind of operation that 
+ * will be performed on the two operands ('op').
  */
 struct Binary : Expr, public std::enable_shared_from_this<Binary>{
   const std::shared_ptr<Expr> left;
@@ -117,11 +117,11 @@ struct Binary : Expr, public std::enable_shared_from_this<Binary>{
    * @brief Constructs a Binary node of the Bleach AST (Abstract Syntax Tree). 
    *
    * This constructor initializes a Binary object with the left operand, right operand and the operator that
-   * represents the operation about to be performed on these operands.
+   * represents the binary operation about to be performed on these operands.
    *
    * @param left: The left operand (represented by the std::shared_ptr<Expr> tyoe) of the binary 
    * operation/operator.
-   * @param op: The operator that represents the operation about to be performed on the two operands 
+   * @param op: The operator that represents the binary operation about to be performed on the two operands 
    * (represented by the Token type).
    * @param right: The right operand (represented by the std::shared_ptr<Expr> type) of the binary 
    * operation/operator.
@@ -193,11 +193,40 @@ struct Literal : Expr, public std::enable_shared_from_this<Literal>{
   }
 };
 
+/**
+ * @struct Logical
+ * 
+ * @brief Defines a struct to represent a logical expression node from the AST of the Bleach language. Remember
+ * that a logical expression node is just a variation of a binary expression node.
+ *
+ * The Logical struct defines a struct that is responsible for representing a logical binary expression node 
+ * from the AST (Abstract Syntax Tree) of the Bleach language. Such struct has three attributes: two that 
+ * represents the operands of a logical expression ('left' and 'right') and another that represents the kind 
+ * of operation that will be performed on the two operands ('op').
+ * 
+ * @note: It's also important to make clear that there's an important difference between binary operators and 
+ * logical operators: The logical ones can short-circuit. In other words, if, after evaluating the left operand 
+ * of a logical operation, the result is already known, then the right operand is not even evaluated.
+ * It's also important to mention that the "and" operator has a higher precedence compared to the "or" operator.
+ */
 struct Logical : Expr, public std::enable_shared_from_this<Logical>{
   const std::shared_ptr<Expr> left;
   const Token op;
   const std::shared_ptr<Expr> right;
 
+  /**
+   * @brief Constructs a Logical node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Lofical object with the left operand, right operand and the operator that
+   * represents the logical operation about to be performed on these operands.
+   *
+   * @param left: The left operand (represented by the std::shared_ptr<Expr> tyoe) of the logical 
+   * operation/operator.
+   * @param op: The operator that represents the logical operation about to be performed on the two operands 
+   * (represented by the Token type).
+   * @param right: The right operand (represented by the std::shared_ptr<Expr> type) of the logical 
+   * operation/operator.
+  **/
   Logical(std::shared_ptr<Expr> left, Token op, std::shared_ptr<Expr> right)
     : left{std::move(left)}, op{std::move(op)}, right{std::move(right)} 
   {}
