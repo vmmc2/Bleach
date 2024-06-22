@@ -507,7 +507,7 @@ class Parser{
     std::shared_ptr<Expr> ternary(){
       std::shared_ptr<Expr> expr = logicalOr();
 
-      if(match(TokenType::QUESTION_MARK)){ // Checks whether there is a "?" after "logicalOr". If that's the case, then it's expected that the parser finds a ternary expression.
+      if(match(TokenType::QUESTION_MARK)){ // Checks whether there is a "?" after "logicalOr". If that's the case, then it's expected that the parser has indeed found a ternary expression.
         std::shared_ptr<Expr> ifBranch = expression();
         consume(TokenType::COLON, "Expected a ':' after the 'if' branch of a ternary expression");
         std::shared_ptr<Expr> elseBranch = expression();
@@ -538,10 +538,19 @@ class Parser{
       return expr;
     }
 
+    /**
+     * @brief Represents the 'logicalAnd' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'logicalAnd' rule from the Context-Free Grammar of the
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Expr> logicalAnd(){
       std::shared_ptr<Expr> expr = equality();
 
-      while(match(TokenType::AND)){
+      while(match(TokenType::AND)){ // If a match happens, then it's expected that the parser has indeed found a 'logicalAnd' expression. This loop is what makes the left-to-right associativity of this operator evident.
         Token op = previous();
         std::shared_ptr<Expr> right = equality();
         expr = std::make_shared<Logical>(expr, std::move(op), right);
