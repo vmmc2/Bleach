@@ -255,10 +255,34 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
   }
 };
 
+/**
+ * @struct While
+ * 
+ * @brief Defines a struct to represent a while statement node from the AST of the Bleach language.
+ *
+ * The While struct defines a struct to represent a while statement node from the AST (Abstract Syntax Tree) of
+ * the Bleach language. A while statement is a statement that during runtime works as a looping control flow
+ * mechanism. This struct has two attributes: The first one is called "condition". It is an expression that
+ * determines for how long the statement inside the while body will be executed. They are going to be executed
+ * as long as the "condition" expression evaluates to true. The second one is called "body". Is is a statement
+ * that will be executed while the "condition" expression evaluates to true.
+ */
 struct While : Stmt, public std::enable_shared_from_this<While>{
   const std::shared_ptr<Expr> condition;
   const std::shared_ptr<Stmt> body;
 
+  /**
+   * @brief Constructs a While node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a While object with the two attributes that were mentioned above.
+   *
+   * @param condition: The expression that will be evaluated at each iteration of the while loop (including the
+   * first one). The value produced by the evaluation of this expression is what determines whether or not the
+   * statement inside the while loop is going to be executed. If it's true, then yes. Otherwise, no (represented
+   * by the std::shared_ptr<Expr> type).
+   * @param body: The statement that will be executed or not depending on the value produced by the evaluation
+   * of the expression stored inside the "condition" attribute (represented by the std::shared_ptr<Stmt> type). 
+  **/
   While(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> body)
     : condition{std::move(condition)}, body{std::move(body)}
   {}
