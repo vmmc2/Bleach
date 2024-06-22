@@ -287,13 +287,22 @@ class Parser{
       return statements;
     }
 
+    /**
+     * @brief Represents the 'doWhileStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'doWhileStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Stmt> doWhileStatement(){
       std::shared_ptr<Stmt> body = statement();
 
       consume(TokenType::WHILE, "Expected the 'while' keyword after the body of the 'do-while' statement");
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
       std::shared_ptr<Expr> condition = expression();
-      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'while' keyword");
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'do-while' condition");
       consume(TokenType::SEMICOLON, "Expected a ';' after the 'do-while' statement");
 
       return std::make_shared<DoWhile>(condition, body);
