@@ -283,7 +283,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Block Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Expression Statement node. This variable is of type 
+     * @param stmt: The node of the Bleach AST that is a Block Statement node. This variable is of type 
      * std::shared_ptr<Block>.
      * 
      * @return Nothing ({}).
@@ -296,6 +296,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a DoWhile Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a DoWhile Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a DoWhile Statement node. This variable is of type 
+     * std::shared_ptr<DoWhile>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitDoWhileStmt' method from the 'StmtVisitor' 
+     * struct.
+     */
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
       do{
         execute(stmt->body);
@@ -409,7 +423,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a While Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Print Statement node. This variable is of type 
+     * @param stmt: The node of the Bleach AST that is a While Statement node. This variable is of type 
      * std::shared_ptr<While>.
      * 
      * @return Nothing ({}).
