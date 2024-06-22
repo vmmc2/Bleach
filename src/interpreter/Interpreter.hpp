@@ -525,8 +525,25 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return expr->value;
     }
 
-    // Pay attention to the fact that logical operators do not return "true" or "false".
-    // Instead, they return the value itself.
+    /**
+     * @brief Visits a Logical expression node of the Bleach AST and produces the corresponding value. 
+     *
+     * This method is responsible for visiting a Logical expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Binary expression node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Binary expression node. This variable is of type 
+     * std::shared_ptr<Logical>.
+     * 
+     * @return The value obtained from the visit (evaluation) to a Logical expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the 'visitLogicalExpr' method from the 'ExprVisitor' 
+     * struct. Pay attention to the fact that logical operators do not return "true" or "false". Instead, they
+     * return the value itself. Moreover, note that this method applies the idea of short-circuit by first
+     * evaluating the left operand of the logical expression. After that, it checks the operator type and if
+     * its possible to short-circuit. If that's the case, it prematurely returns the value produced by the 
+     * evaluation of the left expression/operand. Otherwise, it evaluates the right expression/operand and
+     * returns its value.
+     */
     std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
       std::any left = evaluate(expr->left);
 
