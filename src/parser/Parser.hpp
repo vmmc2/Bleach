@@ -368,6 +368,15 @@ class Parser{
       return std::make_shared<Expression>(value);
     }
 
+    /**
+     * @brief Represents the 'ifStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'ifStmt' rule from the Context-Free Grammar of the 
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Stmt> ifStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'if' keyword");
       std::shared_ptr<Expr> ifCondition = expression();
