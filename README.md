@@ -69,7 +69,9 @@ equality → comparison ( ( "!=" | "==" ) comparison )*
 comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
 term → factor ( ( "-" | "+" ) factor )*
 factor → unary ( ( "/" | "*" ) unary )*
-unary → ( "!" | "-" ) unary | primary
+unary → ( "!" | "-" ) unary | call
+call → primary ( "(" arguments? ")" )*
+arguments → expression ( "," expression )*
 primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | IDENTIFIER
 ```
 
