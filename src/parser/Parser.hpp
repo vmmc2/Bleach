@@ -308,6 +308,15 @@ class Parser{
       return std::make_shared<DoWhile>(condition, body);
     }
 
+    /**
+     * @brief Represents the 'forStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'forStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
     std::shared_ptr<Stmt> forStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'for' keyword");
 
@@ -335,6 +344,9 @@ class Parser{
 
       std::shared_ptr<Stmt> body = statement();
 
+      // We construct the Bleach language AST node that represents the For statement node by using already
+      // existing Bleach language AST nodes. In particular, we use the Block statement node, the Expression
+      // statement node and the While statemente node.
       if(increment != nullptr){
         body = std::make_shared<Block>(
           std::vector<std::shared_ptr<Stmt>>{
@@ -349,7 +361,7 @@ class Parser{
       }
       body = std::make_shared<While>(condition, body);
 
-      if(initializer != nullptr){ // If there is an initializer (a varDeclStmt or a expressionStmt), then we have to wrap the "while" look in a block, to have put such declared variable inside the scope.
+      if(initializer != nullptr){ // If there is an initializer (a varDeclStmt or a expressionStmt), then we have to wrap the "while" look in a block. By doing so, the variable declaration statement or expression statement will be executed before the while loop is executed.
         body = std::make_shared<Block>(
           std::vector<std::shared_ptr<Stmt>>{
             initializer,
