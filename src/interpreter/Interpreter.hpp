@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "../utils/BleachCallable.hpp"
 #include "../error/BleachRuntimeError.hpp"
 #include "../error/Error.hpp"
 #include "../utils/Environment.hpp"
@@ -542,6 +543,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
       }else{
         throw BleachRuntimeError{expr->paren, "Can only call classes, functions and methods."};
+      }
+
+      if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
+        throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
       }
 
       return function->call(*this, std::move(arguments)); // Finally, the interpreter calls the function.
