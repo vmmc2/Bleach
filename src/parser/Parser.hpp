@@ -699,6 +699,9 @@ class Parser{
 
       if(!check(TokenType::RIGHT_PAREN)){ // This "if" statement here is responsible for dealing with the parsing of the arguments inside a function call.
         do{
+          if(arguments.size() >= 255){
+            error(peek(), "A function/method cannot have more than 255 arguments");
+          }
           arguments.push_back(expression());
         }while(match(TokenType::COMMA));
       }
