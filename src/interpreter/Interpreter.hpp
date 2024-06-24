@@ -515,6 +515,25 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitCallExpr(std::shared_ptr<Call> expr) override{
+      std::any callee = evaluate(expr->callee);
+
+      std::vector<std::any> arguments;
+      for(const std::shared_ptr<Expr>& argument : expr->arguments){
+        arguments.push_back(evaluate(argument));
+      }
+
+      std::shared_ptr<BleachCallable> function;
+
+      if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){
+        function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a std::any wrapper must be unwrapped before they can be cast.
+      }else{
+        throw BleachRuntimeError{expr->paren, "Can only call classes, functions and methods."};
+      }
+
+      return function->call(*this, std::move(arguments));
+    }
+
     /**
      * @brief Visits a Grouping (parenthesized) expression node of the Bleach AST and produces the 
      * corresponding value. 
