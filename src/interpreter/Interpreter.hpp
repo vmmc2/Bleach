@@ -529,10 +529,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @note This method is an overridden version of the 'visitCallExpr' method from the 'ExprVisitor' struct.
      */
     std::any visitCallExpr(std::shared_ptr<Call> expr) override{
-      std::any callee = evaluate(expr->callee); // First, the interpreter needs to evaluate the callee.
+      std::any callee = evaluate(expr->callee); // First, the interpreter needs to evaluate the callee. Typically, this expression is just an identifier that looks up the function by its name, but it could be anything.
 
       std::vector<std::any> arguments;
-      for(const std::shared_ptr<Expr>& argument : expr->arguments){ // Second, the interpreter evaluates each expression inside the arguments list to produce its respective value.
+      for(const std::shared_ptr<Expr>& argument : expr->arguments){ // Second, the interpreter evaluates, in order, each expression inside the arguments list to produce its respective value.
         arguments.push_back(evaluate(argument));
       }
 
