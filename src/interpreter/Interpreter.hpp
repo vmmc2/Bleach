@@ -515,23 +515,36 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a Call expression node of the Bleach AST and produces the corresponding value. 
+     *
+     * This method is responsible for visiting a Call expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Call expression node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Call expression node. This variable is of type 
+     * std::shared_ptr<Call>.
+     * 
+     * @return The value obtained from the visit (evaluation) to a Call expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the 'visitCallExpr' method from the 'ExprVisitor' struct.
+     */
     std::any visitCallExpr(std::shared_ptr<Call> expr) override{
-      std::any callee = evaluate(expr->callee);
+      std::any callee = evaluate(expr->callee); // First, the interpreter needs to evaluate the callee.
 
       std::vector<std::any> arguments;
-      for(const std::shared_ptr<Expr>& argument : expr->arguments){
+      for(const std::shared_ptr<Expr>& argument : expr->arguments){ // Second, the interpreter evaluates each expression inside the arguments list to produce its respective value.
         arguments.push_back(evaluate(argument));
       }
 
       std::shared_ptr<BleachCallable> function;
 
-      if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){
-        function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a std::any wrapper must be unwrapped before they can be cast.
+      if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
+        function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
       }else{
         throw BleachRuntimeError{expr->paren, "Can only call classes, functions and methods."};
       }
 
-      return function->call(*this, std::move(arguments));
+      return function->call(*this, std::move(arguments)); // Finally, the interpreter calls the function.
     }
 
     /**
