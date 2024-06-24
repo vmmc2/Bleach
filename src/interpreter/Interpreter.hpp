@@ -29,7 +29,7 @@
 **/
 class Interpreter : public ExprVisitor, public StmtVisitor{
   private:
-    std::shared_ptr<Environment> environment {new Environment}; /**< Variable that represents the current environment of the interpreter instance. */
+    std::shared_ptr<Environment> environment = globals; /**< Variable that tracks the current environment of the interpreter instance. Its value changes during execution as the interpreter enters and exits local scopes. */
 
     /**
      * @brief Checks whether the provided operand of the unary operator ("-") is a value of type double. 
@@ -218,6 +218,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
   public:
+    std::shared_ptr<Environment> globals{new Environment}; /**< Variable that always points to the outermost global environment (global scope). */
+
     /**
      * @brief Interprets/Executes the list of statements that represent a Bleach program (remember that each
      * statement represents an AST following of the Bleach language), provided by the parser. 
