@@ -697,7 +697,7 @@ class Parser{
     std::shared_ptr<Expr> finishCallExpr(std::shared_ptr<Expr> callee){
       std::vector<std::shared_ptr<Expr>> arguments;
 
-      if(!check(TokenType::RIGHT_PAREN)){
+      if(!check(TokenType::RIGHT_PAREN)){ // This "if" statement here is responsible for dealing with the parsing of the arguments inside a function call.
         do{
           arguments.push_back(expression());
         }while(match(TokenType::COMMA));
