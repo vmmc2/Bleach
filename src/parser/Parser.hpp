@@ -689,7 +689,37 @@ class Parser{
         return std::make_shared<Unary>(op, right); // The right-to-left associativity of the '!' and '-' operators is made evident here.
       }
 
-      return primary();
+      // Think like this is an "else" branch to the "if" branch above.
+      return call();
+    }
+
+    // Auxiliary method to the "call" method
+    std::shared_ptr<Expr> finishCallExpr(std::shared_ptr<Expr> callee){
+      std::vector<std::shared_ptr<Expr>> arguments;
+
+      if(!check(TokenType::RIGHT_PAREN)){
+        do{
+          arguments.push_back(expression());
+        }while(match(TokenType::COMMA));
+      }
+
+      Token paren = consume(TokenType::RIGHT_PAREN, "Expected a ')' after the arguments of a function call");
+
+      return std::make_shared<Call>(callee, std::move(paren), std::move(arguments));
+    }
+
+    std::shared_ptr<Expr> call(){
+      std::shared_ptr<Expr> expr = primary();
+
+      while(true){ // This loop along with the "finishCallExpr" is what allows the user to write sequential function call.
+        if(match(TokenType::LEFT_PAREN)){
+          expr = finishCallExpr(expr); // Calls an auxiliary method to finish the parsing of a call expression.
+        }else{
+          break;
+        }
+      }
+
+      return expr;
     }
 
     /**
