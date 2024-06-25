@@ -38,7 +38,25 @@ class NativeClock : public BleachCallable{
 
 // std::io::readLine
 class NativeReadLine : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 0){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      std::string lineContent;
+      std::getline(std::cin, lineContent);
+
+      return lineContent;
+    }
+
+    std::string toString() override{
+      return "<native function: std::io::readLine>";
+    } 
 };
 
 // std::io::print
@@ -78,7 +96,7 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 
     std::string toString() override{
-      return "<native function: std::io::abs>";
+      return "<native function: std::math::abs>";
     }
 };
 
@@ -152,7 +170,7 @@ class NativeLogarithm : public BleachCallable{
     }
 };
 
-// std::math::random
+// std::random::random
 class NativeRandom : public BleachCallable{
   public:
     int arity() override{
