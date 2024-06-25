@@ -20,6 +20,10 @@ class NativeClock : public BleachCallable{
     }
     
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 0){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
       auto now = std::chrono::high_resolution_clock::now();
       auto duration = now.time_since_epoch();
 
@@ -59,7 +63,7 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      if(arguments.size() > 1){
+      if(arguments.size() != 1){
         throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
       }
 
@@ -77,14 +81,43 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 };
 
-// std::math::exp
+// std::math::pow
 class NativeExponentiation : public BleachCallable{
+  public:
+    int arity() override{
+      return 2;
+    }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 2){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+        throw BleachRuntimeError{"The two arguments of the 'std::math::pow' function must be numbers."};
+      }
+
+      double base = std::any_cast<double>(arguments[0]);
+      double exponent = std::any_cast<double>(arguments[1]);
+
+      return std::pow(base, exponent);
+    }
+
+    std::string toString() override{
+      return "<native function: std::math::pow>";
+    }
 };
 
 // std::math::log
 class NativeLogarithm : public BleachCallable{
+  public:
+    int arity() override{
+      return 2;
+    }
 
+    std::string toString() override{
+      return "<native function: std::math::log>";
+    }
 };
 
 // std::math::random
@@ -100,7 +133,7 @@ class NativeSquareRoot : public BleachCallable{
     }
 
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      if(arguments.size() > 1){
+      if(arguments.size() != 1){
         throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
       }
 
@@ -117,6 +150,6 @@ class NativeSquareRoot : public BleachCallable{
     }
 
     std::string toString() override{
-      return "<native function: std::io::sqrt>";
+      return "<native function: std::math::sqrt>";
     }
 };
