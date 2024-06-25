@@ -3,6 +3,7 @@
 #include <any>
 #include <cmath>
 #include <chrono>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -36,7 +37,7 @@ class NativeClock : public BleachCallable{
 };
 
 // std::io::readLine
-class NativeInput : public BleachCallable{
+class NativeReadLine : public BleachCallable{
 
 };
 
@@ -153,7 +154,36 @@ class NativeLogarithm : public BleachCallable{
 
 // std::math::random
 class NativeRandom : public BleachCallable{
+  public:
+    int arity() override{
+      return 2;
+    }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 2){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+        throw BleachRuntimeError{"The two arguments of the 'std::random::random' function must be numbers."};
+      }
+
+      double left = std::any_cast<double>(arguments[0]);
+      double right = std::any_cast<double>(arguments[1]);
+
+      unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+
+      std::mt19937 gen(seed);
+      std::uniform_real_distribution<> distribution(std::fmin(left, right), std::fmax(left, right));
+
+      double randomNumber = distribution(gen);
+
+      return randomNumber;
+    }
+
+    std::string toString() override{
+      return "<native function: std::random::random>";
+    }  
 };
 
 // std::math::sqrt
