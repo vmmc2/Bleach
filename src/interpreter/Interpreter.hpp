@@ -1,16 +1,19 @@
 #pragma once
 
 #include <any>
+#include <cmath>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "../utils/BleachCallable.hpp"
+#include "../utils/BleachFunction.hpp"
 #include "../error/BleachRuntimeError.hpp"
 #include "../error/Error.hpp"
 #include "../utils/Environment.hpp"
 #include "../utils/Expr.hpp"
+#include "../utils/NativeFunctions.hpp"
 #include "../utils/Stmt.hpp"
 
 
@@ -78,6 +81,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
 
       throw BleachRuntimeError{op, "Operands must be numbers."};
+    }
+
+    void checkZeroDivisor(const std::any& divisor, const Token& op, double epsilon = 1e-10){
+      double div = std::any_cast<double>(divisor);
+
+      if(std::fabs(div) < epsilon){
+        throw BleachRuntimeError{op, "The divisor of a division cannot be 0."};
+      }
+
+      return;
     }
 
     /**
@@ -219,6 +232,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
   public:
     std::shared_ptr<Environment> globals{new Environment}; /**< Variable that always points to the outermost global environment (global scope). */
+
+    Interpreter(){
+      globals->define("std::chrono::clock", std::shared_ptr<NativeClock>{});
+      globals->define("std::math::sqrt", std::shared_ptr<NativeSquareRoot>{});
+    }
 
     /**
      * @brief Interprets/Executes the list of statements that represent a Bleach program (remember that each
@@ -511,6 +529,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           return std::any_cast<double>(left) * std::any_cast<double>(right); // Evaluate the case of iteracting nums and strings in order to extend the language.
         case(TokenType::SLASH):
           checkNumberOperands(expr->op, left, right);
+          checkZeroDivisor(right, expr->op);
           return std::any_cast<double>(left) / std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
       }
 
