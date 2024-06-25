@@ -115,6 +115,37 @@ class NativeLogarithm : public BleachCallable{
       return 2;
     }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      const double epsilon = 1e-9;
+
+      if(arguments.size() != 2){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+        throw BleachRuntimeError{"The two arguments of the 'std::math::log' function must be numbers."};
+      }
+
+      double base = std::any_cast<double>(arguments[0]);
+      double argument = std::any_cast<double>(arguments[1]);
+
+      if(std::fabs(base - 1) <= epsilon || std::signbit(base)){
+        throw BleachRuntimeError{"The first argument (the base of the logarithm) of the 'std::math::log' must be a positive number and different from 1."};
+      }
+      if(std::signbit(argument)){
+        throw BleachRuntimeError{"The second argument (the argument of the logarithm) of the 'std::math::log' must be a positive number."};
+      }
+
+      double num = std::log10(argument);
+      double den = std::log10(base);
+
+      if(std::fabs(den) <= epsilon){
+        throw BleachRuntimeError{"Internal error while computing the logarithm of " + std::to_string(argument) + " in base " + std::to_string(base) + "."};
+      }
+
+      return (num/den);
+    }
+
     std::string toString() override{
       return "<native function: std::math::log>";
     }
