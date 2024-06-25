@@ -30,4 +30,8 @@ class BleachRuntimeError : public std::runtime_error{
     BleachRuntimeError(const Token& token, std::string_view runtimeErrorMessage)
       : std::runtime_error{runtimeErrorMessage.data()}, token{token}
     {}
+
+    BleachRuntimeError(std::string_view runtimeErrorMessage)
+      : std::runtime_error{runtimeErrorMessage.data()}, token{Token(TokenType::FILE_END, "", nullptr, 0)}
+    {}
 };
