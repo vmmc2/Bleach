@@ -60,8 +60,43 @@ class NativeReadLine : public BleachCallable{
 };
 
 // std::io::print
+// I will need to implement a more robust version of this class. It must also be able to deal with the following
+// types: BleachList, BleachDict, BleachInstance.
 class NativePrint : public BleachCallable{
+  public:
+    int arity() override{
+      return -1; // This means that the native function expects a variable number of arguments.
+    }
 
+    void printValue(std::any value){
+      if(value.type() == typeid(double)){
+        std::cout << std::any_cast<double>(value) << " ";
+      }else if(value.type() == typeid(bool)){
+        std::cout << std::any_cast<bool>(value) << " ";
+      }else if(value.type() == typeid(nullptr)){
+        std::cout << "nil" << " ";
+      }else if(value.type() == typeid(std::string)){
+        std::cout << std::any_cast<std::string>(value) << " ";
+      }else{
+        throw BleachRuntimeError{"The value cannot be printed."};
+      }
+
+      return;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      for(std::any argument : arguments){
+        printValue(argument);
+      }
+
+      std::cout << std::endl;
+
+      return {};
+    }
+
+    std::string toString() override{
+      return "<native function: std::io::print>";
+    } 
 };
 
 // std::io::fileRead
