@@ -243,6 +243,9 @@ class Parser{
         if(match(TokenType::FOR)){
           return forStatement();
         }
+        if(match(TokenType::FUNCTION)){
+          return funcDeclStatement("function");
+        }
         if(match(TokenType::IF)){
           return ifStatement();
         }
@@ -371,6 +374,36 @@ class Parser{
       }
 
       return body;
+    }
+
+    /**
+     * @brief Represents the 'function' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'function' rule from the Context-Free Grammar of the 
+     * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/ 
+    std::shared_ptr<Stmt> funcDeclStatement(std::string kind){ // Pay attention to the fact that this code is very similar to that of a callExpression.
+      Token name = consume(TokenType::IDENTIFIER, "Expected a " + kind + " name.");
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the " + kind + " name.");
+
+      std::vector<Token> parameters;
+      if(!check(TokenType::RIGHT_PAREN)){
+        do{
+          if(parameters.size() >= 255){
+            error(peek(), "A " + kind + "can't have more than 255 parameters.");
+          }
+          parameters.push_back(consume(TokenType::IDENTIFIER, "Expected a parameter name inside a " + kind + " parameter's list."));
+        }while(match(TokenType::COMMA));
+      }
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the parameter list of a " + kind + ".");
+
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of a " + kind + ".");
+      std::vector<std::shared_ptr<Stmt>> body = block();
+
+      return std::make_shared<Function>(name, parameters, body);
     }
 
     /**
