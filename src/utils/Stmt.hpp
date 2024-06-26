@@ -12,6 +12,7 @@
 struct Block;
 struct DoWhile;
 struct Expression; // Expression statement (Used in function and method calls).
+struct Function; // Function statement (Used in function declarations).
 struct If;
 struct Print;
 struct Var; // Variable declaration statement.
@@ -35,6 +36,7 @@ struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
+  virtual std::any visitFunctionStmt(std::shared_ptr<Function> stmt) = 0;
   virtual std::any visitIfStmt(std::shared_ptr<If> stmt) = 0;
   virtual std::any visitPrintStmt(std::shared_ptr<Print> stmt) = 0;
   virtual std::any visitVarStmt(std::shared_ptr<Var> stmt) = 0;
@@ -162,6 +164,20 @@ struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitExpressionStmt(shared_from_this());
+  }
+};
+
+struct Function : Stmt, public std::enable_shared_from_this<Function>{
+  const Token name; // The name of the function. It's has a TokenType::IDENTIFIER as its type attribute.
+  const std::vector<Token> parameters; // As above, the parameters are all tokens that have TokenType::IDENTIFIER as their type attribute.
+  const std::vector<std::shared_ptr<Stmt>> body; // The list of statements that make the body of the function.
+
+  Function(Token name, std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body)
+    : name{std::move(name)}, parameters{std::move(parameters)}, body{std::move(body)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitFunctionStmt(shared_from_this());
   }
 };
 
