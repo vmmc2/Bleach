@@ -54,7 +54,7 @@ block → "{" statement* "}"
 doWhileStmt → "do" statement "while" "(" expression ")" ";"
 exprStmt → expression ";"
 forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement
-funDeclStmt → "function" function
+funcDeclStmt → "function" function
 function → IDENTIFIER "(" parameters? ")" block
 parameters → IDENTIFIER ( "," IDENTIFIER )*
 ifStmt → "if" "(" expression ")" statement
