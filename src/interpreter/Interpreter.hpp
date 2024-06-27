@@ -359,6 +359,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitFunctionStmt(std::shared_ptr<Function> stmt) override{
+      auto function = std::make_shared<BleachFunction>(stmt);
+      environment->define(stmt->name.lexeme, function);
+
+      return {};
+    }
+
     /**
      * @brief Visits an If Statement node of the Bleach AST and performs the associated actions. 
      *
