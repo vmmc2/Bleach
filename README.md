@@ -103,13 +103,12 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
   - [x] Add support to the ```do-while``` loop
   - [ ] Add ```break``` and ```continue``` keywords make them usable only inside loops
-  - [ ] Make the ```str``` type more robuts (immutability like python, not allow assignment, which methods to include)
+  - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
   - [ ] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
 - [ ] __Chapter 10: Functions (Review Implementation)__
-  - [ ] Add support to the ```lambda``` keyword, which allows the creation of anonymous functions
-  - [ ] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::utils```)
+  - [ ] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
