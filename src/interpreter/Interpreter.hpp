@@ -9,6 +9,7 @@
 
 #include "../utils/BleachCallable.hpp"
 #include "../utils/BleachFunction.hpp"
+#include "../utils/BleachReturn.hpp"
 #include "../error/BleachRuntimeError.hpp"
 #include "../error/Error.hpp"
 #include "../utils/Environment.hpp"
@@ -424,6 +425,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       std::cout << stringify(value) << std::endl;
 
       return {};
+    }
+
+    /**
+     * @brief Visits a Return Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Return Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Return Statement node. This variable is of type 
+     * std::shared_ptr<Return>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitReturnStmt' method from the 'StmtVisitor' struct.
+     * Moreover, this method will always throw a value. The value is the one generated when evaluating the 
+     * expression that might be present"return" statement. If there is no expression, then this means the
+     * produced value is nil (C++ nullptr).
+     */
+    std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
+      std::any value = nullptr;
+      if(stmt->value != nullptr){
+        value = evaluate(stmt->value);
+      }
+
+      throw BleachReturn{value};
     }
 
     /**
