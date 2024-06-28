@@ -235,7 +235,15 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
     Interpreter(){
       globals->define("std::chrono::clock", std::shared_ptr<NativeClock>{});
+      globals->define("std::io::readLine", std::shared_ptr<NativeReadLine>{});
+      globals->define("std::io::print", std::shared_ptr<NativePrint>{});
+      globals->define("std::io::fileRead", std::shared_ptr<NativeFileRead>{});
+      globals->define("std::io::fileWrite", std::shared_ptr<NativeFileWrite>{});
+      globals->define("std::math::abs", std::shared_ptr<NativeAbsoluteValue>{});
+      globals->define("std::math::pow", std::shared_ptr<NativeExponentiation>{});
+      globals->define("std::math::log", std::shared_ptr<NativeLogarithm>{});
       globals->define("std::math::sqrt", std::shared_ptr<NativeSquareRoot>{});
+      globals->define("std::random::random", std::shared_ptr<NativeRandom>{});
     }
 
     /**
