@@ -258,6 +258,9 @@ class Parser{
         if(match(TokenType::PRINT)){
           return printStatement();
         }
+        if(match(TokenType::RETURN)){
+          return returnStatement();
+        }
         if(match(TokenType::WHILE)){
           return whileStatement();
         }
@@ -472,6 +475,28 @@ class Parser{
       consume(TokenType::SEMICOLON, "Expected ';' after the value of a 'print' statement");
       
       return std::make_shared<Print>(value);
+    }
+
+    /**
+     * @brief Represents the 'returnStmt' rule inside the CFG of the Bleach language.
+     *
+     * This method is responsible for representing the 'returnStmt' rule from the Context-Free Grammar of 
+     * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
+     * 
+     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
+     * this rule.
+    **/
+    std::shared_ptr<Stmt> returnStatement(){
+      Token keyword = previous();
+      std::shared_ptr<Expr> value = nullptr;
+
+      if(!check(TokenType::SEMICOLON)){
+        value = expression();
+      }
+
+      consume(TokenType::SEMICOLON, "Expected a ';' at the end of a 'return' statement");
+
+      return std::make_shared<Return>(keyword, value);
     }
 
     /**
