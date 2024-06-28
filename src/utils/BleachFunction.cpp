@@ -2,7 +2,7 @@
 
 #include "./BleachFunction.hpp"
 #include "./Environment.hpp"
-#include "./Interpreter.hpp"
+#include "../interpreter/Interpreter.hpp"
 #include "./Stmt.hpp"
 
 
