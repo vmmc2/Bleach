@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "./BleachCallable.hpp"
-#include "./BleachRuntimeError.hpp"
+#include "../error/BleachRuntimeError.hpp"
 
 class Interpreter;
 
@@ -135,33 +135,6 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 };
 
-// std::math::pow
-class NativeExponentiation : public BleachCallable{
-  public:
-    int arity() override{
-      return 2;
-    }
-
-    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      if(arguments.size() != 2){
-        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
-      }
-
-      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
-        throw BleachRuntimeError{"The two arguments of the 'std::math::pow' function must be numbers."};
-      }
-
-      double base = std::any_cast<double>(arguments[0]);
-      double exponent = std::any_cast<double>(arguments[1]);
-
-      return std::pow(base, exponent);
-    }
-
-    std::string toString() override{
-      return "<native function: std::math::pow>";
-    }
-};
-
 // std::math::log
 class NativeLogarithm : public BleachCallable{
   public:
@@ -205,6 +178,62 @@ class NativeLogarithm : public BleachCallable{
     }
 };
 
+// std::math::pow
+class NativeExponentiation : public BleachCallable{
+  public:
+    int arity() override{
+      return 2;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 2){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+        throw BleachRuntimeError{"The two arguments of the 'std::math::pow' function must be numbers."};
+      }
+
+      double base = std::any_cast<double>(arguments[0]);
+      double exponent = std::any_cast<double>(arguments[1]);
+
+      return std::pow(base, exponent);
+    }
+
+    std::string toString() override{
+      return "<native function: std::math::pow>";
+    }
+};
+
+// std::math::sqrt
+class NativeSquareRoot : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double)){
+        throw BleachRuntimeError{"Argument of the 'std::math::sqrt' function must be a number."};
+      }
+
+      double radicand = std::any_cast<double>(arguments[0]);
+      if(radicand < 0){
+        throw BleachRuntimeError{"Argument of the 'std::math::sqrt' function cannot be a negative number."};
+      }
+
+      return std::sqrt(radicand);
+    }
+
+    std::string toString() override{
+      return "<native function: std::math::sqrt>";
+    }
+};
+
 // std::random::random
 class NativeRandom : public BleachCallable{
   public:
@@ -237,33 +266,4 @@ class NativeRandom : public BleachCallable{
     std::string toString() override{
       return "<native function: std::random::random>";
     }  
-};
-
-// std::math::sqrt
-class NativeSquareRoot : public BleachCallable{
-  public:
-    int arity() override{
-      return 1;
-    }
-
-    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      if(arguments.size() != 1){
-        throw BleachRuntimeError{"Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
-      }
-
-      if(arguments[0].type() != typeid(double)){
-        throw BleachRuntimeError{"Argument of the 'std::math::sqrt' function must be a number."};
-      }
-
-      double radicand = std::any_cast<double>(arguments[0]);
-      if(radicand < 0){
-        throw BleachRuntimeError{"Argument of the 'std::math::sqrt' function cannot be a negative number."};
-      }
-
-      return std::sqrt(radicand);
-    }
-
-    std::string toString() override{
-      return "<native function: std::math::sqrt>";
-    }
 };
