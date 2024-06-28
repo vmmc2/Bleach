@@ -21,9 +21,13 @@ std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> ar
     environment->define(functionDeclaration->parameters[i].lexeme, arguments[i]);
   }
 
-  interpreter.executeBlock(functionDeclaration->body, environment); // Execute the statements that are present inside the function. Pay attention to the fact that the current environment of the newly created function is passed as an argument to this method.
+  try{
+    interpreter.executeBlock(functionDeclaration->body, environment); // Execute the statements that are present inside the function. Pay attention to the fact that the current environment of the newly created function is passed as an argument to this method.
+  }catch(BleachReturn returnValue){ // Caught a return value during the execution of the function. Then, it needs to return such value.
+    return returnValue.value;
+  }
 
-  return nullptr;
+  return nullptr; // This here is necessary for the case when a function does not have a "return" statement. By default, all user defined functions in Bleach return nil (C++ nullptr).
 }
 
 std::string BleachFunction::toString(){
