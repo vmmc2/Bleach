@@ -76,7 +76,8 @@ factor → unary ( ( "/" | "*" ) unary )*
 unary → ( "!" | "-" ) unary | call
 call → primary ( "(" arguments? ")" )*
 arguments → expression ( "," expression )*
-primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | IDENTIFIER
+primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaDeclStmt | IDENTIFIER
+lambdaDeclStmt → "lambda" "(" parameters? ")" block
 ```
 
 
@@ -110,6 +111,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
   - [ ] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
 - [x] __Chapter 10: Functions (Review Implementation)__
   - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
+  - [x] Add support for anonymous functions
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
