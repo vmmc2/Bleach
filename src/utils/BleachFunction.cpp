@@ -6,8 +6,8 @@
 #include "./Stmt.hpp"
 
 
-BleachFunction::BleachFunction(std::shared_ptr<Function> functionDeclaration)
-  : functionDeclaration{std::move(functionDeclaration)}
+BleachFunction::BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure)
+  : functionDeclaration{std::move(functionDeclaration)}, closure{std::move(closure)}
 {}
 
 int BleachFunction::arity(){
@@ -15,7 +15,7 @@ int BleachFunction::arity(){
 }
 
 std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> arguments){
-  auto environment = std::make_shared<Environment>(interpreter.globals); // Create an environment (scope) for the function that is about to be executed.
+  auto environment = std::make_shared<Environment>(closure); // Create an environment (scope) for the function that is about to be executed. The function environment has as its parent environment the closure that involves it.
 
   for(int i = 0; i < functionDeclaration->parameters.size(); i++){ // Create the bindings between the parameters of the function and its corresponding arguments, that were passed during the function.
     environment->define(functionDeclaration->parameters[i].lexeme, arguments[i]);
