@@ -2,6 +2,7 @@
 
 #include <any>
 #include <map>
+#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -31,6 +32,11 @@ class Lexer{
     int start = 0; /**< Variable that points to the first/start character of the lexeme that is being consumed (This index is in relation to the 'sourceCode' variable). */
     int current = 0; /**< Variable that points to the character that is the next one to be consumed by the lexer. */
     int line = 1; /**< Variable that holds the information about which line the lexer is currently at with respect to the source code file. It helps the lexer to generate tokens that know their location in the source code file. */
+    std::set<std::string> nativeFunctions = { /** Variable that stores the names of Bleach native functions. */
+      "std::chrono::clock", 
+      "std::io::readLine", "std::io::print", "std::io::fileRead", "std::io::fileWrite",
+      "std::math::abs", "std::math::pow", "std::math::log", "std::math::sqrt", "std::random::random"
+    };
     std::map<std::string, TokenType> keywords = { /** Variable that maps string values of Bleach keywords to its respective TokenType enum values. */
       {"and",           TokenType::AND},
       {"break",         TokenType::BREAK},
@@ -230,7 +236,7 @@ class Lexer{
      * an underscore or a digit between '0' and '9' (inclusive in both sides).
     **/
     bool isAlphaNumeric(char c){
-      return (isDigit(c) || isAlpha(c));
+      return (isDigit(c) || isAlpha(c) || (c == ':'));
     }
 
     /**
@@ -283,7 +289,10 @@ class Lexer{
       std::string lexeme = std::string{sourceCode.substr(start, current - start)};
       if(keywords.find(lexeme) != keywords.end()){
         type = keywords[lexeme];
-      }else{
+      }else if(lexeme.find(":") != std::string::npos && nativeFunctions.find(lexeme) == nativeFunctions.end()){
+        error(line, "Cannot use the ':' character if not in a Bleach native function call.");
+      }
+      else{
         type = TokenType::IDENTIFIER;
       }
       addToken(type);
