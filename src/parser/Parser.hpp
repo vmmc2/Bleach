@@ -35,6 +35,11 @@ class Parser{
     };
     int current = 0; /**< Variable that points to the next token that has not been consumed yet by the parser. */
     const std::vector<Token>& tokens; /**< Variable that represents the sequence of tokens received by the parser from the lexer. Such sequence will be parsed into an AST. */
+    std::set<std::string> nativeFunctions = { /** Variable that stores the names of Bleach native functions. */
+      "std::chrono::clock", 
+      "std::io::readLine", "std::io::print", "std::io::fileRead", "std::io::fileWrite",
+      "std::math::abs", "std::math::pow", "std::math::log", "std::math::sqrt", "std::random::random"
+    };
 
     /**
      * @brief Returns the token that has just been consumed by the parser.
@@ -521,6 +526,10 @@ class Parser{
 
       consume(TokenType::SEMICOLON, "Expected a ';' after a variable declaration statement");
 
+      if(nativeFunctions.find(name.lexeme) != nativeFunctions.end()){
+        error(name, "Cannot use a Bleach native function as a variable name");
+      }
+
       return std::make_shared<Var>(name, initializer);
     }
 
@@ -574,6 +583,9 @@ class Parser{
 
         if(Variable* e = dynamic_cast<Variable*>(expr.get())){ // This cast is what certify us that the right-hand side operand of the assignment expression is, indeed, a 'Variable' expression.
           Token name = e->name;
+          if(nativeFunctions.find(name.lexeme) != nativeFunctions.end()){
+            error(name, "Cannot use a Bleach native function as an assignment target");
+          }
           return std::make_shared<Assign>(std::move(name), value); // This also makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
         }
       
