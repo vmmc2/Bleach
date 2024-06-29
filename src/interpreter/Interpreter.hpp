@@ -371,8 +371,29 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a Function Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Function Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Function Statement node. This variable is of type 
+     * std::shared_ptr<Function>.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the 'visitFunctionStmt' method from the 'StmtVisitor' 
+     * struct.
+     * Moreover, pay attention to the following fact: When the interpreter visits a Function Statement node, it
+     * creates an instance of a "BleachFunction" object and stores it in the current environment. Moreover, since
+     * functions in Bleach must hold on to their parent environment, during the instance creation, the interpreter
+     * assigns the current environment that it currently is at as parent environment of the "BleachFunction" 
+     * instance. However, I think that this is not 100% correct. Because the parent environment is being defined
+     * at runtime, and as we know, the state of an environment can change during runtime. But, this will be
+     * evaluated more carefully later.
+     */
     std::any visitFunctionStmt(std::shared_ptr<Function> stmt) override{
-      auto function = std::make_shared<BleachFunction>(stmt);
+      auto function = std::make_shared<BleachFunction>(stmt, environment);
       environment->define(stmt->name.lexeme, function);
 
       return {};
