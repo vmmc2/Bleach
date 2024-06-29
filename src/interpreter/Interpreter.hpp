@@ -4,6 +4,7 @@
 #include <cmath>
 #include <memory>
 #include <string>
+#include <typeinfo>
 #include <utility>
 #include <vector>
 
@@ -237,16 +238,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
   public:
     Interpreter(){
-      globals->define("std::chrono::clock", std::shared_ptr<NativeClock>{});
-      globals->define("std::io::readLine", std::shared_ptr<NativeReadLine>{});
-      globals->define("std::io::print", std::shared_ptr<NativePrint>{});
-      globals->define("std::io::fileRead", std::shared_ptr<NativeFileRead>{});
-      globals->define("std::io::fileWrite", std::shared_ptr<NativeFileWrite>{});
-      globals->define("std::math::abs", std::shared_ptr<NativeAbsoluteValue>{});
-      globals->define("std::math::pow", std::shared_ptr<NativeExponentiation>{});
-      globals->define("std::math::log", std::shared_ptr<NativeLogarithm>{});
-      globals->define("std::math::sqrt", std::shared_ptr<NativeSquareRoot>{});
-      globals->define("std::random::random", std::shared_ptr<NativeRandom>{});
+      globals->define("std::chrono::clock", std::make_shared<NativeClock>());
+      globals->define("std::io::readLine", std::make_shared<NativeReadLine>());
+      globals->define("std::io::print", std::make_shared<NativePrint>());
+      // globals->define("std::io::fileRead", std::make_shared<NativeFileRead>());
+      // globals->define("std::io::fileWrite", std::make_shared<NativeFileWrite>());
+      globals->define("std::math::abs", std::make_shared<NativeAbsoluteValue>());
+      globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
+      globals->define("std::math::log", std::make_shared<NativeLogarithm>());
+      globals->define("std::math::sqrt", std::make_shared<NativeSquareRoot>());
+      globals->define("std::random::random", std::make_shared<NativeRandom>());
     }
 
     /**
@@ -605,12 +606,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
         function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
+        if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
+          throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
+        }
+      }else if(callee.type() == typeid(std::shared_ptr<NativeClock>)){
+        function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeReadLine>)){
+        function = std::any_cast<std::shared_ptr<NativeReadLine>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativePrint>)){
+        function = std::any_cast<std::shared_ptr<NativePrint>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeFileRead>)){
+        function = std::any_cast<std::shared_ptr<NativeFileRead>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeFileWrite>)){
+        function = std::any_cast<std::shared_ptr<NativeFileWrite>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
+        function = std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeExponentiation>)){
+        function = std::any_cast<std::shared_ptr<NativeExponentiation>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeLogarithm>)){
+        function = std::any_cast<std::shared_ptr<NativeLogarithm>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
+        function = std::any_cast<std::shared_ptr<NativeSquareRoot>>(callee);
+      }else if(callee.type() == typeid(std::shared_ptr<NativeRandom>)){
+        function = std::any_cast<std::shared_ptr<NativeRandom>>(callee);
       }else{
         throw BleachRuntimeError{expr->paren, "Can only call classes, functions and methods."};
-      }
-
-      if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
-        throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
       }
 
       return function->call(*this, std::move(arguments)); // Finally, the interpreter calls the function.
