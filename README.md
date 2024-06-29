@@ -98,7 +98,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 - [x] __Chapter 7: Evaluating Expressions (Review Implementation)__
   - [x] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
   - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand). __This might be overkill for the purpose of the language, right?__
-  - [ ] Make division by ```0``` a runtime error
+  - [x] Make division by ```0``` a runtime error
 - [x] __Chapter 8: Statements and State (Review Implementation)__
 - [x] __Chapter 9: Control Flow (Review Implementation)__
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
@@ -108,8 +108,8 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
   - [ ] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
-- [ ] __Chapter 10: Functions (Review Implementation)__
-  - [ ] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
+- [x] __Chapter 10: Functions (Review Implementation)__
+  - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
