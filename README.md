@@ -113,8 +113,11 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
+
+## Bugs to fix
 - [ ] __MUST FIX THE RUNTIME ERRORS OF THE NATIVE FUNCTIONS.__
 - [ ] __CONSIDER USING THE ```=>``` OR THE ```->``` FOR KEY-VALUE NOTATION IN DICT LITERALS.__
+- [ ] __FIX THE BUG WHERE VARIABLE REDECLARATION INSIDE THE SAME SCOPE IS ALLOWED. IT SHOULD NOT BE.__
 
 
 ## Setup
