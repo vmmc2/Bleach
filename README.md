@@ -113,6 +113,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | ID
 - [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
+- [ ] __MUST FIX THE RUNTIME ERRORS OF THE NATIVE FUNCTIONS.__
 
 
 ## Setup
