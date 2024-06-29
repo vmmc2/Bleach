@@ -32,6 +32,10 @@
  * be reported to the user.
 **/
 class Interpreter : public ExprVisitor, public StmtVisitor{
+  friend class BleachFunction;
+
+  public:
+    std::shared_ptr<Environment> globals{new Environment}; /**< Variable that always points to the outermost global environment (global scope). */
   private:
     std::shared_ptr<Environment> environment = globals; /**< Variable that tracks the current environment of the interpreter instance. Its value changes during execution as the interpreter enters and exits local scopes. */
 
@@ -232,8 +236,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
   public:
-    std::shared_ptr<Environment> globals{new Environment}; /**< Variable that always points to the outermost global environment (global scope). */
-
     Interpreter(){
       globals->define("std::chrono::clock", std::shared_ptr<NativeClock>{});
       globals->define("std::io::readLine", std::shared_ptr<NativeReadLine>{});
