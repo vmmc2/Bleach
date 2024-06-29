@@ -40,7 +40,7 @@ class NativeClock : public BleachCallable{
 class NativeReadLine : public BleachCallable{
   public:
     int arity() override{
-      return 1;
+      return 0;
     }
 
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
