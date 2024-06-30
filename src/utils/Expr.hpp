@@ -13,11 +13,14 @@ struct Assign;
 struct Binary;
 struct Call;
 struct Grouping;
+struct LambdaFunction;
 struct Literal;
 struct Logical;
 struct Ternary;
 struct Unary;
 struct Variable;
+
+struct Stmt;
 
 /**
  * @struct ExprVisitor
@@ -38,6 +41,7 @@ struct ExprVisitor{
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
   virtual std::any visitCallExpr(std::shared_ptr<Call> expr) = 0;
   virtual std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) = 0;
+  virtual std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
   virtual std::any visitLogicalExpr(std::shared_ptr<Logical> expr) = 0;
   virtual std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) = 0;
@@ -178,6 +182,19 @@ struct Grouping : Expr, public std::enable_shared_from_this<Grouping>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitGroupingExpr(shared_from_this());
+  }
+};
+
+struct LambdaFunction : Expr, public std::enable_shared_from_this<LambdaFunction>{
+  const std::vector<Token> parameters;
+  const std::vector<std::shared_ptr<Stmt>> body;
+
+  LambdaFunction(std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body)
+    : parameters{std::move(parameters)}, body{std::move(body)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitLambdaFunctionExpr(shared_from_this());
   }
 };
 
