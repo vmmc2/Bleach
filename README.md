@@ -89,6 +89,7 @@ lambdaFunctionExpr → "lambda" "(" parameters? ")" block
   * __Arithmetic__
   * __A little control-flow (what does "little" even mean in this context?)__
   * __The ability to allocate arbitrary amounts of memory__
+* __What is the formal and precise definition of scope in the programming language field? The author, Bob Nystrom, says, in chapter 11, that scope is a set of declarations. Therefore, if two sets don't have the same declarations, then they are not the same scope. Is this correct?__
 
 
 ## Roadmap
