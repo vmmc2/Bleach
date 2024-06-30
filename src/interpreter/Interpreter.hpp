@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "../utils/BleachCallable.hpp"
+#include "../utils/BleachLambdaFunction.hpp"
 #include "../utils/BleachFunction.hpp"
 #include "../utils/BleachReturn.hpp"
 #include "../error/BleachRuntimeError.hpp"
@@ -630,6 +631,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
           throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
         }
+      }else if(callee.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
+        function = std::any_cast<std::shared_ptr<BleachLambdaFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
+        if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
+          throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
+        }
       }else if(callee.type() == typeid(std::shared_ptr<NativeClock>)){
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
       }else if(callee.type() == typeid(std::shared_ptr<NativeReadLine>)){
@@ -674,6 +680,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      */
     std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) override{
       return evaluate(expr->expression);
+    }
+
+    std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
+      return std::make_shared<BleachLambdaFunction>(expr, environment);
     }
 
     /**
