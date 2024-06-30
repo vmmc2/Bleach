@@ -1,0 +1,10 @@
+let a = "global";
+{
+  function showA() {
+    print a;
+  }
+  
+  showA();
+  let a = "block";
+  showA();
+}
