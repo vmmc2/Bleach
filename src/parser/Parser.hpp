@@ -825,8 +825,31 @@ class Parser{
         consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression");
         return std::make_shared<Grouping>(expr);
       }
+      if(match(TokenType::LAMBDA)){
+        return lambdaExpression();
+      }
 
       throw error(peek(), "Expected an expression");
+    }
+
+    std::shared_ptr<Expr> lambdaExpression(){
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'lambda' keyword");
+
+      std::vector<Token> parameters;
+      if(!check(TokenType::RIGHT_PAREN)){
+        do{
+          if(parameters.size() >= 255){
+            error(peek(), "An anonymous function can't have more than 255 parameters.");
+          }
+          parameters.push_back(consume(TokenType::IDENTIFIER, "Expected a parameter name inside an anonymous function parameter's list"));
+        }while(match(TokenType::COMMA));
+      }
+      consume(TokenType::RIGHT_PAREN, "Expected a ')' after the parameter's list of an anonymous function");
+
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of an anonymous function.");
+      std::vector<std::shared_ptr<Stmt>> body = block();
+
+      return std::make_shared<LambdaFunction>(parameters, body);
     }
 
   public:
