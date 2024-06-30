@@ -76,8 +76,8 @@ factor → unary ( ( "/" | "*" ) unary )*
 unary → ( "!" | "-" ) unary | call
 call → primary ( "(" arguments? ")" )*
 arguments → expression ( "," expression )*
-primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaDeclStmt | IDENTIFIER
-lambdaDeclStmt → "lambda" "(" parameters? ")" block
+primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER
+lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 ```
 
 
