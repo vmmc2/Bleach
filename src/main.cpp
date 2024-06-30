@@ -12,6 +12,7 @@
 
 // It's not good practice to include .cpp files, but in our case it allows us to lay out the files similarly to
 // the Java code while avoiding circular dependencies.
+#include "./utils/BleachLambdaFunction.cpp"
 #include "./utils/BleachFunction.cpp"
 
 Interpreter interpreter{}; /* Variable that represents the instance of the BLEACH Interpreter. This variable must be declared as global because, so sucessful calls to the 'run' function inside a REPL session reuse the same Interpreter instance. Remember that things must persist through a REPL session. */
@@ -33,7 +34,7 @@ Interpreter interpreter{}; /* Variable that represents the instance of the BLEAC
 **/
 std::string readFile(std::string_view filePath){
   std::filesystem::path path{filePath};
-  if(path.extension() != ".bah"){
+  if(path.extension() != ".bch"){
     std::cerr << RED << "[BLEACH Interpreter Error]: Cannot execute the provided file because it's not a Bleach file: '" << filePath << "'. " << WHITE << std::endl;
     std::exit(74); 
   }
