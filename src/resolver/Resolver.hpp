@@ -12,6 +12,27 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     Interpreter& interpreter;
     std::vector<std::map<std::string, bool>> scopes;
 
+    void declare(const Token& name){
+      if(scopes.empty()){
+        return;
+      }
+
+      std::map<std::string, bool>& scope = scopes.back();
+      scope[name.lexeme] = false;
+
+      return;
+    }
+
+    void define(const Token& name){
+      if(scopes.empty()){
+        return;
+      }
+
+      scopes.back()[name.lexeme] = true;
+
+      return;
+    }
+
     void beginScope(){
       scopes.push_back(std::map<std::string, bool>{});
 
@@ -138,6 +159,11 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitVarStmt(std::shared_ptr<Var> stmt) override{
+      declare(stmt->name);
+      if(stmt->initializer != nullptr){ // If a value is assigned to the variable in its declaration.
+        resolve(stmt->initializer);
+      }
+      define(stmt->name);
 
       return {};
     }
