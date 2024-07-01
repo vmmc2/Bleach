@@ -20,7 +20,7 @@ struct Ternary;
 struct Unary;
 struct Variable;
 
-struct Stmt;
+struct Stmt; // Forward declaration needed to avoid circular dependencies.
 
 /**
  * @struct ExprVisitor
