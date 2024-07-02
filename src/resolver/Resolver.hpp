@@ -98,7 +98,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       resolve(expr->value); // First, the resolver needs to resolve the r-value of the assignment expression.
-      resolveLocal(expr, expr->name); // Then, the resolver resolves the l-value of the assignment expression.
+      resolveLocal(expr, expr->name); // Then, the resolver resolves the l-value of the assignment expression. This is used to figure out to which variable the l-value is referring to.
 
       return {};
     }
