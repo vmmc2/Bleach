@@ -166,6 +166,8 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
+      resolve(stmt->body);
+      resolve(stmt->condition);
 
       return {};
     }
@@ -189,7 +191,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       resolve(stmt->ifCondition);
       resolve(stmt->ifBranch);
 
-      if(stmt->elifBranches.size() != 0){
+      if(stmt->elifConditions.size() != 0){
         for(int i = 0; i < stmt->elifConditions.size(); i++){
           resolve(stmt->elifConditions[i]);
           resolve(stmt->elifBranches[i]);
@@ -204,11 +206,15 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitPrintStmt(std::shared_ptr<Print> stmt) override{
+      resolve(stmt->expression);
 
       return {};
     }
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
+      if(stmt->value != nullptr){
+        resolve(stmt->value);
+      }
 
       return {};
     }
@@ -224,6 +230,8 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
+      resolve(stmt->condition);
+      resolve(stmt->body);
 
       return {};
     }
