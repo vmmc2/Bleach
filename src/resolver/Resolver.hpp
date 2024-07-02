@@ -127,6 +127,15 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
+      beginScope();
+
+      for(int i = 0; i < expr->parameters.size(); i++){
+        declare(expr->parameters[i]);
+        define(expr->parameters[i]);
+      }
+      resolve(expr->body);
+      
+      endScope();
 
       return {};
     }
@@ -143,6 +152,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
+      resolve(expr->condition);
+      resolve(expr->ifBranch);
+      resolve(expr->elseBranch);
 
       return {};
     }
