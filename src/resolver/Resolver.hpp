@@ -57,6 +57,28 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return;
     }
 
+    void resolve(const std::vector<std::shared_ptr<Stmt>>& statements){
+      for(const std::shared_ptr<Stmt>& statement : statements){
+        resolve(statement);
+      }
+
+      return;
+    }
+
+    void resolveFunction(std::shared_ptr<Function> function){
+      beginScope();
+      
+      for(const Token& parameter : function->parameters){
+        declare(parameter);
+        define(parameter);
+      }
+      resolve(function->body);
+
+      endScope();
+
+      return;
+    }
+
     void resolveLocal(std::shared_ptr<Expr> expr, const Token& name){
       for(int i = scopes.size() - 1; i >= 0; i--){
         if(scopes[i].find(name.lexeme) != scopes[i].end()){
@@ -73,14 +95,6 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     Resolver(Interpreter& interpreter)
       : interpreter{interpreter}
     {}
-
-    void resolve(const std::vector<std::shared_ptr<Stmt>>& statements){
-      for(const std::shared_ptr<Stmt>& statement : statements){
-        resolve(statement);
-      }
-
-      return;
-    }
 
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
 
@@ -160,6 +174,10 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitFunctionStmt(std::shared_ptr<Function> stmt) override{
+      declare(stmt->name);
+      define(stmt->name);
+
+      resolveFunction(stmt);
 
       return {};
     }
@@ -181,8 +199,8 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitVarStmt(std::shared_ptr<Var> stmt) override{
       declare(stmt->name); // First, a variable is declared. (Its associated value in the scope is false).
-      if(stmt->initializer != nullptr){ // If a value is assigned to the variable in its declaration.
-        resolve(stmt->initializer); // We then need to resolve the initializer expression. However, it might be possible that the initializer refers to a variable that has the same name as the variable being declared.
+      if(stmt->initializer != nullptr){ // If an expression is assigned to the variable in its declaration, then it needs to be resolved.
+        resolve(stmt->initializer); // We then need to resolve the initializer expression. However, it might be possible that the initializer refers to a variable that has the same name as the variable being declared. If that's the case, an error is reported since this is not allowed.
       }
       define(stmt->name); // After declaring the variable, resolving its possible initializer, we can define it (Its associated value in the scope is now true).
 
