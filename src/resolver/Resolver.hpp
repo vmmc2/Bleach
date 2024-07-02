@@ -171,6 +171,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) override{
+      resolve(stmt->expression);
 
       return {};
     }
@@ -185,6 +186,19 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitIfStmt(std::shared_ptr<If> stmt) override{
+      resolve(stmt->ifCondition);
+      resolve(stmt->ifBranch);
+
+      if(stmt->elifBranches.size() != 0){
+        for(int i = 0; i < stmt->elifConditions.size(); i++){
+          resolve(stmt->elifConditions[i]);
+          resolve(stmt->elifBranches[i]);
+        }
+      }
+
+      if(stmt->elseBranch != nullptr){
+        resolve(stmt->elseBranch);
+      }
 
       return {};
     }
