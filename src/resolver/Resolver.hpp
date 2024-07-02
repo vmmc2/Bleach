@@ -104,16 +104,24 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitBinaryExpr(std::shared_ptr<Binary> expr) override{
+      resolve(expr->left);
+      resolve(expr->right);
 
       return {};
     }
 
     std::any visitCallExpr(std::shared_ptr<Call> expr) override{
+      resolve(expr->callee);
+
+      for(int i = 0; i < expr->arguments.size(); i++){
+        resolve(expr->arguments[i]);
+      }
 
       return {};
     }
 
     std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) override{
+      resolve(expr->expression);
 
       return {};
     }
@@ -124,11 +132,12 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitLiteralExpr(std::shared_ptr<Literal> expr) override{
-
       return {};
     }
 
     std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
+      resolve(expr->left);
+      resolve(expr->right);
 
       return {};
     }
@@ -139,6 +148,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitUnaryExpr(std::shared_ptr<Unary> expr) override{
+      resolve(expr->right);
 
       return {};
     }
