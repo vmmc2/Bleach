@@ -40,6 +40,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     std::shared_ptr<Environment> globals{new Environment}; /**< Variable that always points to the outermost global environment (global scope). */
   private:
     std::shared_ptr<Environment> environment = globals; /**< Variable that tracks the current environment of the interpreter instance. Its value changes during execution as the interpreter enters and exits local scopes. */
+    std::map<std::shared_ptr<Expr>, int> locals; /**< Variable that holds information about how many environments must be traveled between the current one and the enclosing one where the interpreter can find the variable's value. */
 
     /**
      * @brief Checks whether the provided operand of the unary operator ("-") is a value of type double. 
@@ -271,6 +272,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }catch(BleachRuntimeError error){
         runtimeError(error);
       }
+
+      return;
+    }
+
+    void resolve(std::shared_ptr<Expr> expr, int depth){
+      locals[expr] = depth;
 
       return;
     }
