@@ -113,7 +113,7 @@ lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 - [x] __Chapter 10: Functions (Review Implementation)__
   - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
   - [x] Add support for anonymous functions
-- [ ] __Chapter 11: Resolving and Binding (Review Implementation)__
+- [x] __Chapter 11: Resolving and Binding (Review Implementation)__
 - [ ] __Chapter 12: Classes (Review Implementation)__
 - [ ] __Chapter 13: Inheritance (Review Implementation)__
 
