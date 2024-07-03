@@ -9,8 +9,19 @@
 
 class Resolver : public ExprVisitor, public StmtVisitor{
   private:
+    enum class FunctionType{
+      NONE,
+      FUNCTION,
+    };
+    enum class InsideLoop{
+      NO,
+      YES
+    };
+
     Interpreter& interpreter;
     std::vector<std::map<std::string, bool>> scopes;
+    FunctionType currentFunction = FunctionType::NONE;
+    InsideLoop insideALoop = InsideLoop::NO;
 
     void declare(const Token& name){
       if(scopes.empty()){
@@ -18,6 +29,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       }
 
       std::map<std::string, bool>& scope = scopes.back();
+      if(scope.find(name.lexeme) != scope.end()){ // This means that a variable is being redeclared inside a local scope, which is not allowed. In such scenario, an error must be reported by the resolver.
+        error(name, "A variable cannot be redeclared inside the same local scope.");
+      }
       scope[name.lexeme] = false;
 
       return;
@@ -57,15 +71,10 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return;
     }
 
-    void resolve(const std::vector<std::shared_ptr<Stmt>>& statements){
-      for(const std::shared_ptr<Stmt>& statement : statements){
-        resolve(statement);
-      }
+    void resolveFunction(std::shared_ptr<Function> function, FunctionType functionType){
+      FunctionType enclosingFunction = currentFunction;
+      currentFunction = functionType;
 
-      return;
-    }
-
-    void resolveFunction(std::shared_ptr<Function> function){
       beginScope();
       
       for(const Token& parameter : function->parameters){
@@ -75,6 +84,8 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       resolve(function->body);
 
       endScope();
+
+      currentFunction = enclosingFunction;
 
       return;
     }
@@ -95,6 +106,14 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     Resolver(Interpreter& interpreter)
       : interpreter{interpreter}
     {}
+
+    void resolve(const std::vector<std::shared_ptr<Stmt>>& statements){
+      for(const std::shared_ptr<Stmt>& statement : statements){
+        resolve(statement);
+      }
+
+      return;
+    }
 
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       resolve(expr->value); // First, the resolver needs to resolve the r-value of the assignment expression.
@@ -134,7 +153,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
         define(expr->parameters[i]);
       }
       resolve(expr->body);
-      
+
       endScope();
 
       return {};
@@ -204,7 +223,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       declare(stmt->name);
       define(stmt->name);
 
-      resolveFunction(stmt);
+      resolveFunction(stmt, FunctionType::FUNCTION);
 
       return {};
     }
@@ -234,6 +253,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
+      if(currentFunction == FunctionType::NONE){
+        error(stmt->keyword, "Cannot use the 'return' keyword outside a function or method.");
+      }
       if(stmt->value != nullptr){
         resolve(stmt->value);
       }
