@@ -92,6 +92,18 @@ struct Block : Stmt, public std::enable_shared_from_this<Block>{
   }
 };
 
+struct Break : Stmt, public std::enable_shared_from_this<Break>{
+
+};
+
+struct Class : Stmt, public std::enable_shared_from_this<Class>{
+
+};
+
+struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
+
+};
+
 /**
  * @struct DoWhile
  * 
