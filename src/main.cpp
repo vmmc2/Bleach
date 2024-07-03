@@ -9,6 +9,7 @@
 #include "interpreter/Interpreter.hpp"
 #include "lexer/Lexer.hpp"
 #include "parser/Parser.hpp"
+#include "resolver/Resolver.hpp"
 
 // It's not good practice to include .cpp files, but in our case it allows us to lay out the files similarly to
 // the Java code while avoiding circular dependencies.
@@ -88,7 +89,15 @@ void run(std::string_view sourceCode){
     return;
   }
 
-  /* Third Step: Interpret */
+  /* Third Step: Resolving */
+  Resolver resolver{interpreter};
+  resolver.resolve(statements);
+
+  if(hadError){
+    return;
+  }
+
+  /* Fourth Step: Interpreting */
   interpreter.interpret(statements);
 
   return;
