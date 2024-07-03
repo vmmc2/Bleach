@@ -193,6 +193,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return true;
     }
 
+    std::any lookUpVariable(const Token& name, std::shared_ptr<Expr> expr){
+      auto elem = locals.find(expr);
+      if(elem != locals.end()){ // If the Variable expression has been found here, then it means that it is a local variable.
+        int distance = elem->second;
+        return environment->getAt(name.lexeme, distance);
+      }else{ // Otherwise, it is assumed that the variable was declared in the global scope.
+        return globals->get(name); // Global variable are treated in a special way. If a global variable is not found, the a runtime error is thrown by the BLEACH Interpreter.
+      }
+    }
+
     /**
      * @brief Produces a string that represents the value present in the provided Bleach object. 
      *
@@ -547,7 +557,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      */
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       std::any value = evaluate(expr->value);
-      environment->assign(expr->name, value);
+
+      auto elem = locals.find(expr);
+      if(elem != locals.end()){
+        int distance = elem->second;
+        environment->assignAt(expr->name, value, distance);
+      }else{
+        globals->assign(expr->name, value);
+      }
 
       return value;
     }
@@ -814,6 +831,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitVariableExpr(std::shared_ptr<Variable> expr) override{
-      return environment->get(expr->name);
+      return lookUpVariable(expr->name, expr);
     }
 };
