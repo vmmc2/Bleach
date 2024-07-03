@@ -1,12 +1,13 @@
 #pragma once
 
 #include <any>
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
 #include <utility>
 
-#include "../error/BleachRuntimeError.hpp"
+#include "../error/Error.hpp"
 #include "./Token.hpp"
 
 
@@ -25,8 +26,10 @@
  * that, we use the "lexeme" attribute of the "Token" class. By doing so, we make sure that different tokens
  * with the same lexeme point to the same value, if, and only if, such tokens are in the same scope.
 **/
-class Environment{
+class Environment : public std::enable_shared_from_this<Environment>{
   private:
+    friend class Interpreter;
+
     std::map<std::string,std::any> values; /**< Variable that stores the bindings between variables' names and their associated values. */
     std::shared_ptr<Environment> enclosing; /**< Variable that points to its enclosing environment (the "parent" environment of this environment). */
 
@@ -54,6 +57,15 @@ class Environment{
     Environment(std::shared_ptr<Environment> enclosing)
       : enclosing{std::move(enclosing)}
     {}
+
+    std::shared_ptr<Environment> ancestor(int distance){
+      std::shared_ptr<Environment> environment = shared_from_this();
+      for(int i = 0; i < distance; i++){
+        environment = environment->enclosing;
+      }
+
+      return environment;
+    }
 
     /**
      * @brief Assigns the received value to the variable which the lexeme of the received token refers to. 
@@ -89,6 +101,12 @@ class Environment{
       }
 
       throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};
+    }
+
+    void assignAt(const Token& name, std::any value, int distance){
+      ancestor(distance)->values[name.lexeme] = std::move(value);
+
+      return;
     }
 
     /**
@@ -142,5 +160,9 @@ class Environment{
       }
 
       throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};
+    }
+
+    std::any getAt(const std::string&name, int distance){
+      return ancestor(distance)->values[name];
     }
 };
