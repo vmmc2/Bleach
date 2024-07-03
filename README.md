@@ -49,8 +49,13 @@
 ## Current State of the Bleach Language Context-Free Grammar
 ```txt
 program → statement* EOF
-statement → block | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
+statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
+break → "break" ";"
+classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
+continueStmt → "continue" ";"
+methodDeclStmt → "method" method
+method → IDENTIFIER "(" parameters? ")" block
 doWhileStmt → "do" statement "while" "(" expression ")" ";"
 exprStmt → expression ";"
 forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement
