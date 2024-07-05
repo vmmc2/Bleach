@@ -10,6 +10,9 @@
 
 // Necessary forward declarations of certain structs so they can be used inside the 'StmtVisitor' struct below.
 struct Block;
+struct Break;
+struct Class; // Represents a class declaration statement.
+struct Continue;
 struct DoWhile;
 struct Expression; // Expression statement (Used in function and method calls).
 struct Function; // Function statement (Used in function declarations).
@@ -35,6 +38,9 @@ struct While;
  */
 struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
+  virtual std::any visitBreakStmt(std::shared_ptr<Break> stmt) = 0;
+  virtual std::any visitClassStmt(std::shared_ptr<Class> stmt) = 0;
+  virtual std::any visitContinueStmt(std::shared_ptr<Continue> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
   virtual std::any visitFunctionStmt(std::shared_ptr<Function> stmt) = 0;
@@ -93,7 +99,15 @@ struct Block : Stmt, public std::enable_shared_from_this<Block>{
 };
 
 struct Break : Stmt, public std::enable_shared_from_this<Break>{
+  const Token keyword;
 
+  Break(Token keyword)
+    : keyword{std::move(keyword)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitBreakStmt(shared_from_this());
+  }
 };
 
 struct Class : Stmt, public std::enable_shared_from_this<Class>{
@@ -101,7 +115,15 @@ struct Class : Stmt, public std::enable_shared_from_this<Class>{
 };
 
 struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
+  const Token keyword;
 
+  Continue(Token keyword)
+    : keyword{std::move(keyword)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitContinueStmt(shared_from_this());
+  }
 };
 
 /**
