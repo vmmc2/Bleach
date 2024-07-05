@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <memory>
+#include <set>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -307,11 +308,15 @@ class Parser{
     std::shared_ptr<Stmt> breakStatement(){
       Token keyword = previous();
 
+      consume(TokenType::SEMICOLON, "Expected a ';' after a 'break' statement");
+
       return std::make_shared<Break>(keyword);
     }
 
     std::shared_ptr<Stmt> continueStatement(){
       Token keyword = previous();
+
+      consume(TokenType::SEMICOLON, "Expected a ';' after a 'continue' statement");
 
       return std::make_shared<Continue>(keyword);
     }
