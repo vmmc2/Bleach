@@ -242,6 +242,12 @@ class Parser{
     **/
     std::shared_ptr<Stmt> statement(){
       try{
+        if(match(TokenType::BREAK)){
+          return breakStatement();
+        }
+        if(match(TokenType::CONTINUE)){
+          return continueStatement();
+        }
         if(match(TokenType::DO)){
           return doWhileStatement();
         }
@@ -296,6 +302,18 @@ class Parser{
       consume(TokenType::RIGHT_BRACE, "Expected a '}' after a block"); // After the last statement of a block, the next expected token is '}'. If that's not the case, then the parser has found a parsing error (syntax error).
 
       return statements;
+    }
+
+    std::shared_ptr<Stmt> breakStatement(){
+      Token keyword = previous();
+
+      return std::make_shared<Break>(keyword);
+    }
+
+    std::shared_ptr<Stmt> continueStatement(){
+      Token keyword = previous();
+
+      return std::make_shared<Continue>(keyword);
     }
 
     /**
