@@ -14,14 +14,14 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       FUNCTION,
     };
     enum class InsideLoop{
-      NO,
-      YES
+      NO_LOOP,
+      INSIDE_LOOP
     };
 
     Interpreter& interpreter;
     std::vector<std::map<std::string, bool>> scopes;
     FunctionType currentFunction = FunctionType::NONE;
-    InsideLoop insideALoop = InsideLoop::NO;
+    InsideLoop currentLoop = InsideLoop::NO_LOOP;
 
     void declare(const Token& name){
       if(scopes.empty()){
@@ -206,6 +206,22 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitBreakStmt(std::shared_ptr<Break> stmt) override{
+      if(currentLoop == InsideLoop::NO_LOOP){
+        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop.");
+      }      
+
+      return {};
+    }
+
+    std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
+      if(currentLoop == InsideLoop::NO_LOOP){
+        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop.");
+      } 
+
+      return {};
+    }
+
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
       resolve(stmt->body);
       resolve(stmt->condition);
@@ -254,7 +270,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       if(currentFunction == FunctionType::NONE){
-        error(stmt->keyword, "Cannot use the 'return' keyword outside a function or method.");
+        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function or method.");
       }
       if(stmt->value != nullptr){
         resolve(stmt->value);
@@ -274,8 +290,14 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
+      InsideLoop enclosingLoop = currentLoop;
+
+      currentLoop = InsideLoop::INSIDE_LOOP;
+
       resolve(stmt->condition);
       resolve(stmt->body);
+
+      currentLoop = enclosingLoop;
 
       return {};
     }
