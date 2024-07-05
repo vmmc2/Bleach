@@ -39,7 +39,7 @@ struct While;
 struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitBreakStmt(std::shared_ptr<Break> stmt) = 0;
-  virtual std::any visitClassStmt(std::shared_ptr<Class> stmt) = 0;
+  //virtual std::any visitClassStmt(std::shared_ptr<Class> stmt) = 0;
   virtual std::any visitContinueStmt(std::shared_ptr<Continue> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
@@ -65,6 +65,7 @@ struct StmtVisitor{
  */
 struct Stmt{
   virtual std::any accept(StmtVisitor& visitor) = 0;
+  virtual std::string toString() = 0;
 };
 
 /**
@@ -96,6 +97,10 @@ struct Block : Stmt, public std::enable_shared_from_this<Block>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitBlockStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "block statement";
+  }
 };
 
 struct Break : Stmt, public std::enable_shared_from_this<Break>{
@@ -108,11 +113,15 @@ struct Break : Stmt, public std::enable_shared_from_this<Break>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitBreakStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "break statement";
+  }
 };
 
-struct Class : Stmt, public std::enable_shared_from_this<Class>{
+// struct Class : Stmt, public std::enable_shared_from_this<Class>{
 
-};
+// };
 
 struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
   const Token keyword;
@@ -123,6 +132,10 @@ struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitContinueStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "continue statement";
   }
 };
 
@@ -167,6 +180,10 @@ struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitDoWhileStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "do-while statement";
+  }
 };
 
 /**
@@ -201,6 +218,10 @@ struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitExpressionStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "expression statement";
+  }
 };
 
 struct Function : Stmt, public std::enable_shared_from_this<Function>{
@@ -214,6 +235,10 @@ struct Function : Stmt, public std::enable_shared_from_this<Function>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitFunctionStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "function statement";
   }
 };
 
@@ -271,6 +296,10 @@ struct If : Stmt, public std::enable_shared_from_this<If>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitIfStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "if statement";
+  }
 };
 
 /**
@@ -300,6 +329,10 @@ struct Print : Stmt, public std::enable_shared_from_this<Print>{
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitPrintStmt(shared_from_this());
   }
+
+  std::string toString() override{
+    return "print statement";
+  }
 };
 
 struct Return : Stmt, public std::enable_shared_from_this<Return>{
@@ -312,6 +345,10 @@ struct Return : Stmt, public std::enable_shared_from_this<Return>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitReturnStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "return statement";
   }
 };
 
@@ -347,6 +384,10 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitVarStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "variable declaration statement";
   }
 };
 
@@ -384,5 +425,9 @@ struct While : Stmt, public std::enable_shared_from_this<While>{
 
   std::any accept(StmtVisitor& visitor) override{
     return visitor.visitWhileStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "while statement";
   }
 };
