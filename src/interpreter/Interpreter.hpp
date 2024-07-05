@@ -8,7 +8,9 @@
 #include <utility>
 #include <vector>
 
+#include "../utils/BleachBreak.hpp"
 #include "../utils/BleachCallable.hpp"
+#include "../utils/BleachContinue.hpp"
 #include "../utils/BleachLambdaFunction.hpp"
 #include "../utils/BleachFunction.hpp"
 #include "../utils/BleachReturn.hpp"
@@ -347,6 +349,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitBreakStmt(std::shared_ptr<Break> stmt) override{
+      throw BleachBreak{};
+    }
+
+    std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
+      throw BleachContinue{};
+    }
+
     /**
      * @brief Visits a DoWhile Statement node of the Bleach AST and performs the associated actions. 
      *
@@ -362,9 +372,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
-      do{
-        execute(stmt->body);
-      }while(isTruthy(evaluate(stmt->condition)));
+      try{
+        do{
+          execute(stmt->body);
+        }while(isTruthy(evaluate(stmt->condition)));
+      }catch(BleachBreak){
+        // Do nothing. Just break out of the loop.
+      }
 
       return {};
     }
@@ -535,8 +549,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @note This method is an overridden version of the 'visitWhileStmt' method from the 'StmtVisitor' struct.
      */
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
-      while(isTruthy(evaluate(stmt->condition))){
-        execute(stmt->body);
+      try{
+        while(isTruthy(evaluate(stmt->condition))){
+          execute(stmt->body);
+        }
+      }catch(BleachBreak){
+        // Do nothing. Just break out of the loop.
       }
 
       return {};
