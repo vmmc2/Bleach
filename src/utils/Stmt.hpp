@@ -11,7 +11,7 @@
 // Necessary forward declarations of certain structs so they can be used inside the 'StmtVisitor' struct below.
 struct Block;
 struct Break;
-struct Class; // Represents a class declaration statement.
+struct Class; // Class declaration statement.
 struct Continue;
 struct DoWhile;
 struct Expression; // Expression statement (Used in function and method calls).
