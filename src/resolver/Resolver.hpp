@@ -208,7 +208,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitBreakStmt(std::shared_ptr<Break> stmt) override{
       if(currentLoop == InsideLoop::NO_LOOP){
-        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop.");
+        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop");
       }      
 
       return {};
@@ -216,21 +216,46 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
       if(currentLoop == InsideLoop::NO_LOOP){
-        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop.");
+        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop");
       } 
 
       return {};
     }
 
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
+      InsideLoop enclosingLoop = currentLoop;
+
+      currentLoop = InsideLoop::INSIDE_LOOP;
+
+      beginScope();
       resolve(stmt->body);
       resolve(stmt->condition);
+      endScope();
+
+      currentLoop = enclosingLoop;
 
       return {};
     }
 
     std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) override{
       resolve(stmt->expression);
+
+      return {};
+    }
+
+    std::any visitForStmt(std::shared_ptr<For> stmt) override{
+      InsideLoop enclosingLoop = currentLoop;
+
+      currentLoop = InsideLoop::INSIDE_LOOP;
+
+      beginScope();
+      resolve(stmt->initializer);
+      resolve(stmt->condition);
+      resolve(stmt->body);
+      resolve(stmt->increment);
+      endScope();
+
+      currentLoop = enclosingLoop;
 
       return {};
     }
@@ -270,7 +295,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       if(currentFunction == FunctionType::NONE){
-        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function or method.");
+        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function or method");
       }
       if(stmt->value != nullptr){
         resolve(stmt->value);
@@ -294,8 +319,10 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
       currentLoop = InsideLoop::INSIDE_LOOP;
 
+      beginScope();
       resolve(stmt->condition);
       resolve(stmt->body);
+      endScope();
 
       currentLoop = enclosingLoop;
 
