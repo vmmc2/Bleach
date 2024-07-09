@@ -331,7 +331,8 @@ class Parser{
      * this rule.
     **/
     std::shared_ptr<Stmt> doWhileStatement(){
-      std::shared_ptr<Stmt> body = statement();
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of a 'do-while' loop.");
+      std::vector<std::shared_ptr<Stmt>> body = block();
 
       consume(TokenType::WHILE, "Expected the 'while' keyword after the body of the 'do-while' statement");
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
@@ -376,35 +377,11 @@ class Parser{
       }
       consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'for' clauses");
 
-      std::shared_ptr<Stmt> body = statement();
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of a 'for' loop.");
 
-      // We construct the Bleach language AST node that represents the For statement node by using already
-      // existing Bleach language AST nodes. In particular, we use the Block statement node, the Expression
-      // statement node and the While statemente node.
-      if(increment != nullptr){
-        body = std::make_shared<Block>(
-          std::vector<std::shared_ptr<Stmt>>{
-            body,
-            std::make_shared<Expression>(increment) // Pay attention to the fact that we use the "Expression" type (Expression Statement) instead of the "Expr" type.
-          }
-        );
-      }
+      std::vector<std::shared_ptr<Stmt>> body = block();
 
-      if(condition == nullptr){ // Remember, if the "for" loop does not have a condition, then it works like a "while(true){ ... }" loop.
-        condition = std::make_shared<Literal>(true); 
-      }
-      body = std::make_shared<While>(condition, body);
-
-      if(initializer != nullptr){ // If there is an initializer (a varDeclStmt or a expressionStmt), then we have to wrap the "while" look in a block. By doing so, the variable declaration statement or expression statement will be executed before the while loop is executed.
-        body = std::make_shared<Block>(
-          std::vector<std::shared_ptr<Stmt>>{
-            initializer,
-            body
-          }
-        );
-      }
-
-      return body;
+      return std::make_shared<For>(initializer, condition, increment, body);
     }
 
     /**
@@ -570,7 +547,9 @@ class Parser{
       std::shared_ptr<Expr> condition = expression();
       consume(TokenType::RIGHT_PAREN, "Expected a ')' after the 'while' condition");
 
-      std::shared_ptr<Stmt> body = statement(); // The body of a while statement can be any kind of statement.
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of a 'while' loop.");
+
+      std::vector<std::shared_ptr<Stmt>> body = block(); // The body of a while statement can only be a block.
 
       return std::make_shared<While>(condition, body);
     }
