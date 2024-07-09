@@ -47,18 +47,19 @@
 
 
 ## Current State of the Bleach Language Context-Free Grammar
+* __Now loops (```for```, ```do-while```, ```while```) must be followed by a block.__
 ```txt
 program → statement* EOF
 statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
-break → "break" ";"
-classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
+breakStmt → "break" ";"
 continueStmt → "continue" ";"
+classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
 methodDeclStmt → "method" method
 method → IDENTIFIER "(" parameters? ")" block
-doWhileStmt → "do" statement "while" "(" expression ")" ";"
+doWhileStmt → "do" block "while" "(" expression ")" ";"
 exprStmt → expression ";"
-forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" statement
+forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" block
 funcDeclStmt → "function" function
 function → IDENTIFIER "(" parameters? ")" block
 parameters → IDENTIFIER ( "," IDENTIFIER )*
@@ -68,7 +69,7 @@ ifStmt → "if" "(" expression ")" statement
 printStmt → "print" expression ";"
 returnStmt → "return" expression? ";"
 varDeclStmt → "let" IDENTIFIER ( "=" expression )? ";"
-whileStmt → "while" "(" expression ")" statement
+whileStmt → "while" "(" expression ")" block
 expression → assignment
 assignment → IDENTIFIER "=" assignment | ternary
 ternary → logic_or ( "?" expression ":" expression )*
