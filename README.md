@@ -111,11 +111,11 @@ lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 - [x] __Chapter 9: Control Flow (Review Implementation)__
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
   - [x] Add support to the ```do-while``` loop
-  - [ ] Add ```break``` and ```continue``` keywords make them usable only inside loops
+  - [x] Add ```break``` and ```continue``` keywords make them usable only inside loops
   - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
-  - [ ] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
+  - [x] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
 - [x] __Chapter 10: Functions (Review Implementation)__
   - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
   - [x] Add support for anonymous functions
