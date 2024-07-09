@@ -15,6 +15,7 @@ struct Class; // Represents a class declaration statement.
 struct Continue;
 struct DoWhile;
 struct Expression; // Expression statement (Used in function and method calls).
+struct For; // For loop statement.
 struct Function; // Function statement (Used in function declarations).
 struct If;
 struct Print;
@@ -43,6 +44,7 @@ struct StmtVisitor{
   virtual std::any visitContinueStmt(std::shared_ptr<Continue> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
+  virtual std::any visitForStmt(std::shared_ptr<For> stmt) = 0;
   virtual std::any visitFunctionStmt(std::shared_ptr<Function> stmt) = 0;
   virtual std::any visitIfStmt(std::shared_ptr<If> stmt) = 0;
   virtual std::any visitPrintStmt(std::shared_ptr<Print> stmt) = 0;
@@ -157,7 +159,7 @@ struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
  */
 struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
   const std::shared_ptr<Expr> condition;
-  const std::shared_ptr<Stmt> body;
+  const std::vector<std::shared_ptr<Stmt>> body;
 
   /**
    * @brief Constructs a DoWhile node of the Bleach AST (Abstract Syntax Tree). 
@@ -168,12 +170,13 @@ struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
    * (including the first one). The value produced by the evaluation of this expression is what determines 
    * whether or not the statement inside the while loop is going to be executed. If it's true, then yes. 
    * Otherwise, no (represented by the std::shared_ptr<Expr> type).
-   * @param body: The statement that will be executed or not depending on the value produced by the evaluation
-   * of the expression stored inside the "condition" attribute (represented by the std::shared_ptr<Stmt> type).
-   * Remember that the statement stored inside "body" will always be executed since "condition" is always
-   * evaluated at the end of each do-while iteration. 
+   * @param body: The block of statements that will be executed or not depending on the value produced by the 
+   * evaluation of the expression stored inside the "condition" attribute (represented by the 
+   * std::vector<std::shared_ptr<Stmt>> type). Remember that the statements stored inside "body" will always be
+   * executed in the first iteration of this type of loop because "condition" is always evaluated at the end of
+   * each iteration. 
   **/
-  DoWhile(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> body)
+  DoWhile(std::shared_ptr<Expr> condition, std::vector<std::shared_ptr<Stmt>> body)
     : condition{std::move(condition)}, body{std::move(body)}
   {}
 
@@ -221,6 +224,25 @@ struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
 
   std::string toString() override{
     return "expression statement";
+  }
+};
+
+struct For : Stmt, public std::enable_shared_from_this<For>{
+  const std::shared_ptr<Stmt> initializer;
+  const std::shared_ptr<Expr> condition;
+  const std::shared_ptr<Expr> increment;
+  const std::vector<std::shared_ptr<Stmt>> body;
+
+  For(std::shared_ptr<Stmt> initializer, std::shared_ptr<Expr> condition, std::shared_ptr<Expr> increment, std::vector<std::shared_ptr<Stmt>> body)
+    : initializer{std::move(initializer)}, condition{std::move(condition)}, increment{std::move(increment)}, body{std::move(body)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitForStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "for statement";
   }
 };
 
@@ -405,7 +427,7 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
  */
 struct While : Stmt, public std::enable_shared_from_this<While>{
   const std::shared_ptr<Expr> condition;
-  const std::shared_ptr<Stmt> body;
+  const std::vector<std::shared_ptr<Stmt>> body;
 
   /**
    * @brief Constructs a While node of the Bleach AST (Abstract Syntax Tree). 
@@ -416,10 +438,11 @@ struct While : Stmt, public std::enable_shared_from_this<While>{
    * loop (including the first one). The value produced by the evaluation of this expression is what determines
    * whether or not the statement inside the while loop is going to be executed. If it's true, then yes. 
    * Otherwise, no (represented by the std::shared_ptr<Expr> type).
-   * @param body: The statement that will be executed or not depending on the value produced by the evaluation
-   * of the expression stored inside the "condition" attribute (represented by the std::shared_ptr<Stmt> type). 
+   * @param body: The block of statement that will be executed or not depending on the value produced by the 
+   * evaluation of the expression stored inside the "condition" attribute (represented by the 
+   * std::vector<std::shared_ptr<Stmt>> type). 
   **/
-  While(std::shared_ptr<Expr> condition, std::shared_ptr<Stmt> body)
+  While(std::shared_ptr<Expr> condition, std::vector<std::shared_ptr<Stmt>> body)
     : condition{std::move(condition)}, body{std::move(body)}
   {}
 
