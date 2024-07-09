@@ -372,13 +372,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
+      std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
+
       try{
-        do{
-          execute(stmt->body);
-        }while(isTruthy(evaluate(stmt->condition)));
+        this->environment = std::make_shared<Environment>(previous); // Make the current environment that the interpreter is looking at be the environment of the block statement that is being visited.
+        
+        foundContinueStatement:
+          do{
+            for(const std::shared_ptr<Stmt>& statement : stmt->body){
+              try{
+                execute(statement);
+              }catch(BleachContinue){
+                if(isTruthy(evaluate(stmt->condition))){
+                  goto foundContinueStatement;
+                }
+              }
+            }
+          }while(isTruthy(evaluate(stmt->condition)));
       }catch(BleachBreak){
         // Do nothing. Just break out of the loop.
+      }catch(...){
+        this->environment = previous; // Restores the previous environment in case a runtime error is thrown while visiting the statements inside the block.
+        throw;
       }
+
+      this->environment = previous; // Restores the previous environment after visiting the statements inside the block.
 
       return {};
     }
@@ -399,6 +417,43 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      */
     std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) override{
       evaluate(stmt->expression);
+
+      return {};
+    }
+
+    std::any visitForStmt(std::shared_ptr<For> stmt) override{
+      std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
+
+      try{
+        this->environment = std::make_shared<Environment>(previous); // Make the current environment that the interpreter is looking at be the environment of the block statement that is being visited.
+        bool hasFoundContinueStatement = false;
+        
+        execute(stmt->initializer);
+
+        foundContinueStatement:
+
+        if(hasFoundContinueStatement){
+          evaluate(stmt->increment);
+        }
+        while(isTruthy(evaluate(stmt->condition))){
+          for(const std::shared_ptr<Stmt>& statement : stmt->body){
+            try{
+              execute(statement);
+            }catch(BleachContinue){
+              hasFoundContinueStatement = true;
+              goto foundContinueStatement;
+            }
+          }
+          evaluate(stmt->increment);
+        }
+      }catch(BleachBreak){
+        // Do nothing. Just break out of the loop.
+      }catch(...){
+        this->environment = previous; // Restores the previous environment in case a runtime error is thrown while visiting the statements inside the block.
+        throw;
+      }
+
+      this->environment = previous; // Restores the previous environment after visiting the statements inside the block.
 
       return {};
     }
@@ -549,13 +604,28 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @note This method is an overridden version of the 'visitWhileStmt' method from the 'StmtVisitor' struct.
      */
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
+      std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
+
       try{
-        while(isTruthy(evaluate(stmt->condition))){
-          execute(stmt->body);
-        }
+        this->environment = std::make_shared<Environment>(previous); // Make the current environment that the interpreter is looking at be the environment of the block statement that is being visited.
+
+        foundContinueStatement:
+          while(isTruthy(evaluate(stmt->condition))){
+            for(const std::shared_ptr<Stmt>& statement : stmt->body){
+              try{
+                execute(statement);
+              }catch(BleachContinue){
+                goto foundContinueStatement;
+              }
+            }
+          }
       }catch(BleachBreak){
         // Do nothing. Just break out of the loop.
+      }catch(...){
+        this->environment = previous; // Restores the previous environment in case a runtime error is thrown while visiting the statements inside the block.
+        throw;
       }
+      this->environment = previous; // Restores the previous environment after visiting the statements inside the block.
 
       return {};
     }
