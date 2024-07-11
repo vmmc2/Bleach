@@ -103,6 +103,57 @@ make
 ```
 
 
+## Examples of code written in Bleach
+* Fatorial:
+```js
+function fatorial(n){
+  if(n == 0){
+    return 1;
+  }
+  return n * fatorial(n - 1);
+}
+```
+
+* Fibonacci:
+```js
+function fib(n){
+  if(n == 1 or n == 2){
+    return 1;
+  }
+  return fib(n - 1) + fib(n - 2);
+}
+```
+
+* Iteration
+```js
+function loop(){
+  for(let i = 0; i <= 10; i++){
+    if(i == 4 || i == 5){
+      continue;
+    }elif(i == 10){
+      break;
+    }else{
+      std::io::print("The current number is:", i);
+    }
+  }
+}
+
+loop();
+```
+
+* User Input
+```js
+function getUserInput(){
+  let s = std::io::readLine();
+
+  return s;
+}
+
+let s = getUserInput();
+std::io::print(s);
+```
+
+
 ## Roadmap
 - [x] __Part 1: Scanning (Review Implementation)__
   - [x] Add support Multi-line comments (```/* */```)
