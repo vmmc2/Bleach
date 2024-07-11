@@ -13,6 +13,7 @@
 
 // It's not good practice to include .cpp files, but in our case it allows us to lay out the files similarly to
 // the Java code while avoiding circular dependencies.
+#include "./utils/BleachClass.cpp"
 #include "./utils/BleachLambdaFunction.cpp"
 #include "./utils/BleachFunction.cpp"
 
