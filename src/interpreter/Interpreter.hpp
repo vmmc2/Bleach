@@ -353,6 +353,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       throw BleachBreak{};
     }
 
+    std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
+      environment->define(stmt->name.lexeme, nullptr); // A class declaration doesn't have a value by itself.
+      auto klass = std::make_shared<LoxClass>(stmt->name.lexeme);
+      environment->assign(stmt->name, std::move(klass));
+
+      return {};
+    }
+
     std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
       throw BleachContinue{};
     }
