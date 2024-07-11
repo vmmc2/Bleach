@@ -88,17 +88,20 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | la
 lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 ```
 
-<!--
-## Doubts
-* __What is the diference between using a variable and refering to a variable?__
-* __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
-* __Differences between scopes and environments (the author says they are "close cousins"). Also, the author later mentions that scope is a concept/idea and environment is something concrete that implements such concept.__
-* __What is necessary to claim that a programming language is Turing-Complete? In other words, what exactly is Turing-Completeness? According to the author, the programming language needs to have the following features implemented:__
-  * __Arithmetic__
-  * __A little control-flow (what does "little" even mean in this context?)__
-  * __The ability to allocate arbitrary amounts of memory__
-* __What is the formal and precise definition of scope in the programming language field? The author, Bob Nystrom, says, in chapter 11, that scope is a set of declarations. Therefore, if two sets don't have the same declarations, then they are not the same scope. Is this correct?__
--->
+
+## How to use it?
+1. Clone this repository in your local machine.
+2. Inside the local repository, navigate to the ```src``` file.
+3. Run the following command inside the terminal in the ```src``` directory:
+```sh
+make
+```
+4. Run the BLEACH Interpreter:
+```sh
+./BleachInterpreter                                  # Executes the interpreter in the interactive mode (REPL mode).
+./BleachInterpreter relative_path_to_a_".bch"_file.  # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+```
+
 
 ## Roadmap
 - [x] __Part 1: Scanning (Review Implementation)__
@@ -152,3 +155,16 @@ cmake ../llvm -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=~/llvm-project/build -D
 ```shell
 make
 ```
+
+
+<!--
+## Doubts
+* __What is the diference between using a variable and refering to a variable?__
+* __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
+* __Differences between scopes and environments (the author says they are "close cousins"). Also, the author later mentions that scope is a concept/idea and environment is something concrete that implements such concept.__
+* __What is necessary to claim that a programming language is Turing-Complete? In other words, what exactly is Turing-Completeness? According to the author, the programming language needs to have the following features implemented:__
+  * __Arithmetic__
+  * __A little control-flow (what does "little" even mean in this context?)__
+  * __The ability to allocate arbitrary amounts of memory__
+* __What is the formal and precise definition of scope in the programming language field? The author, Bob Nystrom, says, in chapter 11, that scope is a set of declarations. Therefore, if two sets don't have the same declarations, then they are not the same scope. Is this correct?__
+-->
