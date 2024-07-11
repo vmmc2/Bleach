@@ -128,7 +128,7 @@ function fib(n){
 ```js
 function loop(){
   for(let i = 0; i <= 10; i++){
-    if(i == 4 || i == 5){
+    if(i == 4 or i == 5){
       continue;
     }elif(i == 10){
       break;
