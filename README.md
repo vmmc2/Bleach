@@ -86,7 +86,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | la
 lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 ```
 
-
+<!--
 ## Doubts
 * __What is the diference between using a variable and refering to a variable?__
 * __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
@@ -96,40 +96,42 @@ lambdaFunctionExpr → "lambda" "(" parameters? ")" block
   * __A little control-flow (what does "little" even mean in this context?)__
   * __The ability to allocate arbitrary amounts of memory__
 * __What is the formal and precise definition of scope in the programming language field? The author, Bob Nystrom, says, in chapter 11, that scope is a set of declarations. Therefore, if two sets don't have the same declarations, then they are not the same scope. Is this correct?__
-
+-->
 
 ## Roadmap
-- [x] __Chapter 4: Scanning (Review Implementation)__
+- [x] __Part 1: Scanning (Review Implementation)__
   - [x] Add support Multi-line comments (```/* */```)
-- [x] __Chapter 5: Representing Code (Review Implementation)__
-- [x] __Chapter 6: Parsing Expressions (Review Implementation)__
-- [x] __Chapter 7: Evaluating Expressions (Review Implementation)__
+- [x] __Part 2: Representing Code (Review Implementation)__
+- [x] __Part 3: Parsing Expressions (Review Implementation)__
+- [x] __Part 4: Evaluating Expressions (Review Implementation)__
   - [x] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
-  - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of operand). __This might be overkill for the purpose of the language, right?__
   - [x] Make division by ```0``` a runtime error
-- [x] __Chapter 8: Statements and State (Review Implementation)__
-- [x] __Chapter 9: Control Flow (Review Implementation)__
+- [x] __Part 5: Statements and State (Review Implementation)__
+- [x] __Part 6: Control Flow (Review Implementation)__
   - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
   - [x] Add support to the ```do-while``` loop
   - [x] Add ```break``` and ```continue``` keywords make them usable only inside loops
+  - [x] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
+- [x] __Part 7: Functions (Review Implementation)__
+  - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
+  - [x] Add support for anonymous functions
+- [x] __Part 8: Resolving and Binding (Review Implementation)__
+- [ ] __Part 9: Classes (Review Implementation)__
+- [ ] __Part 10: Inheritance (Review Implementation)__
   - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
-  - [x] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
-- [x] __Chapter 10: Functions (Review Implementation)__
-  - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
-  - [x] Add support for anonymous functions
-- [x] __Chapter 11: Resolving and Binding (Review Implementation)__
-- [ ] __Chapter 12: Classes (Review Implementation)__
-- [ ] __Chapter 13: Inheritance (Review Implementation)__
+  - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of user defined class). __This might be an overkill for the purpose of the language. Need to think more about it.__
 
-## Bugs to fix
+
+## Noticed bugs that need to be fixed
 - [ ] __MUST FIX THE RUNTIME ERRORS OF THE NATIVE FUNCTIONS.__
 - [ ] __CONSIDER USING THE ```=>``` OR THE ```->``` FOR KEY-VALUE NOTATION IN DICT LITERALS.__
 - [x] __FIX THE BUG WHERE VARIABLE REDECLARATION INSIDE THE SAME SCOPE IS ALLOWED. IT SHOULD NOT BE.__
 
 
-## Setup
+## LLVM Version of the Bleach Language (Not priority right now)
+### Initial Setup
 1. On the root folder of your machine:
 ```shell
 git clone git@github.com:llvm/llvm-project.git
