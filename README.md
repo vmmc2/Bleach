@@ -1,4 +1,6 @@
 # Bleach
+* A programming language aimed at teaching compilers. 
+
 
 ## Intro
 * My undergraduate thesis in Computer Engineering
