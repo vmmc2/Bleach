@@ -246,6 +246,9 @@ class Parser{
         if(match(TokenType::BREAK)){
           return breakStatement();
         }
+        if(match(TokenType::CLASS)){
+          return classDeclStatement();
+        }
         if(match(TokenType::CONTINUE)){
           return continueStatement();
         }
@@ -311,6 +314,20 @@ class Parser{
       consume(TokenType::SEMICOLON, "Expected a ';' after a 'break' statement");
 
       return std::make_shared<Break>(keyword);
+    }
+
+    std::shared_ptr<Stmt> classDeclStatement(){
+      Token name = consume(TokenType::IDENTIFIER, "Expected a class name after the 'class' keyword");
+      consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of the class");
+
+      std::vector<std::shared_ptr<Function>> methods;
+      while(!check(TokenType::RIGHT_BRACE) && !isAtEnd()){
+        methods.push_back(funcDeclStatement("method"));
+      }
+
+      consume(TokenType::RIGHT_BRACE, "Expected a '}' after the body of the class");
+
+      return std::make_shared<Class>(name, methods);
     }
 
     std::shared_ptr<Stmt> continueStatement(){
@@ -393,7 +410,10 @@ class Parser{
      * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
      * this rule.
     **/ 
-    std::shared_ptr<Stmt> funcDeclStatement(std::string kind){ // Pay attention to the fact that this code is very similar to that of a callExpression.
+    std::shared_ptr<Function> funcDeclStatement(std::string kind){ // Pay attention to the fact that this code is very similar to that of a callExpression.
+      if(kind == "method"){
+        consume(TokenType::METHOD, "Expected the 'method' keyword in the declaration of a method from a class");
+      }
       Token name = consume(TokenType::IDENTIFIER, "Expected a " + kind + " name.");
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the " + kind + " name.");
 
