@@ -40,7 +40,7 @@ struct While;
 struct StmtVisitor{
   virtual std::any visitBlockStmt(std::shared_ptr<Block> stmt) = 0;
   virtual std::any visitBreakStmt(std::shared_ptr<Break> stmt) = 0;
-  //virtual std::any visitClassStmt(std::shared_ptr<Class> stmt) = 0;
+  virtual std::any visitClassStmt(std::shared_ptr<Class> stmt) = 0;
   virtual std::any visitContinueStmt(std::shared_ptr<Continue> stmt) = 0;
   virtual std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) = 0;
   virtual std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) = 0;
@@ -121,9 +121,22 @@ struct Break : Stmt, public std::enable_shared_from_this<Break>{
   }
 };
 
-// struct Class : Stmt, public std::enable_shared_from_this<Class>{
+struct Class : Stmt, public std::enable_shared_from_this<Class>{
+  const Token name;
+  const std::vector<std::shared_ptr<Function>> methods;
 
-// };
+  Class(Token name, std::vector<std::shared_ptr<Function>> methods)
+    : name{std::move(name)}, methods{std::move(methods)}
+  {}
+
+  std::any accept(StmtVisitor& visitor) override{
+    return visitor.visitClassStmt(shared_from_this());
+  }
+
+  std::string toString() override{
+    return "class declaration statement";
+  }
+};
 
 struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
   const Token keyword;
