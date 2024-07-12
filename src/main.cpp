@@ -14,8 +14,10 @@
 // It's not good practice to include .cpp files, but in our case it allows us to lay out the files similarly to
 // the Java code while avoiding circular dependencies.
 #include "./utils/BleachClass.cpp"
-#include "./utils/BleachLambdaFunction.cpp"
 #include "./utils/BleachFunction.cpp"
+#include "./utils/BleachInstance.cpp"
+#include "./utils/BleachLambdaFunction.cpp"
+
 
 Interpreter interpreter{}; /* Variable that represents the instance of the BLEACH Interpreter. This variable must be declared as global because, so sucessful calls to the 'run' function inside a REPL session reuse the same Interpreter instance. Remember that things must persist through a REPL session. */
 
