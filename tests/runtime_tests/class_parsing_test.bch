@@ -1,0 +1,7 @@
+class Bagel{
+  method eat(){
+    print "The bagel has been eaten.";
+  }
+}
+
+print Bagel; 
