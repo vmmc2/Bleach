@@ -3,8 +3,8 @@
 #include "./BleachClass.hpp"
 
 
-BleachClass::BleachClass(std::string name, std::map<std::string, std::shared_ptr<BleachFunction>> methods)
-  : name{std::move(name)}, methods{std::move(methods)}
+BleachClass::BleachClass(std::string name)
+  : name{std::move(name)}
 {}
 
 int BleachClass::arity(){
@@ -12,7 +12,9 @@ int BleachClass::arity(){
 }
 
 std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> arguments){
-  return {};
+  auto instance = std::make_shared<BleachInstance>(shared_from_this());
+  
+  return instance;
 }
 
 std::shared_ptr<BleachFunction> BleachClass::findMethod(const std::string& name){
