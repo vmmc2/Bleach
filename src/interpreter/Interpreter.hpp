@@ -247,6 +247,18 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         
         return numberAsText;
       }
+      if(object.type() == typeid(std::shared_ptr<BleachClass>)){
+        return std::any_cast<std::shared_ptr<BleachClass>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachFunction>)){
+        return std::any_cast<std::shared_ptr<BleachFunction>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
+        return std::any_cast<std::shared_ptr<BleachInstance>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
+        return std::any_cast<std::shared_ptr<BleachLambdaFunction>>(object)->toString();
+      }
 
       return "Error in stringify: object type not recognized.";
     }
@@ -747,7 +759,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       std::shared_ptr<BleachCallable> function;
 
-      if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
+      if(callee.type() == typeid(std::shared_ptr<BleachClass>)){
+        function = std::any_cast<std::shared_ptr<BleachClass>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
+        if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
+          throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
+        }
+      }else if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
         function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
         if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
           throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
