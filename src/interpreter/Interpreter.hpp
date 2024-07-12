@@ -12,6 +12,7 @@
 #include "../utils/BleachCallable.hpp"
 #include "../utils/BleachClass.hpp"
 #include "../utils/BleachContinue.hpp"
+#include "../utils/BleachInstance.hpp"
 #include "../utils/BleachLambdaFunction.hpp"
 #include "../utils/BleachFunction.hpp"
 #include "../utils/BleachReturn.hpp"
