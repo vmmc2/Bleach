@@ -50,15 +50,15 @@
 
 ## How to use it?
 1. Clone this repository in your local machine.
-2. Inside the local repository, navigate to the ```src``` file.
-3. Run the following command inside the terminal in the ```src``` directory:
+2. Go to the ```Bleach``` directory. Then, execute the following commands inside it:
 ```sh
+cd src
 make
 ```
 4. Run the BLEACH Interpreter:
 ```sh
-./BleachInterpreter                                  # Executes the interpreter in the interactive mode (REPL mode).
-./BleachInterpreter relative_path_to_a_".bch"_file.  # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+./BleachInterpreter # Executes the interpreter in the interactive mode (REPL mode).
+./BleachInterpreter relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
 ```
 
 
