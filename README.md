@@ -58,7 +58,7 @@ make
 4. Run the BLEACH Interpreter:
 ```sh
 ./BleachInterpreter # Executes the interpreter in the interactive mode (REPL mode).
-./BleachInterpreter relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+./BleachInterpreter absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
 ```
 
 
