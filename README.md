@@ -48,47 +48,6 @@
 * Both documentations can be found here (Insert a link later on).
 
 
-## Current State of the Bleach Language Context-Free Grammar
-* __Now loops (```for```, ```do-while```, ```while```) must be followed by a block.__
-```txt
-program → statement* EOF
-statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
-block → "{" statement* "}"
-breakStmt → "break" ";"
-continueStmt → "continue" ";"
-classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
-methodDeclStmt → "method" method
-method → IDENTIFIER "(" parameters? ")" block
-doWhileStmt → "do" block "while" "(" expression ")" ";"
-exprStmt → expression ";"
-forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" block
-funcDeclStmt → "function" function
-function → IDENTIFIER "(" parameters? ")" block
-parameters → IDENTIFIER ( "," IDENTIFIER )*
-ifStmt → "if" "(" expression ")" statement
-         ( "elif" "(" expression ")" statement )*
-         ( "else" statement )?
-printStmt → "print" expression ";"
-returnStmt → "return" expression? ";"
-varDeclStmt → "let" IDENTIFIER ( "=" expression )? ";"
-whileStmt → "while" "(" expression ")" block
-expression → assignment
-assignment → IDENTIFIER "=" assignment | ternary
-ternary → logic_or ( "?" expression ":" expression )*
-logic_or → logic_and ( "or" logic_and )*
-logic_and → equality ( "and" equality )*
-equality → comparison ( ( "!=" | "==" ) comparison )*
-comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
-term → factor ( ( "-" | "+" ) factor )*
-factor → unary ( ( "/" | "*" ) unary )*
-unary → ( "!" | "-" ) unary | call
-call → primary ( "(" arguments? ")" )*
-arguments → expression ( "," expression )*
-primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER
-lambdaFunctionExpr → "lambda" "(" parameters? ")" block
-```
-
-
 ## How to use it?
 1. Clone this repository in your local machine.
 2. Inside the local repository, navigate to the ```src``` file.
@@ -185,6 +144,47 @@ std::io::print(s);
 - [ ] __FIX THE BUG WHERE A RETURN STATEMENT IS NOT BEING ALLOWED INSIDE AN ANONYMOUS FUNCTION. IT SHOULD BE.__
 - [ ] __CONSIDER USING THE ```=>``` OR THE ```->``` FOR KEY-VALUE NOTATION IN DICT LITERALS.__
 - [x] __FIX THE BUG WHERE VARIABLE REDECLARATION INSIDE THE SAME SCOPE IS ALLOWED. IT SHOULD NOT BE.__
+
+
+## Current State of the Bleach Language Context-Free Grammar
+* __Now loops (```for```, ```do-while```, ```while```) must be followed by a block.__
+```txt
+program → statement* EOF
+statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
+block → "{" statement* "}"
+breakStmt → "break" ";"
+continueStmt → "continue" ";"
+classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
+methodDeclStmt → "method" method
+method → IDENTIFIER "(" parameters? ")" block
+doWhileStmt → "do" block "while" "(" expression ")" ";"
+exprStmt → expression ";"
+forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" block
+funcDeclStmt → "function" function
+function → IDENTIFIER "(" parameters? ")" block
+parameters → IDENTIFIER ( "," IDENTIFIER )*
+ifStmt → "if" "(" expression ")" statement
+         ( "elif" "(" expression ")" statement )*
+         ( "else" statement )?
+printStmt → "print" expression ";"
+returnStmt → "return" expression? ";"
+varDeclStmt → "let" IDENTIFIER ( "=" expression )? ";"
+whileStmt → "while" "(" expression ")" block
+expression → assignment
+assignment → IDENTIFIER "=" assignment | ternary
+ternary → logic_or ( "?" expression ":" expression )*
+logic_or → logic_and ( "or" logic_and )*
+logic_and → equality ( "and" equality )*
+equality → comparison ( ( "!=" | "==" ) comparison )*
+comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
+term → factor ( ( "-" | "+" ) factor )*
+factor → unary ( ( "/" | "*" ) unary )*
+unary → ( "!" | "-" ) unary | call
+call → primary ( "(" arguments? ")" )*
+arguments → expression ( "," expression )*
+primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER
+lambdaFunctionExpr → "lambda" "(" parameters? ")" block
+```
 
 
 ## LLVM Version of the Bleach Language (Not priority right now)
