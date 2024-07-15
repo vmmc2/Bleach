@@ -153,10 +153,10 @@ program → statement* EOF
 statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
 breakStmt → "break" ";"
-continueStmt → "continue" ";"
 classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
 methodDeclStmt → "method" method
 method → IDENTIFIER "(" parameters? ")" block
+continueStmt → "continue" ";"
 doWhileStmt → "do" block "while" "(" expression ")" ";"
 exprStmt → expression ";"
 forStmt → "for" "(" ( varDecl | exprStmt | ";" ) expression? ";" expression? ")" block
@@ -180,7 +180,7 @@ comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
 term → factor ( ( "-" | "+" ) factor )*
 factor → unary ( ( "/" | "*" ) unary )*
 unary → ( "!" | "-" ) unary | call
-call → primary ( "(" arguments? ")" )*
+call → primary ( "(" arguments? ")" | "." IDENTIFIER )*
 arguments → expression ( "," expression )*
 primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER
 lambdaFunctionExpr → "lambda" "(" parameters? ")" block
