@@ -12,6 +12,7 @@
 struct Assign;
 struct Binary;
 struct Call;
+struct Get;
 struct Grouping;
 struct LambdaFunction;
 struct Literal;
@@ -40,6 +41,7 @@ struct ExprVisitor{
   virtual std::any visitAssignExpr(std::shared_ptr<Assign> expr) = 0;
   virtual std::any visitBinaryExpr(std::shared_ptr<Binary> expr) = 0;
   virtual std::any visitCallExpr(std::shared_ptr<Call> expr) = 0;
+  virtual std::any visitGetExpr(std::shared_ptr<Get> expr) = 0;
   virtual std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) = 0;
   virtual std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
@@ -152,6 +154,25 @@ struct Call : Expr, public std::enable_shared_from_this<Call>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitCallExpr(shared_from_this());
+  }
+};
+
+
+struct Get : Expr, public std::enable_shared_from_this<Get>{
+  // This struct here represents a "Get" expression: someObject.someProperty
+  // object -> someObject
+  // name -> someProperty
+  // At runtime, it will use a token of type IDENTIFIER to read the property with tha name from the object
+  // that the expression evaluates to.
+  const std::shared_ptr<Expr> object;
+  const Token name;
+
+  Get(std::shared_ptr<Expr> object, Token name)
+    : object{std::move(object)}, name{std::move(name)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitGetExpr(shared_from_this());
   }
 };
 
