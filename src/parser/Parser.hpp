@@ -809,6 +809,9 @@ class Parser{
       while(true){ // This loop along with the "finishCallExpr" is what allows the user to write sequential function call.
         if(match(TokenType::LEFT_PAREN)){
           expr = finishCallExpr(expr); // Calls an auxiliary method to finish the parsing of a call expression.
+        }else if(match(TokenType::DOT)){
+          Token name = consume(TokenType::IDENTIFIER, "Expected a property name after '.'");
+          return std::make_shared<Get>(expr, name);
         }else{
           break;
         }
