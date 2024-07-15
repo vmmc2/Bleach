@@ -139,6 +139,12 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitGetExpr(std::shared_ptr<Get> expr) override{
+      resolve(expr->object);
+
+      return {};
+    }
+
     std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) override{
       resolve(expr->expression);
 
