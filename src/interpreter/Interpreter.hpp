@@ -802,6 +802,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return function->call(*this, std::move(arguments)); // Finally, the interpreter calls the function.
     }
 
+    std::any visitGetExpr(std::shared_ptr<Get> expr) override{
+      std::any object = evaluate(expr->object);
+
+      if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
+        return std::any_cast<std::shared_ptr<BleachInstance>>(object)->get(expr->name);
+      }
+
+      throw BleachRuntimeError{expr->name, "Only BleachDict, BleachInstance or BleachList have properties."};
+    }
+
     /**
      * @brief Visits a Grouping (parenthesized) expression node of the Bleach AST and produces the 
      * corresponding value. 
