@@ -811,7 +811,7 @@ class Parser{
           expr = finishCallExpr(expr); // Calls an auxiliary method to finish the parsing of a call expression.
         }else if(match(TokenType::DOT)){
           Token name = consume(TokenType::IDENTIFIER, "Expected a property name after '.'");
-          return std::make_shared<Get>(expr, name);
+          expr = std::make_shared<Get>(expr, name); // It will create a tree with left-associativity. Which means the properties are going to be evaluated from left to right.
         }else{
           break;
         }
