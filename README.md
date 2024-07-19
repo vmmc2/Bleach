@@ -152,7 +152,7 @@ std::io::print(s);
 program → statement* EOF
 statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
-breakStmt → "break" ";"
+break → "break" ";"
 classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
 methodDeclStmt → "method" method
 method → IDENTIFIER "(" parameters? ")" block
@@ -171,7 +171,7 @@ returnStmt → "return" expression? ";"
 varDeclStmt → "let" IDENTIFIER ( "=" expression )? ";"
 whileStmt → "while" "(" expression ")" block
 expression → assignment
-assignment → IDENTIFIER "=" assignment | ternary
+assignment → ( call "." )? IDENTIFIER "=" assignment | ternary
 ternary → logic_or ( "?" expression ":" expression )*
 logic_or → logic_and ( "or" logic_and )*
 logic_and → equality ( "and" equality )*
