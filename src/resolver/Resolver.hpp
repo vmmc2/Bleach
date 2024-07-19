@@ -176,6 +176,13 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitSetExpr(std::shared_ptr<Set> expr) override{
+      resolve(expr->value);
+      resolve(expr->object);
+
+      return {};
+    }
+
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
       resolve(expr->condition);
       resolve(expr->ifBranch);
