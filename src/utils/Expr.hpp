@@ -17,6 +17,7 @@ struct Grouping;
 struct LambdaFunction;
 struct Literal;
 struct Logical;
+struct Set;
 struct Ternary;
 struct Unary;
 struct Variable;
@@ -46,6 +47,7 @@ struct ExprVisitor{
   virtual std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
   virtual std::any visitLogicalExpr(std::shared_ptr<Logical> expr) = 0;
+  virtual std::any visitSetExpr(std::shared_ptr<Set> expr) = 0;
   virtual std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) = 0;
   virtual std::any visitUnaryExpr(std::shared_ptr<Unary> expr) = 0;
   virtual std::any visitVariableExpr(std::shared_ptr<Variable> expr) = 0;
@@ -162,7 +164,7 @@ struct Get : Expr, public std::enable_shared_from_this<Get>{
   // This struct here represents a "Get" expression: someObject.someProperty
   // object -> someObject
   // name -> someProperty
-  // At runtime, it will use a token of type IDENTIFIER to read the property with tha name from the object
+  // At runtime, it will use a token of type IDENTIFIER to read the property with that name from the object
   // that the expression evaluates to.
   const std::shared_ptr<Expr> object;
   const Token name;
@@ -287,6 +289,26 @@ struct Logical : Expr, public std::enable_shared_from_this<Logical>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitLogicalExpr(shared_from_this());
+  }
+};
+
+struct Set : Expr, public std::enable_shared_from_this<Set>{
+  // This struct here represents a "Set" expression: someObject.someProperty = someValue
+  // object -> someObject
+  // name -> someProperty
+  // value -> someValue
+  // At runtime, it will use a token of type IDENTIFIER to find out where the property with that name from the 
+  // object that the expression evaluates to is stored, so it can assign the value to it.
+  const std::shared_ptr<Expr> object;
+  const Token name;
+  const std::shared_ptr<Expr> value;
+
+  Set(std::shared_ptr<Expr> object, Token name, std::shared_ptr<Expr> value)
+    : object{std::move(object)}, name{std::move(name)}, value{std::move(value)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitSetExpr(shared_from_this());
   }
 };
 
