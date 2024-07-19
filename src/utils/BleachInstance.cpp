@@ -17,6 +17,12 @@ std::any BleachInstance::get(const Token& name){
   throw BleachRuntimeError{name, "Undefined property '" + name.lexeme + "'."};
 }
 
+void BleachInstance::set(const Token& name, std::any value){
+  fields[name.lexeme] = std::move(value);
+
+  return;
+}
+
 std::string BleachInstance::toString(){
   return "class instance"; // Must change this later...
 }

@@ -16,5 +16,6 @@ class BleachInstance : public std::enable_shared_from_this<BleachInstance>{
   public:
     BleachInstance(std::shared_ptr<BleachClass> klass);
     std::any get(const Token& name);
+    void set(const Token& name, std::any value);
     std::string toString();
 };
