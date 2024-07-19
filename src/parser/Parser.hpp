@@ -603,12 +603,15 @@ class Parser{
         Token equals = previous(); // Grab the assignment operator ('=').
         std::shared_ptr<Expr> value = assignment(); // This here is what makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
 
-        if(Variable* e = dynamic_cast<Variable*>(expr.get())){ // This cast is what certify us that the right-hand side operand of the assignment expression is, indeed, a 'Variable' expression.
+        if(Variable* e = dynamic_cast<Variable*>(expr.get())){ // This cast is what certify us that the left-hand side operand of the assignment expression is, indeed, a 'Variable' expression.
           Token name = e->name;
           if(nativeFunctions.find(name.lexeme) != nativeFunctions.end()){
             error(name, "Cannot use a Bleach native function as an assignment target");
           }
           return std::make_shared<Assign>(std::move(name), value); // This also makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
+        }else if(Get* get = dynamic_cast<Get*>(expr.get())){
+          // How could I ensure that a Bleach native function is not used as an assignment target?
+          return std::make_shared<Set>(get->object, get->name, value); // This here is responsible for transforming a "Get" expression into a "Set" expression.
         }
       
         error(equals, "Invalid assignment target");
