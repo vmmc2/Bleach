@@ -888,6 +888,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return evaluate(expr->right);
     }
 
+    std::any visitSetExpr(std::shared_ptr<Set> expr) override{
+      std::any object = evaluate(expr->object);
+
+      if(object.type() != typeid(std::shared_ptr<BleachInstance>)){
+        throw BleachRuntimeError{expr->name, "Only instances of classes have fields."};
+      }
+
+      std::any value = evaluate(expr->value);
+      std::any_cast<std::shared_ptr<BleachInstance>>(object)->set(expr->name, value);
+
+      return value;
+    }
+
     /**
      * @brief Visits a Ternary expression node of the Bleach AST and produces the corresponding value. 
      *
