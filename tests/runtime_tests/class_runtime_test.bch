@@ -1,0 +1,7 @@
+class Dog{
+  method bark(){
+    print "Au au";
+  }
+}
+
+Dog().bark();
