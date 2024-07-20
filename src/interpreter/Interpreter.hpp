@@ -369,7 +369,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
     std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
       environment->define(stmt->name.lexeme, nullptr); // A class declaration doesn't have a value by itself.
-      auto klass = std::make_shared<BleachClass>(stmt->name.lexeme);
+
+      std::map<std::string, std::shared_ptr<BleachFunction>> methods;
+      for(std::shared_ptr<Function> method : stmt->methods){
+        std::shared_ptr<BleachFunction> function = std::make_shared<BleachFunction>(method, environment);
+        methods[method->name.lexeme] = function;
+      }
+
+      auto klass = std::make_shared<BleachClass>(stmt->name.lexeme, methods);
       environment->assign(stmt->name, std::move(klass));
 
       return {};
