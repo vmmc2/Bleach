@@ -12,6 +12,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     enum class FunctionType{
       NONE,
       FUNCTION,
+      METHOD,
     };
     enum class InsideLoop{
       NO_LOOP,
@@ -230,6 +231,11 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
       declare(stmt->name);
       define(stmt->name);
+
+      for(const std::shared_ptr<Function> method : stmt->methods){
+        FunctionType declaration = FunctionType::METHOD;
+        resolveFunction(method, declaration);
+      }
 
       return {};
     }
