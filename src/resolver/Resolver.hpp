@@ -256,6 +256,14 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       declare(stmt->name);
       define(stmt->name);
 
+      if(stmt->superclass != nullptr && stmt->superclass->name.lexeme == stmt->name.lexeme){
+        error(stmt->superclass->name, "A class cannot inherit from itself");
+      }
+
+      if(stmt->superclass != nullptr){
+        resolve(stmt->superclass);
+      }
+
       beginScope();
       scopes.back()["self"] = true;
 
