@@ -19,7 +19,7 @@ std::any BleachInstance::get(const Token& name){
   // In short, fields/attributes shadow methods.
   auto method = klass->findMethod(name.lexeme);
   if(method != nullptr){
-    return method;
+    return method->bind(shared_from_this());
   }
 
   throw BleachRuntimeError{name, "Undefined property '" + name.lexeme + "'."};
