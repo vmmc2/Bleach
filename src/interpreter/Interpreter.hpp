@@ -895,6 +895,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return evaluate(expr->right);
     }
 
+    std::any visitSelfExpr(std::shared_ptr<Self> expr) override{
+      return lookUpVariable(expr->keyword, expr);
+    }
+
     std::any visitSetExpr(std::shared_ptr<Set> expr) override{
       std::any object = evaluate(expr->object);
 
