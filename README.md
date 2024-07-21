@@ -131,7 +131,7 @@ std::io::print(s);
   - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
   - [x] Add support for anonymous functions
 - [x] __Part 8: Resolving and Binding (Review Implementation)__
-- [ ] __Part 9: Classes (Review Implementation)__
+- [x] __Part 9: Classes (Review Implementation)__
 - [ ] __Part 10: Inheritance (Review Implementation)__
   - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
@@ -141,7 +141,7 @@ std::io::print(s);
 
 ## Noticed bugs that need to be fixed
 - [ ] __MUST FIX THE RUNTIME ERRORS OF THE NATIVE FUNCTIONS.__
-- [ ] __FIX THE BUG WHERE A RETURN STATEMENT IS NOT BEING ALLOWED INSIDE AN ANONYMOUS FUNCTION. IT SHOULD BE.__
+- [x] __FIX THE BUG WHERE A RETURN STATEMENT IS NOT BEING ALLOWED INSIDE AN ANONYMOUS FUNCTION. IT SHOULD BE.__
 - [ ] __CONSIDER USING THE ```=>``` OR THE ```->``` FOR KEY-VALUE NOTATION IN DICT LITERALS.__
 - [x] __FIX THE BUG WHERE VARIABLE REDECLARATION INSIDE THE SAME SCOPE IS ALLOWED. IT SHOULD NOT BE.__
 
@@ -153,7 +153,7 @@ program → statement* EOF
 statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
 break → "break" ";"
-classDeclStmt → "class" IDENTIFIER "{" methodDeclStmt* "}"
+classDeclStmt → "class" IDENTIFIER ( "inherits" IDENTIFIER )? "{" methodDeclStmt* "}"
 methodDeclStmt → "method" method
 method → IDENTIFIER "(" parameters? ")" block
 continueStmt → "continue" ";"
