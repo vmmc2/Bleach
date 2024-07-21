@@ -372,7 +372,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       std::map<std::string, std::shared_ptr<BleachFunction>> methods;
       for(std::shared_ptr<Function> method : stmt->methods){
-        std::shared_ptr<BleachFunction> function = std::make_shared<BleachFunction>(method, environment);
+        std::shared_ptr<BleachFunction> function = std::make_shared<BleachFunction>(method, environment, method->name.lexeme == "init");
         methods[method->name.lexeme] = function;
       }
 
@@ -509,7 +509,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * evaluated more carefully later.
      */
     std::any visitFunctionStmt(std::shared_ptr<Function> stmt) override{
-      auto function = std::make_shared<BleachFunction>(stmt, environment);
+      auto function = std::make_shared<BleachFunction>(stmt, environment, false);
       environment->define(stmt->name.lexeme, function);
 
       return {};
