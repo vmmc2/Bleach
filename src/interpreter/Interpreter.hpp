@@ -368,6 +368,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
+      std::any superclass;
+      if(stmt->superclass != nullptr){
+        superclass = evaluate(stmt->superclass); // This line here is responsible for returning the runtime value associated with the name of the superclass.
+        if(superclass.type() != typeid(std::shared_ptr<BleachClass>)){
+          throw BleachRuntimeError{stmt->superclass->name, "A superclass must be a class"};
+        }
+      }
+
       environment->define(stmt->name.lexeme, nullptr); // A class declaration doesn't have a value by itself.
 
       std::map<std::string, std::shared_ptr<BleachFunction>> methods;
@@ -376,7 +384,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         methods[method->name.lexeme] = function;
       }
 
-      auto klass = std::make_shared<BleachClass>(stmt->name.lexeme, methods);
+      std::shared_ptr<BleachClass> superklass = nullptr;
+      if(superclass.type() == typeid(std::shared_ptr<BleachClass>)){
+        superklass = std::any_cast<std::shared_ptr<BleachClass>>(superclass);
+      }
+      auto klass = std::make_shared<BleachClass>(stmt->name.lexeme, superklass, methods);
       environment->assign(stmt->name, std::move(klass));
 
       return {};
