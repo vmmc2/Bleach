@@ -6,8 +6,8 @@
 #include "./Stmt.hpp"
 
 
-BleachFunction::BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure)
-  : functionDeclaration{std::move(functionDeclaration)}, closure{std::move(closure)}
+BleachFunction::BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure, bool isInitializer)
+  : functionDeclaration{std::move(functionDeclaration)}, closure{std::move(closure)}, isInitializer{isInitializer}
 {}
 
 int BleachFunction::arity(){
@@ -18,7 +18,7 @@ std::shared_ptr<BleachFunction> BleachFunction::bind(std::shared_ptr<BleachInsta
   auto environment = std::make_shared<Environment>(closure);
   environment->define("self", instance); // Declaring the variable "self" inside this new environment and defining its value to be equal to the instance that the method is being accessed from.
   
-  return std::make_shared<BleachFunction>(functionDeclaration, environment);
+  return std::make_shared<BleachFunction>(functionDeclaration, environment, isInitializer); // Just pass on the original value of "isInitializer" to the newly created "BleachFunction" object.
 }
 
 std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> arguments){
@@ -31,7 +31,14 @@ std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> ar
   try{
     interpreter.executeBlock(functionDeclaration->body, environment); // Execute the statements that are present inside the function. Pay attention to the fact that the current environment of the newly created function is passed as an argument to this method.
   }catch(BleachReturn returnValue){ // Caught a return value during the execution of the function. Then, it needs to return such value.
+    if(isInitializer){
+      return closure->getAt("self", 0); // Earlier empty return ("return;") from a constructor of a class.
+    }
     return returnValue.value;
+  }
+
+  if(isInitializer){ // If the function is a constructor ("init" method), then it will always (implicitly) return "self".
+    return closure->getAt("self", 0); // Remember that the binding between "self" and its corresponding instance is stored in the "closure" environment.
   }
 
   return nullptr; // This here is necessary for the case when a function does not have a "return" statement. By default, all user defined functions in Bleach return nil (C++ nullptr).

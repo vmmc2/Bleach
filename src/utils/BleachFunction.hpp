@@ -7,16 +7,17 @@
 
 #include "./BleachCallable.hpp"
 
-
+class BleachInstance;
 class Environment;
 class Function;
 
 class BleachFunction : public BleachCallable{
   private:
+    bool isInitializer;
     std::shared_ptr<Environment> closure;
     std::shared_ptr<Function> functionDeclaration;
   public:
-    BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure);
+    BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure, bool isInitializer);
     int arity() override;
     std::shared_ptr<BleachFunction> bind(std::shared_ptr<BleachInstance> instance);
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override;
