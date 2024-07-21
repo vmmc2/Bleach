@@ -16,6 +16,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     enum class FunctionType{
       NONE,
       FUNCTION,
+      INITIALIZER,
       LAMBDAFUNCTION,
       METHOD,
     };
@@ -260,6 +261,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
       for(const std::shared_ptr<Function> method : stmt->methods){
         FunctionType declaration = FunctionType::METHOD;
+        if(method->name.lexeme == "init"){
+          declaration = FunctionType::INITIALIZER;
+        }
         resolveFunction(method, declaration);
       }
 
@@ -353,7 +357,11 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       if(currentFunction == FunctionType::NONE){
         error(stmt->keyword, "Cannot use the 'return' keyword outside of a function, lambda or method.");
       }
+
       if(stmt->value != nullptr){
+        if(currentFunction == FunctionType::INITIALIZER){
+          error(stmt->keyword, "Cannot use the 'return' keyword inside the 'init' method of a class.");
+        }
         resolve(stmt->value);
       }
 
