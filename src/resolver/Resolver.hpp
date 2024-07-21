@@ -9,9 +9,14 @@
 
 class Resolver : public ExprVisitor, public StmtVisitor{
   private:
+    enum class ClassType{
+      NONE,
+      CLASS,
+    };
     enum class FunctionType{
       NONE,
       FUNCTION,
+      LAMBDAFUNCTION,
       METHOD,
     };
     enum class InsideLoop{
@@ -21,6 +26,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     Interpreter& interpreter;
     std::vector<std::map<std::string, bool>> scopes;
+    ClassType currentClass = ClassType::NONE;
     FunctionType currentFunction = FunctionType::NONE;
     InsideLoop currentLoop = InsideLoop::NO_LOOP;
 
@@ -153,6 +159,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
+      FunctionType enclosingFunction = currentFunction;
+      currentFunction = FunctionType::LAMBDAFUNCTION;
+
       beginScope();
 
       for(int i = 0; i < expr->parameters.size(); i++){
@@ -162,6 +171,8 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       resolve(expr->body);
 
       endScope();
+
+      currentFunction = enclosingFunction;
 
       return {};
     }
@@ -173,6 +184,15 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
       resolve(expr->left);
       resolve(expr->right);
+
+      return {};
+    }
+
+    std::any visitSelfExpr(std::shared_ptr<Self> expr) override{
+      if(currentClass == ClassType::NONE){
+        error(expr->keyword, "Cannot use 'self' outside of a class.");
+      }
+      resolveLocal(expr, expr->keyword); // Since "self" is considered to be a kind of hidden variable, we need to treat it like so.
 
       return {};
     }
@@ -229,13 +249,23 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     }
 
     std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
+      ClassType enclosingClass = currentClass;
+      currentClass = ClassType::CLASS;
+
       declare(stmt->name);
       define(stmt->name);
+
+      beginScope();
+      scopes.back()["self"] = true;
 
       for(const std::shared_ptr<Function> method : stmt->methods){
         FunctionType declaration = FunctionType::METHOD;
         resolveFunction(method, declaration);
       }
+
+      endScope();
+
+      currentClass = enclosingClass;
 
       return {};
     }
@@ -321,7 +351,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       if(currentFunction == FunctionType::NONE){
-        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function or method");
+        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function, lambda or method.");
       }
       if(stmt->value != nullptr){
         resolve(stmt->value);
