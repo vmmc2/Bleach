@@ -8,13 +8,24 @@ BleachClass::BleachClass(std::string name, std::map<std::string, std::shared_ptr
 {}
 
 int BleachClass::arity(){
+  std::shared_ptr<BleachFunction> initializer = findMethod("init");
+  
+  if(initializer != nullptr){
+    return initializer->arity();
+  }
+
   return 0;
 }
 
-std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> arguments){
-  auto instance = std::make_shared<BleachInstance>(shared_from_this());
+std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> arguments){ // className()
+  auto instance = std::make_shared<BleachInstance>(shared_from_this()); // Creates an instance of the class.
+  std::shared_ptr<BleachFunction> initializer = findMethod("init"); // Search for the "init" method, which is a constructor. A value of type std::shared_ptr<BleachFunction>.
+
+  if(initializer != nullptr){ // If the initializer (std::shared_ptr<BleachFunction>) of the class has been found.
+    initializer->bind(instance)->call(interpreter, std::move(arguments)); // Calling the constructor in the instance.
+  }
   
-  return instance;
+  return instance; // Returning the instance after all this process is executed.
 }
 
 std::shared_ptr<BleachFunction> BleachClass::findMethod(const std::string& name){
