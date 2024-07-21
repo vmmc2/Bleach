@@ -14,6 +14,13 @@ int BleachFunction::arity(){
   return functionDeclaration->parameters.size();
 }
 
+std::shared_ptr<BleachFunction> BleachFunction::bind(std::shared_ptr<BleachInstance> instance){
+  auto environment = std::make_shared<Environment>(closure);
+  environment->define("self", instance); // Declaring the variable "self" inside this new environment and defining its value to be equal to the instance that the method is being accessed from.
+  
+  return std::make_shared<BleachFunction>(functionDeclaration, environment);
+}
+
 std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> arguments){
   auto environment = std::make_shared<Environment>(closure); // Create an environment (scope) for the function that is about to be executed. The function environment has as its parent environment the closure that involves it.
 
