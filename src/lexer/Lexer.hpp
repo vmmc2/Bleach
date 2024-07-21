@@ -59,7 +59,7 @@ class Lexer{
       {"return",        TokenType::RETURN},
       {"static",        TokenType::STATIC},
       {"super",         TokenType::SUPER},
-      {"this",          TokenType::THIS},
+      {"self",          TokenType::SELF},
       {"true",          TokenType::TRUE},
       {"while",         TokenType::WHILE},
     };
