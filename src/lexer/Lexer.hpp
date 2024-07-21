@@ -50,6 +50,7 @@ class Lexer{
       {"function",      TokenType::FUNCTION},
       {"if",            TokenType::IF},
       {"in",            TokenType::IN},
+      {"inherits",      TokenType::INHERITS},
       {"lambda",        TokenType::LAMBDA},
       {"let",           TokenType::LET},
       {"method",        TokenType::METHOD},
