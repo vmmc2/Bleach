@@ -3,8 +3,8 @@
 #include "./BleachClass.hpp"
 
 
-BleachClass::BleachClass(std::string name, std::map<std::string, std::shared_ptr<BleachFunction>> methods)
-  : name{std::move(name)}, methods{std::move(methods)}
+BleachClass::BleachClass(std::string name, std::shared_ptr<BleachClass> superclass, std::map<std::string, std::shared_ptr<BleachFunction>> methods)
+  : name{std::move(name)}, superclass{std::move(superclass)}, methods{std::move(methods)}
 {}
 
 int BleachClass::arity(){
@@ -29,9 +29,15 @@ std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> argum
 }
 
 std::shared_ptr<BleachFunction> BleachClass::findMethod(const std::string& name){
+  // First, we search for the method inside the current class.
   auto elem = methods.find(name);
   if(elem != methods.end()){
     return elem->second;
+  }
+
+  // If the method is not found, then, maybe it's inside of some superclass of the current class.
+  if(superclass != nullptr){
+    return superclass->findMethod(name);
   }
 
   return nullptr;
