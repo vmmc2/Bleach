@@ -845,6 +845,9 @@ class Parser{
       if(match(TokenType::NUMBER, TokenType::STRING)){
         return std::make_shared<Literal>(previous().literal);
       }
+      if(match(TokenType::SELF)){
+        return std::make_shared<Self>(previous());
+      }
       if(match(TokenType::IDENTIFIER)){ // Parses a variable expression, which is an expression that is responsible for getting the value bound to a variable during runtime.
         return std::make_shared<Variable>(previous());
       }
