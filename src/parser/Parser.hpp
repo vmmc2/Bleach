@@ -318,6 +318,13 @@ class Parser{
 
     std::shared_ptr<Stmt> classDeclStatement(){
       Token name = consume(TokenType::IDENTIFIER, "Expected a class name after the 'class' keyword");
+
+      std::shared_ptr<Variable> superclass = nullptr;
+      if(match(TokenType::INHERITS)){
+        consume(TokenType::IDENTIFIER, "Expected a superclass name after the 'inherits' keyword");
+        superclass = std::make_shared<Variable>(previous());
+      }
+      
       consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of the class");
 
       std::vector<std::shared_ptr<Function>> methods;
@@ -327,7 +334,7 @@ class Parser{
 
       consume(TokenType::RIGHT_BRACE, "Expected a '}' after the body of the class");
 
-      return std::make_shared<Class>(name, methods);
+      return std::make_shared<Class>(name, superclass, methods);
     }
 
     std::shared_ptr<Stmt> continueStatement(){
