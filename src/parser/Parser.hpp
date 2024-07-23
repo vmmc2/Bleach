@@ -855,6 +855,13 @@ class Parser{
       if(match(TokenType::SELF)){
         return std::make_shared<Self>(previous());
       }
+      if(match(TokenType::SUPER)){
+        Token keyword = previous();
+        consume(TokenType::DOT, "Expected a '.' after the 'super' keyword");
+        Token method = consume(TokenType::IDENTIFIER, "Expected a superclass method name");
+
+        return std::make_shared<Super>(keyword, method);
+      }
       if(match(TokenType::IDENTIFIER)){ // Parses a variable expression, which is an expression that is responsible for getting the value bound to a variable during runtime.
         return std::make_shared<Variable>(previous());
       }
