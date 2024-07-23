@@ -378,6 +378,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       environment->define(stmt->name.lexeme, nullptr); // A class declaration doesn't have a value by itself.
 
+      if(stmt->superclass != nullptr){
+        environment = std::make_shared<Environment>(environment);
+        environment->define("super", superclass);
+      }
+
       std::map<std::string, std::shared_ptr<BleachFunction>> methods;
       for(std::shared_ptr<Function> method : stmt->methods){
         std::shared_ptr<BleachFunction> function = std::make_shared<BleachFunction>(method, environment, method->name.lexeme == "init");
@@ -389,6 +394,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         superklass = std::any_cast<std::shared_ptr<BleachClass>>(superclass);
       }
       auto klass = std::make_shared<BleachClass>(stmt->name.lexeme, superklass, methods);
+
+      if(stmt->superclass != nullptr){
+        environment = environment->enclosing;
+      }
+
       environment->assign(stmt->name, std::move(klass));
 
       return {};
@@ -922,6 +932,21 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       std::any_cast<std::shared_ptr<BleachInstance>>(object)->set(expr->name, value);
 
       return value;
+    }
+
+    std::any visitSuperExpr(std::shared_ptr<Super> expr) override{
+      int distance = locals[expr];
+
+      auto superclass = std::any_cast<std::shared_ptr<BleachClass>>(environment->getAt("super", distance));
+      auto object = std::any_cast<std::shared_ptr<BleachInstance>>(environment->getAt("this", distance - 1));
+
+      std::shared_ptr<BleachFunction> method = superclass->findMethod(expr->method.lexeme);
+
+      if(method == nullptr){
+        throw BleachRuntimeError{expr->method, "Undefined property (field or method):" + expr->method.lexeme + "."};
+      }
+
+      return method->bind(object);
     }
 
     /**

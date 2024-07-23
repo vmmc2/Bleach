@@ -12,6 +12,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
     enum class ClassType{
       NONE,
       CLASS,
+      SUBCLASS,
     };
     enum class FunctionType{
       NONE,
@@ -205,6 +206,18 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitSuperExpr(std::shared_ptr<Super> expr) override{
+      if(currentClass == ClassType::NONE){
+        error(expr->keyword, "Cannot use the 'super' keyword outside of a class.");
+      }else if(currentClass != ClassType::SUBCLASS){
+        error(expr->keyword, "Cannot use the 'super' keyword inside a class that does not have a superclass.");
+      }
+
+      resolveLocal(expr, expr->keyword);
+
+      return {};
+    }
+
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
       resolve(expr->condition);
       resolve(expr->ifBranch);
@@ -261,7 +274,13 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       }
 
       if(stmt->superclass != nullptr){
+        currentClass = ClassType::SUBCLASS;
         resolve(stmt->superclass);
+      }
+
+      if(stmt->superclass != nullptr){
+        beginScope();
+        scopes.back()["super"] = true;
       }
 
       beginScope();
@@ -276,6 +295,10 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       }
 
       endScope();
+
+      if(stmt->superclass != nullptr){
+        endScope();
+      }
 
       currentClass = enclosingClass;
 
