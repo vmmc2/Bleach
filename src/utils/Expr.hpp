@@ -19,6 +19,7 @@ struct Literal;
 struct Logical;
 struct Self;
 struct Set;
+struct Super;
 struct Ternary;
 struct Unary;
 struct Variable;
@@ -50,6 +51,7 @@ struct ExprVisitor{
   virtual std::any visitLogicalExpr(std::shared_ptr<Logical> expr) = 0;
   virtual std::any visitSelfExpr(std::shared_ptr<Self> expr) = 0;
   virtual std::any visitSetExpr(std::shared_ptr<Set> expr) = 0;
+  virtual std::any visitSuperExpr(std::shared_ptr<Super> expr) = 0;
   virtual std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) = 0;
   virtual std::any visitUnaryExpr(std::shared_ptr<Unary> expr) = 0;
   virtual std::any visitVariableExpr(std::shared_ptr<Variable> expr) = 0;
@@ -323,6 +325,19 @@ struct Set : Expr, public std::enable_shared_from_this<Set>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitSetExpr(shared_from_this());
+  }
+};
+
+struct Super : Expr, public std::enable_shared_from_this<Super>{
+  const Token keyword;
+  const Token method;
+
+  Super(Token keyword, Token method)
+    : keyword{std::move(keyword)}, method{std::move(method)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitSuperExpr(shared_from_this());
   }
 };
 
