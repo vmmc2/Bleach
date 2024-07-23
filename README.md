@@ -132,7 +132,8 @@ std::io::print(s);
   - [x] Add support for anonymous functions
 - [x] __Part 8: Resolving and Binding (Review Implementation)__
 - [x] __Part 9: Classes (Review Implementation)__
-- [ ] __Part 10: Inheritance (Review Implementation)__
+- [x] __Part 10: Inheritance (Review Implementation)__
+- [ ] __Optional: Good to have features__ 
   - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
   - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
   - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
