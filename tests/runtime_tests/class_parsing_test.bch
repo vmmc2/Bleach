@@ -4,4 +4,4 @@ class Bagel{
   }
 }
 
-print Bagel; 
+print Bagel;
