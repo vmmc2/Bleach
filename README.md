@@ -133,18 +133,28 @@ std::io::print(s);
 - [x] __Part 8: Resolving and Binding (Review Implementation)__
 - [x] __Part 9: Classes (Review Implementation)__
 - [x] __Part 10: Inheritance (Review Implementation)__
-- [ ] __Optional: Good to have features__ 
-  - [ ] Make the ```str``` type more robust (immutability like python, not allow assignment, which methods to include)
-  - [ ] Add the ```list``` type (which methods to include and how to traverse values of such type)
-  - [ ] Add the ```dict``` type (which methods to include and how to traverse values of such type)
-  - [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of user defined class). __This might be an overkill for the purpose of the language. Need to think more about it.__
 
 
-## Noticed bugs that need to be fixed
-- [ ] __MUST FIX THE RUNTIME ERRORS OF THE NATIVE FUNCTIONS.__
-- [x] __FIX THE BUG WHERE A RETURN STATEMENT IS NOT BEING ALLOWED INSIDE AN ANONYMOUS FUNCTION. IT SHOULD BE.__
-- [ ] __CONSIDER USING THE ```=>``` OR THE ```->``` FOR KEY-VALUE NOTATION IN DICT LITERALS.__
-- [x] __FIX THE BUG WHERE VARIABLE REDECLARATION INSIDE THE SAME SCOPE IS ALLOWED. IT SHOULD NOT BE.__
+## To Do
+- [ ] Decide how should be the syntax of native functions from the Bleach language.
+- [ ] Fix the terminal displaying related to runtime errors of native functions from the Bleach language.
+
+
+## Good to have features
+- [ ] Make the ```str``` type more robust.
+  - [ ] Think about which methods to include in this type.
+  - [ ] Think about how to index a value of string type. 
+- [ ] Add the ```list``` type.
+  - [ ] Think about how to lex/scan a ```list``` literal.
+  - [ ] Think about how to parse a ```list``` literal (AST node).
+  - [ ] Think about how the resolver should deal with a ```list``` literal.
+  - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```list``` value. Think about how the sorting of a ```list``` value should work.
+- [ ] Add the ```dict``` type.
+  - [ ] Think about how to lex/scan a ```dict``` literal.
+  - [ ] Think about how to parse a ```dict``` literal (AST node).
+  - [ ] Think about how the resolver should deal with a ```dict``` literal.
+  - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```dict``` value. Think about which types could be hashable.
+- [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of user defined class). __This might be an overkill for the purpose of the language. Need to think more about it.__
 
 
 ## Current State of the Bleach Language Context-Free Grammar
@@ -187,7 +197,7 @@ primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | la
 lambdaFunctionExpr → "lambda" "(" parameters? ")" block
 ```
 
-
+<!--
 ## LLVM Version of the Bleach Language (Not priority right now)
 ### Initial Setup
 1. On the root folder of your machine:
@@ -208,7 +218,7 @@ cmake ../llvm -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=~/llvm-project/build -D
 ```shell
 make
 ```
-
+-->
 
 <!--
 ## Doubts
