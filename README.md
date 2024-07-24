@@ -137,7 +137,7 @@ std::io::print(s);
 
 ## To Do
 - [ ] Decide how should be the syntax of native functions from the Bleach language.
-- [ ] Fix the terminal displaying related to runtime errors of native functions from the Bleach language.
+- [ ] Fix the terminal displaying problems related to runtime errors of native functions from the Bleach language.
 
 
 ## Good to have features
