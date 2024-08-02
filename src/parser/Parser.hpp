@@ -428,7 +428,7 @@ class Parser{
       if(!check(TokenType::RIGHT_PAREN)){
         do{
           if(parameters.size() >= 255){
-            error(peek(), "A " + kind + "can't have more than 255 parameters.");
+            error(peek(), "A " + kind + "can't have more than 255 parameters");
           }
           parameters.push_back(consume(TokenType::IDENTIFIER, "Expected a parameter name inside a " + kind + " parameter's list."));
         }while(match(TokenType::COMMA));
@@ -878,13 +878,14 @@ class Parser{
     }
 
     std::shared_ptr<Expr> lambdaExpression(){
-      consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'lambda' keyword");
+      consume(TokenType::ARROW, "Expected a '->' after the 'lambda' keyword");
+      consume(TokenType::LEFT_PAREN, "Expected a '(' after the ':' character, which is supposed to appear after the 'lambda' keyword");
 
       std::vector<Token> parameters;
       if(!check(TokenType::RIGHT_PAREN)){
         do{
           if(parameters.size() >= 255){
-            error(peek(), "An anonymous function can't have more than 255 parameters.");
+            error(peek(), "An anonymous function can't have more than 255 parameters");
           }
           parameters.push_back(consume(TokenType::IDENTIFIER, "Expected a parameter name inside an anonymous function parameter's list"));
         }while(match(TokenType::COMMA));

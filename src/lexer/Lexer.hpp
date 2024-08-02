@@ -263,7 +263,7 @@ class Lexer{
       }
 
       if(isAtEnd()){
-        error(line, "Unterminated multi-line comment.");
+        error(line, "Unterminated multi-line comment");
         return;
       }
       return;
@@ -291,7 +291,7 @@ class Lexer{
       if(keywords.find(lexeme) != keywords.end()){
         type = keywords[lexeme];
       }else if(lexeme.find(":") != std::string::npos && nativeFunctions.find(lexeme) == nativeFunctions.end()){
-        error(line, "Cannot use the ':' character if not in a Bleach native function call.");
+        error(line, "Cannot use the ':' character if not in a Bleach native function call");
       }
       else{
         type = TokenType::IDENTIFIER;
@@ -352,7 +352,7 @@ class Lexer{
       }
 
       if(isAtEnd()){
-        error(line, "Unterminated string.");
+        error(line, "Unterminated string");
         return;
       }
 
@@ -412,7 +412,11 @@ class Lexer{
           addToken(TokenType::PLUS);
           break;
         case('-'):
-          addToken(TokenType::MINUS);
+          if(match('>')){
+            addToken(TokenType::ARROW);
+          }else{
+            addToken(TokenType::MINUS);
+          }
           break;
         case('*'):
           addToken(TokenType::STAR);

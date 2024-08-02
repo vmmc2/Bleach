@@ -39,7 +39,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
       std::map<std::string, bool>& scope = scopes.back();
       if(scope.find(name.lexeme) != scope.end()){ // This means that a variable is being redeclared inside a local scope, which is not allowed. In such scenario, an error must be reported by the resolver.
-        error(name, "A variable cannot be redeclared inside the same local scope.");
+        error(name, "A variable cannot be redeclared inside the same local scope");
       }
       scope[name.lexeme] = false;
 
@@ -192,7 +192,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitSelfExpr(std::shared_ptr<Self> expr) override{
       if(currentClass == ClassType::NONE){
-        error(expr->keyword, "Cannot use 'self' outside of a class.");
+        error(expr->keyword, "Cannot use 'self' outside of a class");
       }
       resolveLocal(expr, expr->keyword); // Since "self" is considered to be a kind of hidden variable, we need to treat it like so.
 
@@ -208,9 +208,9 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitSuperExpr(std::shared_ptr<Super> expr) override{
       if(currentClass == ClassType::NONE){
-        error(expr->keyword, "Cannot use the 'super' keyword outside of a class.");
+        error(expr->keyword, "Cannot use the 'super' keyword outside of a class");
       }else if(currentClass != ClassType::SUBCLASS){
-        error(expr->keyword, "Cannot use the 'super' keyword inside a class that does not have a superclass.");
+        error(expr->keyword, "Cannot use the 'super' keyword inside a class that does not have a superclass");
       }
 
       resolveLocal(expr, expr->keyword);
@@ -237,7 +237,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
         auto& scope = scopes.back();
         auto elem = scope.find(expr->name.lexeme);
         if(elem != scope.end() && elem->second == false){ // Remember: If the interpreter is visiting this node, then its visiting a name that references a variable inside an expression.
-          error(expr->name, "Cannot read local variable in its own initializer."); // If the variable that it refers to has a false value associated to it in the scope, then it means we are inside an initializer using a variable that is refering to the variable that is being declared. Not allowed.
+          error(expr->name, "Cannot read local variable in its own initializer"); // If the variable that it refers to has a false value associated to it in the scope, then it means we are inside an initializer using a variable that is refering to the variable that is being declared. Not allowed.
         }
       }
 
@@ -386,12 +386,12 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       if(currentFunction == FunctionType::NONE){
-        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function, lambda or method.");
+        error(stmt->keyword, "Cannot use the 'return' keyword outside of a function, lambda or method");
       }
 
       if(stmt->value != nullptr){
         if(currentFunction == FunctionType::INITIALIZER){
-          error(stmt->keyword, "Cannot use the 'return' keyword inside the 'init' method of a class.");
+          error(stmt->keyword, "Cannot use the 'return' keyword inside the 'init' method of a class");
         }
         resolve(stmt->value);
       }
