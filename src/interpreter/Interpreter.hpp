@@ -824,41 +824,74 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
           throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
         }
-      }else if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
+        return function->call(*this, std::move(arguments)); // Finally, the interpreter calls an instance of a Bleach class.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<BleachFunction>)){ // Third, the interpreter checks whether the callee is of type "BleachFuntion" because, if that's not the case, then an user cannot call it.
         function = std::any_cast<std::shared_ptr<BleachFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
         if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
           throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
         }
-      }else if(callee.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
+        return function->call(*this, std::move(arguments)); // Finally, the interpreter calls a Bleach function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
         function = std::any_cast<std::shared_ptr<BleachLambdaFunction>>(callee);  // Pointers in a "std::any" wrapper must be unwrapped before they can be cast.
         if(arguments.size() != function->arity()){ // Checks whether the number of arguments passed in the class, function or method call is equal to its declared arity.
           throw BleachRuntimeError{expr->paren, "Expected " + std::to_string(function->arity()) + " arguments, but instead received " + std::to_string(arguments.size()) + "."};
         }
-      }else if(callee.type() == typeid(std::shared_ptr<NativeClock>)){
+        return function->call(*this, std::move(arguments)); // Finally, the interpreter calls a Bleach lambda function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeClock>)){
         function = std::any_cast<std::shared_ptr<NativeClock>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeReadLine>)){
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeReadLine>)){
         function = std::any_cast<std::shared_ptr<NativeReadLine>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativePrint>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativePrint>)){
         function = std::any_cast<std::shared_ptr<NativePrint>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeFileRead>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeFileRead>)){
         function = std::any_cast<std::shared_ptr<NativeFileRead>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeFileWrite>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeFileWrite>)){
         function = std::any_cast<std::shared_ptr<NativeFileWrite>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         function = std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeExponentiation>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeExponentiation>)){
         function = std::any_cast<std::shared_ptr<NativeExponentiation>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeLogarithm>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeLogarithm>)){
         function = std::any_cast<std::shared_ptr<NativeLogarithm>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
         function = std::any_cast<std::shared_ptr<NativeSquareRoot>>(callee);
-      }else if(callee.type() == typeid(std::shared_ptr<NativeRandom>)){
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeRandom>)){
         function = std::any_cast<std::shared_ptr<NativeRandom>>(callee);
-      }else{
-        throw BleachRuntimeError{expr->paren, "Can only call classes, functions and methods."};
+
+         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
 
-      return function->call(*this, std::move(arguments)); // Finally, the interpreter calls the function.
+      throw BleachRuntimeError{expr->paren, "Can only call classes, functions, lambda functions, methods and native functions."};
     }
 
     std::any visitGetExpr(std::shared_ptr<Get> expr) override{
@@ -868,7 +901,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::shared_ptr<BleachInstance>>(object)->get(expr->name);
       }
 
-      throw BleachRuntimeError{expr->name, "Only BleachDict, BleachInstance or BleachList have properties."};
+      throw BleachRuntimeError{expr->name, "Only instances, lists or strings have properties."};
     }
 
     /**
