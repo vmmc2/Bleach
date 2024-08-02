@@ -44,7 +44,7 @@
     * __Swift Compiler:__ A compiler to the famous programming language developed by Apple, is written in C++.
 
 
-## Bleach Language Documentation and Bleach Tree-Walk Interpreter Documentation
+## Bleach Language Documentation
 * Both documentations can be found here (Insert a link later on).
 
 
