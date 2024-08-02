@@ -16,7 +16,7 @@
 **/
 class BleachRuntimeError : public std::runtime_error{
   public:
-    const Token& token; /**< Variable that represents the token that triggered the runtime error. */
+    const Token token; /**< Variable that represents the token that triggered the runtime error. */
     
     /**
      * @brief Constructs a BleachRuntimeError with the token that was responsible for causing the runtime error. 
@@ -28,10 +28,6 @@ class BleachRuntimeError : public std::runtime_error{
      * @param runtimeErrorMessage: The error message related to the runtime error that has happened.
     **/
     BleachRuntimeError(const Token& token, std::string_view runtimeErrorMessage)
-      : std::runtime_error{runtimeErrorMessage.data()}, token{token}
-    {}
-
-    BleachRuntimeError(std::string_view runtimeErrorMessage)
-      : std::runtime_error{runtimeErrorMessage.data()}, token{Token(TokenType::FILE_END, "", nullptr, 0)}
+      : token{token}, std::runtime_error{runtimeErrorMessage.data()}
     {}
 };
