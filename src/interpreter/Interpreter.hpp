@@ -260,6 +260,30 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       if(object.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
         return std::any_cast<std::shared_ptr<BleachLambdaFunction>>(object)->toString();
       }
+      if(object.type() == typeid(std::shared_ptr<NativeClock>)){
+        return std::any_cast<std::shared_ptr<NativeClock>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeReadLine>)){
+        return std::any_cast<std::shared_ptr<NativeReadLine>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativePrint>)){
+        return std::any_cast<std::shared_ptr<NativePrint>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
+        return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeLogarithm>)){
+        return std::any_cast<std::shared_ptr<NativeLogarithm>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeExponentiation>)){
+        return std::any_cast<std::shared_ptr<NativeExponentiation>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
+        return std::any_cast<std::shared_ptr<NativeSquareRoot>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeRandom>)){
+        return std::any_cast<std::shared_ptr<NativeRandom>>(object)->toString();
+      }
 
       return "Error in stringify: object type not recognized.";
     }
