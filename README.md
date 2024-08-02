@@ -194,7 +194,7 @@ unary → ( "!" | "-" ) unary | call
 call → primary ( "(" arguments? ")" | "." IDENTIFIER )*
 arguments → expression ( "," expression )*
 primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER | "super" . IDENTIFIER
-lambdaFunctionExpr → "lambda" "(" parameters? ")" block
+lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
 ```
 
 <!--
