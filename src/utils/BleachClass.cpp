@@ -28,6 +28,12 @@ std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> argum
   return instance; // Returning the instance after all this process is executed.
 }
 
+std::any BleachClass::call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments){
+  std::cout << "No implementation of this method available." << std::endl;
+ 
+  return {};
+}
+
 std::shared_ptr<BleachFunction> BleachClass::findMethod(const std::string& name){
   // First, we search for the method inside the current class.
   auto elem = methods.find(name);
