@@ -17,5 +17,6 @@ class BleachLambdaFunction : public BleachCallable{
     BleachLambdaFunction(std::shared_ptr<LambdaFunction> lambdaFunctionDeclaration, std::shared_ptr<Environment> closure);
     int arity() override;
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override;
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override;
     std::string toString() override;
 };

@@ -29,6 +29,12 @@ std::any BleachLambdaFunction::call(Interpreter& interpreter, std::vector<std::a
   return nullptr; // This here is necessary for the case when a function does not have a "return" statement. By default, all user defined functions in Bleach return nil (C++ nullptr).
 }
 
+std::any BleachLambdaFunction::call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments){
+  std::cout << "No implementation of this method available for the 'BleachLambdaClass'." << std::endl;
+ 
+  return {};
+}
+
 std::string BleachLambdaFunction::toString(){
   return "<lambda function>";
 }
