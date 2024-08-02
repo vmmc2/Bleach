@@ -1,0 +1,15 @@
+class Dog{
+  method greet(){
+    print "Owf Owf!";
+  }
+}
+
+class Corgi inherits Dog{
+  method greet(breed){
+    super.greet();
+    print "My name is Ichigo and I am a " + breed + ".";
+  }
+}
+
+let c = Corgi();
+c.greet("Corgi");

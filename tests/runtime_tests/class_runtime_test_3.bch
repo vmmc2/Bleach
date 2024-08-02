@@ -1,0 +1,17 @@
+class Base{
+  method greet(){
+    print "Hello from the base class!";
+  }
+}
+
+class Derived inherits Base{
+  method express(){
+    print "Express Yourself!";
+  }
+}
+
+let base = Base();
+let derived = Derived();
+
+derived.express();
+derived.greet();
