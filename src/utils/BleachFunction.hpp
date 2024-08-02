@@ -21,5 +21,6 @@ class BleachFunction : public BleachCallable{
     int arity() override;
     std::shared_ptr<BleachFunction> bind(std::shared_ptr<BleachInstance> instance);
     std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override;
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override;
     std::string toString() override;
 };
