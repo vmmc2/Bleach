@@ -286,7 +286,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       beginScope();
       scopes.back()["self"] = true;
 
-      for(const std::shared_ptr<Function> method : stmt->methods){
+      for(std::shared_ptr<Function> method : stmt->methods){
         FunctionType declaration = FunctionType::METHOD;
         if(method->name.lexeme == "init"){
           declaration = FunctionType::INITIALIZER;

@@ -334,7 +334,7 @@ class Parser{
 
       consume(TokenType::RIGHT_BRACE, "Expected a '}' after the body of the class");
 
-      return std::make_shared<Class>(name, superclass, methods);
+      return std::make_shared<Class>(std::move(name), superclass, std::move(methods));
     }
 
     std::shared_ptr<Stmt> continueStatement(){
@@ -860,7 +860,7 @@ class Parser{
         consume(TokenType::DOT, "Expected a '.' after the 'super' keyword");
         Token method = consume(TokenType::IDENTIFIER, "Expected a superclass method name");
 
-        return std::make_shared<Super>(keyword, method);
+        return std::make_shared<Super>(std::move(keyword), std::move(method));
       }
       if(match(TokenType::IDENTIFIER)){ // Parses a variable expression, which is an expression that is responsible for getting the value bound to a variable during runtime.
         return std::make_shared<Variable>(previous());

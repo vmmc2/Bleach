@@ -385,7 +385,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       std::map<std::string, std::shared_ptr<BleachFunction>> methods;
       for(std::shared_ptr<Function> method : stmt->methods){
-        std::shared_ptr<BleachFunction> function = std::make_shared<BleachFunction>(method, environment, method->name.lexeme == "init");
+        auto function = std::make_shared<BleachFunction>(method, environment, method->name.lexeme == "init");
         methods[method->name.lexeme] = function;
       }
 
@@ -395,7 +395,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       auto klass = std::make_shared<BleachClass>(stmt->name.lexeme, superklass, methods);
 
-      if(stmt->superclass != nullptr){
+      if(superklass != nullptr){
         environment = environment->enclosing;
       }
 
@@ -749,7 +749,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           if(left.type() == typeid(std::string) && right.type() == typeid(std::string)){
             return std::any_cast<std::string>(left) + std::any_cast<std::string>(right);
           }
-          throw BleachRuntimeError{expr->op, "Operands must be two numbers or two strings."};
+          if(left.type() == typeid(double) && right.type() == typeid(std::string)){
+            return std::to_string(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
+          }
+          if((left.type() == typeid(std::string) || right.type() == typeid(double))){
+            return std::any_cast<std::string>(left) + std::to_string(std::any_cast<double>(right));
+          }
+          throw BleachRuntimeError{expr->op, "Operands must be two numbers or two strings or one number and one string."};
         case(TokenType::MINUS):
           checkNumberOperands(expr->op, left, right);
           return std::any_cast<double>(left) - std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
@@ -938,7 +944,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       int distance = locals[expr];
 
       auto superclass = std::any_cast<std::shared_ptr<BleachClass>>(environment->getAt("super", distance));
-      auto object = std::any_cast<std::shared_ptr<BleachInstance>>(environment->getAt("this", distance - 1));
+      auto object = std::any_cast<std::shared_ptr<BleachInstance>>(environment->getAt("self", distance - 1));
 
       std::shared_ptr<BleachFunction> method = superclass->findMethod(expr->method.lexeme);
 
