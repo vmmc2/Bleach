@@ -29,7 +29,7 @@ std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> argum
 }
 
 std::any BleachClass::call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments){
-  std::cout << "No implementation of this method available." << std::endl;
+  std::cout << "No implementation of this method available for the 'BleachClass' class." << std::endl;
  
   return {};
 }

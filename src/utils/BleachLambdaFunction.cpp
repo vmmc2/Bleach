@@ -30,7 +30,7 @@ std::any BleachLambdaFunction::call(Interpreter& interpreter, std::vector<std::a
 }
 
 std::any BleachLambdaFunction::call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments){
-  std::cout << "No implementation of this method available for the 'BleachLambdaClass'." << std::endl;
+  std::cout << "No implementation of this method available for the 'BleachLambdaFunction' class." << std::endl;
  
   return {};
 }
