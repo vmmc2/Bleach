@@ -135,12 +135,7 @@ std::io::print(s);
 - [x] __Part 10: Inheritance (Review Implementation)__
 
 
-## To Do
-- [ ] Decide how should be the syntax of native functions from the Bleach language.
-- [ ] Fix the terminal displaying problems related to runtime errors of native functions from the Bleach language.
-
-
-## Good to have features
+## Future Steps
 - [ ] Make the ```str``` type more robust.
   - [ ] Think about which methods to include in this type.
   - [ ] Think about how to index a value of string type. 
@@ -149,12 +144,6 @@ std::io::print(s);
   - [ ] Think about how to parse a ```list``` literal (AST node).
   - [ ] Think about how the resolver should deal with a ```list``` literal.
   - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```list``` value. Think about how the sorting of a ```list``` value should work.
-- [ ] Add the ```dict``` type.
-  - [ ] Think about how to lex/scan a ```dict``` literal.
-  - [ ] Think about how to parse a ```dict``` literal (AST node).
-  - [ ] Think about how the resolver should deal with a ```dict``` literal.
-  - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```dict``` value. Think about which types could be hashable.
-- [ ] Make comparison and equality operators more robust with respect to its operands (allow them to be any type of user defined class). __This might be an overkill for the purpose of the language. Need to think more about it.__
 
 
 ## Current State of the Bleach Language Context-Free Grammar
