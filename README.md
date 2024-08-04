@@ -48,7 +48,7 @@
 * The link to the official Bleach documentation page will be inserted later on.
 
 
-## Bleach Syntax Highlight VSCode Extension
+## Bleach Language Syntax Highlight VSCode Extension
 * The link to the official Bleach syntax highlight VSCode extension will be inserted later on.
 
 
