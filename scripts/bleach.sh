@@ -7,7 +7,7 @@ YELLOW='\033[33m'
 NC='\033[0m' # No Color
 
 # Navigate to the subdirectory where the Makefile is located
-cd src
+cd ../src
 
 # Clean and build the project
 echo -e "${YELLOW}Cleaning the project... ${NC}"
