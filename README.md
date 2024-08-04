@@ -50,15 +50,29 @@
 
 ## How to use it?
 1. Clone this repository in your local machine.
-2. Go to the ```Bleach``` directory. Then, execute the following commands inside it:
+2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it:
 ```sh
-cd src
-make
+cd scripts
+chmod +x bleach.sh
 ```
-4. Run the BLEACH Interpreter:
+3. Go back to the ```Bleach``` root directory:
 ```sh
-./BleachInterpreter # Executes the interpreter in the interactive mode (REPL mode).
-./BleachInterpreter absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+cd scripts
+./bleach.sh # Executes the interpreter in the interactive mode (REPL mode).
+./bleach.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+```
+
+
+## How to run the unit tests of the Bleach Tree-Walk Interpreter?
+1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it:
+```sh
+cd scripts
+chmod +x bleach_test_pipeline.sh
+```
+3. Go back to the ```Bleach``` root directory:
+```sh
+cd scripts
+./bleach_test_pipeline.sh
 ```
 
 
