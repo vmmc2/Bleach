@@ -45,7 +45,7 @@
 
 
 ## Bleach Language Documentation
-* Both documentations can be found here (Insert a link later on).
+* The link to the official Bleach documentation page will be inserted later on.
 
 
 ## How to use it?
