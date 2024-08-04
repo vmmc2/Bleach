@@ -3,7 +3,7 @@
 
 
 ## Intro
-* My undergraduate thesis in Computer Engineering
+* The implementation of my undergraduate thesis in Computer Engineering
   * Author: Victor Miguel de Morais Costa
   * Advisor: Leopoldo Motta Teixeira
 
@@ -42,6 +42,10 @@
     * __LLVM (Low Level Virtual Machine):__ A compiler infrastructure project that includes a collection of modular and reusable compiler and toolchain components. While LLVM itself is written in C++, it provides support for multiple programming languages.
     * __MSVC (Microsoft Visual C++ Compiler):__ A part of the famous Visual Studio IDE.
     * __Swift Compiler:__ A compiler to the famous programming language developed by Apple, is written in C++.
+
+
+## The undergraduate thesis
+* If you are interested in check out what motivated me to do this project, the though process to make project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
 
 
 ## Bleach Language Documentation
