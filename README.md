@@ -55,9 +55,8 @@
 cd scripts
 chmod +x bleach.sh
 ```
-3. Go back to the ```Bleach``` root directory:
+3. Execute the script that starts up the Bleach Tree-Walk Interpreter:
 ```sh
-cd scripts
 ./bleach.sh # Executes the interpreter in the interactive mode (REPL mode).
 ./bleach.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
 ```
@@ -69,9 +68,8 @@ cd scripts
 cd scripts
 chmod +x bleach_test_pipeline.sh
 ```
-3. Go back to the ```Bleach``` root directory:
+3. Execute the script that run all of the unit tests related to the Bleach Tree-Walk Interpreter:
 ```sh
-cd scripts
 ./bleach_test_pipeline.sh
 ```
 
