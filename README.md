@@ -48,6 +48,10 @@
 * The link to the official Bleach documentation page will be inserted later on.
 
 
+## Bleach Syntax Highlight VSCode Extension
+* The link to the official Bleach syntax highlight VSCode extension will be inserted later on.
+
+
 ## How to use it?
 1. Clone this repository in your local machine.
 2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it:
