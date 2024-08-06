@@ -45,15 +45,15 @@
 
 
 ## The undergraduate thesis
-* If you are interested in check out what motivated me to do this project, the though process to make project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
+* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
 
 
 ## Bleach Language Documentation
-* The link to the official Bleach documentation page will be inserted later on.
+* The link to the official Bleach Language documentation page will be inserted later on.
 
 
 ## Bleach Language Syntax Highlight VSCode Extension
-* The link to the official Bleach syntax highlight VSCode extension will be inserted later on.
+* The link to the official Bleach Language syntax highlight VSCode extension will be inserted later on.
 
 
 ## How to use it?
@@ -79,57 +79,6 @@ chmod +x bleach_test_pipeline.sh
 3. Execute the script that run all of the unit tests related to the Bleach Tree-Walk Interpreter:
 ```sh
 ./bleach_test_pipeline.sh
-```
-
-
-## Examples of code written in Bleach
-* Fatorial:
-```js
-function fatorial(n){
-  if(n == 0){
-    return 1;
-  }
-  return n * fatorial(n - 1);
-}
-```
-
-* Fibonacci:
-```js
-function fib(n){
-  if(n == 1 or n == 2){
-    return 1;
-  }
-  return fib(n - 1) + fib(n - 2);
-}
-```
-
-* Iteration
-```js
-function loop(){
-  for(let i = 0; i <= 10; i++){
-    if(i == 4 or i == 5){
-      continue;
-    }elif(i == 10){
-      break;
-    }else{
-      std::io::print("The current number is:", i);
-    }
-  }
-}
-
-loop();
-```
-
-* User Input
-```js
-function getUserInput(){
-  let s = std::io::readLine();
-
-  return s;
-}
-
-let s = getUserInput();
-std::io::print(s);
 ```
 
 
