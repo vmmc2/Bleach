@@ -1,14 +1,16 @@
 #!/bin/bash
 
-# Directories containing Lox files and expected output
-VALID_LOX_DIR="path/to/valid_lox_files"
-INVALID_LOX_DIR="path/to/invalid_lox_files"
-EXPECTED_VALID_OUTPUT_DIR="path/to/expected_valid_outputs"
-EXPECTED_INVALID_OUTPUT_DIR="path/to/expected_invalid_outputs"
-# Path to your Lox interpreter executable
-INTERPRETER="./BleachInterpreter"
+# Directories containing Bleach files and expected output
+VALID_BLEACH_PROGRAMS_DIR="../tests/valid_bleach_programs"
+INVALID_BLEACH_PROGRAMS_DIR="../to/tests/invalid_bleach_programs"
+EXPECTED_VALID_BLEACH_PROGRAMS_OUTPUT_DIR="../tests/valid_bleach_programs_output"
+EXPECTED_INVALID_BLEACH_PROGRAMS_OUTPUT_DIR="../tests/invalid_bleach_programs_output"
+
+# Path to the Bleach Interpreter executable
+INTERPRETER="../src/BleachInterpreter"
+
 # Directory to save output logs
-LOG_DIR="path/to/logs"
+LOG_DIR="../logs"
 mkdir -p "$LOG_DIR"  # Create the log directory if it does not exist
 
 # Define color codes
@@ -59,22 +61,32 @@ run_invalid_test() {
     ((total_invalid++))
 }
 
-# Run tests for valid Lox files
-for file in "$VALID_LOX_DIR"/*.lox; do
-    run_valid_test "$file"
+
+show_file_name(){
+    echo -e $1
+}
+
+# Run tests for valid Bleach files
+for subdir in "lexer" "parser" "resolver" "runtime"; do
+    for file in "$VALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
+        show_file_name "$file"
+    done
 done
 
-# Run tests for invalid Lox files
-for file in "$INVALID_LOX_DIR"/*.lox; do
-    run_invalid_test "$file"
+# Run tests for invalid Bleach files
+for subdir in "lexer" "parser" "resolver" "runtime"; do
+    for file in "$INVALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
+        show_file_name "$file"
+    done
 done
 
 # Show summaries
+echo ""
 printf "${BLUE}Valid Tests Summary:${NC}\n"
 printf "${BLUE}Total valid tests: $total_valid${NC}\n"
 printf "${GREEN}Passed valid tests: $passed_valid${NC}\n"
 printf "${RED}Failed valid tests: $((total_valid - passed_valid))${NC}\n"
-
+echo ""
 printf "${BLUE}Invalid Tests Summary:${NC}\n"
 printf "${BLUE}Total invalid tests: $total_invalid${NC}\n"
 printf "${GREEN}Failed invalid tests: $passed_invalid${NC}\n"
