@@ -2,7 +2,7 @@
 
 # Directories containing Bleach files and expected output
 VALID_BLEACH_PROGRAMS_DIR="../tests/valid_bleach_programs"
-INVALID_BLEACH_PROGRAMS_DIR="../to/tests/invalid_bleach_programs"
+INVALID_BLEACH_PROGRAMS_DIR="../tests/invalid_bleach_programs"
 EXPECTED_VALID_BLEACH_PROGRAMS_OUTPUT_DIR="../tests/valid_bleach_programs_output"
 EXPECTED_INVALID_BLEACH_PROGRAMS_OUTPUT_DIR="../tests/invalid_bleach_programs_output"
 
@@ -26,26 +26,6 @@ passed_valid=0
 total_invalid=0
 passed_invalid=0
 
-# Function to run a single valid test
-run_valid_test() {
-    local file=$1
-    local log_file="$LOG_DIR/$(basename "$file").log"
-    local expected_file="$EXPECTED_VALID_OUTPUT_DIR/$(basename "$file").expected"
-
-    printf "${YELLOW}Running valid test: $file...${NC}\n"
-    if $INTERPRETER "$file" >"$log_file" 2>&1; then
-        if diff -q "$log_file" "$expected_file" > /dev/null; then
-            printf "${GREEN}Valid test passed: $file${NC}\n"
-            ((passed_valid++))
-        else
-            printf "${RED}Valid test failed (output mismatch): $file${NC}\n"
-        fi
-    else
-        printf "${RED}Valid test failed (interpreter error): $file${NC}\n"
-    fi
-    ((total_valid++))
-}
-
 # Function to run a single invalid test
 run_invalid_test() {
     local file=$1
@@ -61,24 +41,39 @@ run_invalid_test() {
     ((total_invalid++))
 }
 
+# Function to run a single valid test
+run_valid_test() {
+    bleach_file=$1 # file to be executed
+    log_file=$2 # file with the produced result by the executed file
+    expected_result_file=$3 # file with the expected result to be generated the executed file
 
-show_file_name(){
-    echo -e $1
+    printf "${YELLOW}Running valid test: $bleach_file...${NC}\n"
+    if $INTERPRETER "$bleach_file" > "$log_file" 2>&1; then
+        if diff -q "$log_file" "$expected_result_file" > /dev/null; then
+            printf "${GREEN}Valid test passed: $bleach_file${NC}\n"
+            ((passed_valid++))
+        else
+            printf "${RED}Valid test failed (output mismatch): $bleach_file${NC}\n"
+        fi
+    else
+        printf "${RED}Valid test failed (interpreter error): $bleach_file${NC}\n"
+    fi
+    ((total_valid++))
 }
 
 # Run tests for valid Bleach files
-for subdir in "lexer" "parser" "resolver" "runtime"; do
+for subdir in "runtime"; do
     for file in "$VALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
-        show_file_name "$file"
+        run_valid_test "$file" "$LOG_DIR/valid_bleach_programs/$subdir/$(basename "$file").log" "$EXPECTED_VALID_BLEACH_PROGRAMS_OUTPUT_DIR/$subdir/$(basename "$file").expected"
     done
 done
 
 # Run tests for invalid Bleach files
-for subdir in "lexer" "parser" "resolver" "runtime"; do
-    for file in "$INVALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
-        show_file_name "$file"
-    done
-done
+# for subdir in "lexer" "parser" "resolver" "runtime"; do
+#     for file in "$INVALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
+#         run_invalid_test "$file" "$subdir"
+#     done
+# done
 
 # Show summaries
 echo ""
