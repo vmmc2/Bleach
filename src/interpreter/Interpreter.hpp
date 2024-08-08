@@ -3,6 +3,7 @@
 #include <any>
 #include <cmath>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <typeinfo>
 #include <utility>
@@ -197,6 +198,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return true;
     }
 
+    std::string formatDouble(double value){
+        std::ostringstream out;
+
+        // Check if the value has a fractional part
+        if(value == static_cast<int>(value)){
+          // If the value is an integer, don't show decimal places
+          out << std::fixed << std::setprecision(0) << value;
+        }else{
+          // If the value has a fractional part, show it with the required precision
+          out << std::fixed << std::setprecision(15) << value;
+
+          // Remove trailing zeros
+          std::string result = out.str();
+          result.erase(result.find_last_not_of('0') + 1, std::string::npos);
+
+          // If the last character is a '.', remove it as well
+          if(result.back() == '.'){
+            result.pop_back();
+          }
+          return result;
+        }
+
+        return out.str();
+    }
+
     std::any lookUpVariable(const Token& name, std::shared_ptr<Expr> expr){
       auto elem = locals.find(expr);
       if(elem != locals.end()){ // If the Variable expression has been found here, then it means that it is a local variable.
@@ -231,22 +257,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::string>(object);
       }
       if(object.type() == typeid(double)){
-        std::string numberAsText = std::to_string(std::any_cast<double>(object));
-        std::string::size_type dotPosition = numberAsText.find(".");
-        bool allZeroes = true;
-
-        for(std::string::size_type startPoint = dotPosition + 1; startPoint < numberAsText.length(); startPoint++){
-          if(numberAsText[startPoint] != '0'){
-            allZeroes = false;
-            break;
-          }
-        }
-
-        if(allZeroes){
-          numberAsText = numberAsText.substr(0, dotPosition);
-        }
-        
-        return numberAsText;
+        double value = std::any_cast<double>(object);
+        return formatDouble(value);
       }
       if(object.type() == typeid(std::shared_ptr<BleachClass>)){
         return std::any_cast<std::shared_ptr<BleachClass>>(object)->toString();
@@ -774,10 +786,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
             return std::any_cast<std::string>(left) + std::any_cast<std::string>(right);
           }
           if(left.type() == typeid(double) && right.type() == typeid(std::string)){
-            return std::to_string(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
+            return formatDouble(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
           }
           if((left.type() == typeid(std::string) || right.type() == typeid(double))){
-            return std::any_cast<std::string>(left) + std::to_string(std::any_cast<double>(right));
+            return std::any_cast<std::string>(left) + formatDouble(std::any_cast<double>(right));
           }
           throw BleachRuntimeError{expr->op, "Operands must be two numbers or two strings or one number and one string."};
         case(TokenType::MINUS):
