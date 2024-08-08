@@ -6,7 +6,7 @@ class Dog{
   }
 
   method greet(){
-    return "Hello, there! My name is " + self.name + " and I have " + self.height + "m and " + self.weight + "kgs.";
+    return "Hello, there! My name is " + self.name + " and I have " + self.height + " m and " + self.weight + " kg.";
   }
 }
 
@@ -21,5 +21,9 @@ print d.greet();
 d.name = "Sirius";
 d.height = 1.23;
 d.weight = 64;
+
+print d.name;
+print d.height;
+print d.weight;
 
 print d.greet();

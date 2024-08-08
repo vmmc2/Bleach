@@ -10,7 +10,6 @@ class Derived inherits Base{
   }
 }
 
-let base = Base();
 let derived = Derived();
 
 derived.express();

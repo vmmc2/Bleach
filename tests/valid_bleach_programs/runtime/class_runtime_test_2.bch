@@ -4,7 +4,7 @@ class fatSolver{
   }
 
   method solve(){
-    let fatorial = lambda (x){
+    let fatorial = lambda -> (x){
       if(x == 0){
         return 1;
       }else{
