@@ -200,7 +200,7 @@ struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
  * control flow mechanism. This struct has two attributes: The first one is called "condition". It is an 
  * expression that determines for how long the statement inside the while body will be executed. It is going
  * to be executed as long as the "condition" expression evaluates to true. The second one is called "body". It 
- * is a statement that will be executed while the "condition" expression evaluates to true.
+ * is a list of statements that will be executed while the "condition" expression evaluates to true.
  * 
  * @note: Remember the statement present inside a do-while statement is always executed in its very first 
  * iteration because the evaluation of the expression present inside "condition" is made at the end of each 
@@ -219,7 +219,7 @@ struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
    * (including the first one). The value produced by the evaluation of this expression is what determines 
    * whether or not the statement inside the while loop is going to be executed. If it's true, then yes. 
    * Otherwise, no (represented by the std::shared_ptr<Expr> type).
-   * @param body: The block of statements that will be executed or not depending on the value produced by the 
+   * @param body: The list of statements that will be executed or not depending on the value produced by the 
    * evaluation of the expression stored inside the "condition" attribute (represented by the 
    * std::vector<std::shared_ptr<Stmt>> type). Remember that the statements stored inside "body" will always be
    * executed in the first iteration of this type of loop because "condition" is always evaluated at the end of
@@ -495,8 +495,8 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
  * the Bleach language. A while statement is a statement that during runtime works as a looping control flow
  * mechanism. This struct has two attributes: The first one is called "condition". It is an expression that
  * determines for how long the statement inside the while body will be executed. It is going to be executed
- * as long as the "condition" expression evaluates to true. The second one is called "body". It is a statement
- * that will be executed while the "condition" expression evaluates to true.
+ * as long as the "condition" expression evaluates to true. The second one is called "body". It is a list of 
+ * statements that will be executed while the "condition" expression evaluates to true.
  */
 struct While : Stmt, public std::enable_shared_from_this<While>{
   const std::shared_ptr<Expr> condition;
@@ -511,7 +511,7 @@ struct While : Stmt, public std::enable_shared_from_this<While>{
    * loop (including the first one). The value produced by the evaluation of this expression is what determines
    * whether or not the statement inside the while loop is going to be executed. If it's true, then yes. 
    * Otherwise, no (represented by the std::shared_ptr<Expr> type).
-   * @param body: The block of statement that will be executed or not depending on the value produced by the 
+   * @param body: The list of statements that will be executed or not depending on the value produced by the 
    * evaluation of the expression stored inside the "condition" attribute (represented by the 
    * std::vector<std::shared_ptr<Stmt>> type). 
   **/
