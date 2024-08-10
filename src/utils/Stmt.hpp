@@ -139,11 +139,36 @@ struct Break : Stmt, public std::enable_shared_from_this<Break>{
   }
 };
 
+/**
+ * @struct Class
+ * 
+ * @brief Defines a struct to represent a class declaration statement node from the AST of the Bleach language.
+ *
+ * The Class struct defines a struct to represent a class declaration statement node from the AST (Abstract 
+ * Syntax Tree) of the Bleach language. A class declaration statement is a statement that is used to declare a
+ * new user created class.
+ * This struct has three attributes: The first one is "name". It's a token that represents the name of the 
+ * declared class. The second one is "superclass". It's a variable expression that is responsible for storing 
+ * the name of the superclass (if any) from which class that has just been declared inherits from. The third one
+ * is "methods". It's just a list of function declaration statements that represents the methods that were 
+ * declared inside this class.
+ */
 struct Class : Stmt, public std::enable_shared_from_this<Class>{
   const Token name;
   const std::shared_ptr<Variable> superclass;
   const std::vector<std::shared_ptr<Function>> methods;
 
+  /**
+   * @brief Constructs a Class node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Class object with the attributes that was mentioned above.
+   *
+   * @param name: The token that represents the name of the declared class (represented by the Token type).
+   * @param superclass: The expression that stores a token which represents the name of the superclass that the
+   * declared class inherits from (represented by the std::shared_ptr<Variable> type).
+   * @param methods: The list of methods that the declared class has declared inside itself (represented by the 
+   * std::vector<std::shared_ptr<Function>> type).
+  **/
   Class(Token name, std::shared_ptr<Variable> superclass, std::vector<std::shared_ptr<Function>> methods)
     : name{std::move(name)}, superclass{std::move(superclass)}, methods{std::move(methods)}
   {}
