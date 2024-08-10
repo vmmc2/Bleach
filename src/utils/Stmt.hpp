@@ -105,9 +105,27 @@ struct Block : Stmt, public std::enable_shared_from_this<Block>{
   }
 };
 
+
+/**
+ * @struct Break
+ * 
+ * @brief Defines a struct to represent a break statement node from the AST of the Bleach language.
+ *
+ * The Break struct defines a struct to represent a break statement node from the AST (Abstract Syntax Tree) of
+ * the Bleach language. A break statement is a statement that is used to interrupt the execution of the nearest
+ * enclosing loop (whether it is a "for", "do-while" of "while" loop).
+ * This struct has just one attribute: "keyword". It is a token that represents the "break" keyword.
+ */
 struct Break : Stmt, public std::enable_shared_from_this<Break>{
   const Token keyword;
 
+  /**
+   * @brief Constructs a Break node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Break object with the attribute that was mentioned above.
+   *
+   * @param keyword: The token that represents the "break" keyword (represented by the Token type).
+  **/
   Break(Token keyword)
     : keyword{std::move(keyword)}
   {}
@@ -139,9 +157,26 @@ struct Class : Stmt, public std::enable_shared_from_this<Class>{
   }
 };
 
+/**
+ * @struct Continue
+ * 
+ * @brief Defines a struct to represent a continue statement node from the AST of the Bleach language.
+ *
+ * The Continue struct defines a struct to represent a continue statement node from the AST (Abstract Syntax 
+ * Tree) of the Bleach language. A continue statement is a statement that is used to make the the nearest 
+ * enclosing loop (whether it is a "for", "do-while" of "while" loop) immediately go to its next iteration.
+ * This struct has just one attribute: "keyword". It is a token that represents the "continue" keyword.
+ */
 struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
   const Token keyword;
 
+  /**
+   * @brief Constructs a Continue node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Continue object with the attribute that was mentioned above.
+   *
+   * @param keyword: The token that represents the "continue" keyword (represented by the Token type).
+  **/
   Continue(Token keyword)
     : keyword{std::move(keyword)}
   {}
@@ -371,10 +406,34 @@ struct Print : Stmt, public std::enable_shared_from_this<Print>{
   }
 };
 
+/**
+ * @struct Return
+ * 
+ * @brief Defines a struct to represent a return statement node from the AST of the Bleach language.
+ *
+ * The Return struct defines a struct to represent a return statement node from the AST (Abstract Syntax 
+ * Tree) of the Bleach language. A return statement is a statement that is used inside functions, lambdas and
+ * methods to signal the end of the body of a function, a lambda or a method. It can possibly, but not 
+ * necessarily, be followed by an expression that indicates the value returned by the function, lambda or 
+ * method.
+ * This struct has two attributes: The first one is called "keyword". It is a token that represents the "return"
+ * keyword. The second one is called "value". It is an expression, that can possibly not exist, whose purpose is
+ * to be evaluated during runtime and return the produced value as its result.
+ */
 struct Return : Stmt, public std::enable_shared_from_this<Return>{
   const Token keyword;
   const std::shared_ptr<Expr> value;
 
+  /**
+   * @brief Constructs a Return node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Return object with the two attributes that were mentioned above.
+   *
+   * @param keyword: The token that represents the "return" keyword (represented by the Token type).
+   * @param value: The expression that will be evaluated and whose resulting value will be used as the
+   * return value of a function, a lambda or a method (represented by the std::shared_ptr<Expr> type). 
+   * If nullptr is provided as its value, then the return statement will return nil as its default value.
+  **/
   Return(Token keyword, std::shared_ptr<Expr> value)
     : keyword{std::move(keyword)}, value{std::move(value)}
   {}
