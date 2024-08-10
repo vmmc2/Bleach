@@ -222,11 +222,11 @@ struct Continue : Stmt, public std::enable_shared_from_this<Continue>{
  * The DoWhile struct defines a struct to represent a do-while statement node from the AST (Abstract Syntax 
  * Tree) of the Bleach language. A do-while statement is a statement that during runtime works as a looping 
  * control flow mechanism. This struct has two attributes: The first one is called "condition". It is an 
- * expression that determines for how long the statement inside the while body will be executed. It is going
- * to be executed as long as the "condition" expression evaluates to true. The second one is called "body". It 
- * is a list of statements that will be executed while the "condition" expression evaluates to true.
+ * expression that determines for how long the statements inside the do-while body will be executed. The second
+ * one is called "body". It is a list of statements that will be executed while the "condition" expression 
+ * evaluates to true.
  * 
- * @note: Remember the statement present inside a do-while statement is always executed in its very first 
+ * @note: Remember that the statements present inside a do-while statement are always executed in its very first 
  * iteration because the evaluation of the expression present inside "condition" is made at the end of each 
  * iteration.
  */
@@ -241,7 +241,7 @@ struct DoWhile : Stmt, public std::enable_shared_from_this<DoWhile>{
    *
    * @param condition: The expression that will be evaluated at the end of each iteration of the do-while loop
    * (including the first one). The value produced by the evaluation of this expression is what determines 
-   * whether or not the statement inside the while loop is going to be executed. If it's true, then yes. 
+   * whether or not the statements inside the do-while loop are going to be executed. If it's true, then yes. 
    * Otherwise, no (represented by the std::shared_ptr<Expr> type).
    * @param body: The list of statements that will be executed or not depending on the value produced by the 
    * evaluation of the expression stored inside the "condition" attribute (represented by the 
@@ -300,12 +300,44 @@ struct Expression : Stmt, public std::enable_shared_from_this<Expression>{
   }
 };
 
+/**
+ * @struct For
+ * 
+ * @brief Defines a struct to represent a for statement node from the AST of the Bleach language.
+ *
+ * The For struct defines a struct to represent a for statement node from the AST (Abstract Syntax 
+ * Tree) of the Bleach language. A for statement is a statement that during runtime works as a looping 
+ * control flow mechanism. This struct has four attributes: The first one is called "initializer". It's a 
+ * statement executed only once before the runtime enters the for loop. Such statement is usually used to 
+ * create a new variable or execute an expression statement. The second one is called "condition". It is an 
+ * expression that determines for how long the statements inside the while body will be executed. The third one ]
+ * is called "increment". It's an expression that will be evaluated at the end of each iteration of a for loop. 
+ * The fourth one is called "body". It's a list of statements that will be executed while the "condition" 
+ * expression evaluates to true.
+ */
 struct For : Stmt, public std::enable_shared_from_this<For>{
   const std::shared_ptr<Stmt> initializer;
   const std::shared_ptr<Expr> condition;
   const std::shared_ptr<Expr> increment;
   const std::vector<std::shared_ptr<Stmt>> body;
 
+  /**
+   * @brief Constructs a For node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a For object with the four attributes that were mentioned above.
+   *
+   * @param initializer: The statement that will be executed only once and before the interpreter indeed starts 
+   * the execution of the for loop (represented by the std::shared_ptr<Stmt> type).
+   * @param condition: The expression that will be evaluated at the beginning of each iteration of the for loop.
+   * The value produced by the evaluation of this expression is what determines whether or not the statements 
+   * inside the for loop are going to be executed. If it's true, then yes. Otherwise, no (represented by the 
+   * std::shared_ptr<Expr> type).
+   * @param increment: The expression that will be evaluated at the end of each iteration of the for loop (
+   * represented by the std::shared_ptr<Expr> type).
+   * @param body: The list of statements that will be executed or not depending on the value produced by the 
+   * evaluation of the expression stored inside the "condition" attribute (represented by the ]
+   * std::vector<std::shared_ptr<Stmt>> type).
+  **/
   For(std::shared_ptr<Stmt> initializer, std::shared_ptr<Expr> condition, std::shared_ptr<Expr> increment, std::vector<std::shared_ptr<Stmt>> body)
     : initializer{std::move(initializer)}, condition{std::move(condition)}, increment{std::move(increment)}, body{std::move(body)}
   {}
