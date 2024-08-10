@@ -351,11 +351,36 @@ struct For : Stmt, public std::enable_shared_from_this<For>{
   }
 };
 
+/**
+ * @struct Function
+ * 
+ * @brief Defines a struct to represent a function declaration statement node from the AST of the Bleach 
+ * language.
+ *
+ * The Function struct defines a struct to represent a function declaration statement node from the AST 
+ * (Abstract Syntax Tree) of the Bleach language. A function declaration statement is a statement that 
+ * represents the declaration of a function (its name, its parameters' names and its body). This struct has
+ * three attributes: The first one is called "name". It's a token that represents the name of the declared 
+ * function. The second one is called "parameters". It is a list of tokens where each token represents the name
+ * of a parameter from the declared function. The third one is called "body". It's a list of statements that 
+ * will be executed when the declared function is called during runtime.
+ */
 struct Function : Stmt, public std::enable_shared_from_this<Function>{
   const Token name; // The name of the function. It's has a TokenType::IDENTIFIER as its type attribute.
   const std::vector<Token> parameters; // As above, the parameters are all tokens that have TokenType::IDENTIFIER as their type attribute.
   const std::vector<std::shared_ptr<Stmt>> body; // The list of statements that make the body of the function.
 
+  /**
+   * @brief Constructs a Function node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes a Function object with the three attributes that were mentioned above.
+   *
+   * @param name: The token that represents the name of the declared function (represented by the Token type).
+   * @param parameters: The list of tokens that represents the names of parameters from the declared function
+   * (represented by the std::vector<Token> type).
+   * @param body: The list of statements that will be executed once the function is called during runtime
+   * (represented by the std::vector<std::shared_ptr<Stmt>> type).
+  **/
   Function(Token name, std::vector<Token> parameters, std::vector<std::shared_ptr<Stmt>> body)
     : name{std::move(name)}, parameters{std::move(parameters)}, body{std::move(body)}
   {}
@@ -550,9 +575,8 @@ struct Var : Stmt, public std::enable_shared_from_this<Var>{
  * The While struct defines a struct to represent a while statement node from the AST (Abstract Syntax Tree) of
  * the Bleach language. A while statement is a statement that during runtime works as a looping control flow
  * mechanism. This struct has two attributes: The first one is called "condition". It is an expression that
- * determines for how long the statement inside the while body will be executed. It is going to be executed
- * as long as the "condition" expression evaluates to true. The second one is called "body". It is a list of 
- * statements that will be executed while the "condition" expression evaluates to true.
+ * determines for how long the statements inside the while body will be executed. The second one is called "body". 
+ * It is a list of statements that will be executed while the "condition" expression evaluates to true.
  */
 struct While : Stmt, public std::enable_shared_from_this<While>{
   const std::shared_ptr<Expr> condition;
