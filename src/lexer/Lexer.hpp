@@ -49,7 +49,6 @@ class Lexer{
       {"for",           TokenType::FOR},
       {"function",      TokenType::FUNCTION},
       {"if",            TokenType::IF},
-      {"in",            TokenType::IN},
       {"inherits",      TokenType::INHERITS},
       {"lambda",        TokenType::LAMBDA},
       {"let",           TokenType::LET},
@@ -58,9 +57,8 @@ class Lexer{
       {"or",            TokenType::OR},
       {"print",         TokenType::PRINT},
       {"return",        TokenType::RETURN},
-      {"static",        TokenType::STATIC},
-      {"super",         TokenType::SUPER},
       {"self",          TokenType::SELF},
+      {"super",         TokenType::SUPER},
       {"true",          TokenType::TRUE},
       {"while",         TokenType::WHILE},
     };
