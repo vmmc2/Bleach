@@ -5,8 +5,8 @@
 #include <vector>
 
 
-class Interpreter; // Forward declaration necessary to implement the BleachLambdaFunction class.
-class Token; // Forward declaration necessary to implement the BleachLambdaFunction class.
+class Interpreter; // Forward declaration necessary to implement the BleachCallable class.
+class Token; // Forward declaration necessary to implement the BleachCallable class.
 
 /**
  * @class BleachCallable
