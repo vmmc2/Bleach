@@ -22,8 +22,8 @@ class BleachFunction; // Forward declaration necessary to implement the BleachCl
  * that stores the name of the user-defined class whose runtime representation refers to. The second one is
  * "superclass". It is a pointer that refers to the instance of another BleachClass that will work as the
  * superclass of the current class. Pay attention to the fact that not every class has a superclass. If that's
- * the case, then the value of "superclass" will be nullptr. The third attribute is a map that stores key value
- * pairs. In this map, a key is the name of a method (a string) and its associated value is a runtime 
+ * the case, then the value of "superclass" will be nullptr. The third one is "methods". It is a map that stores
+ * key-value pairs. In this map, a key is the name of a method (a string) and its associated value is a runtime 
  * representation of the method that was declared inside the class.
 **/
 class BleachClass : public BleachCallable, public std::enable_shared_from_this<BleachClass>{
