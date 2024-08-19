@@ -11,8 +11,8 @@
  * @class Token
  * @brief Represents a token with a type, lexeme, literal value, and line number.
  *
- * The Token class is used to store information about tokens encountered
- * during lexical analysis (lexing/scanning) phase in the Bleach Interpreter.
+ * The Token class is used to store information about tokens encountered during lexical analysis 
+ * (lexing/scanning) phase in the Bleach Interpreter.
  */
 class Token{
   public:
