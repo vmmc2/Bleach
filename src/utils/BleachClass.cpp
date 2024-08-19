@@ -45,7 +45,7 @@ int BleachClass::arity(){
 }
 
 /**
- * @brief Executes the instance of the BleachClass and returns an instance of the BleachInstance class.
+ * @brief Executes the instance of the BleachClass class and returns an instance of the BleachInstance class.
  * 
  * This method is responsible for executing the instance of the BleachClass during runtime. The execution of
  * a BleachClass object essentialy means that an instance of that BleachClass, an object of type BleachInstance,
