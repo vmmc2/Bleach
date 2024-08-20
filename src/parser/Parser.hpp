@@ -59,8 +59,8 @@ class Parser{
      * This method is responsible for returning the token that the parser has yet to consume. In other words, 
      * the token that is being currently pointed by the 'current' attribute of the 'Parser' class.
      * 
-     * @return A Token: the next token that has not been consumed yet by the parser. In other words, the token 
-     * that is currently being pointed by the 'current' attribute of the 'Parser' class.
+     * @return The next token that has not been consumed yet by the parser. In other words, the token that is
+     * currently being pointed by the 'current' attribute of the 'Parser' class.
     **/
     Token peek(){
       return tokens[current];
@@ -105,11 +105,10 @@ class Parser{
      * This method is responsible for reporting a syntax error (parsing error) to the user through the console
      * (terminal) and also returning an instance of the 'ParseError' class back to its caller. 
      * 
-     * @param token: The const reference (const Token&) to the Token that is the cause of the syntax error 
-     * (parsing error) that was discovered by the parser.
-     * @param errorMessage: The string (std::string_view) that has the contents of the error message that must
-     * be shown to the user in the console (terminal) if the token that's about to be consumed doesn't have the
-     * expected type.
+     * @param token: A const reference to the Token that is the cause of the syntax error (parsing error) that 
+     * was discovered by the parser.
+     * @param errorMessage: The string that has the contents of the error message that must be shown to the user
+     * in the console (terminal) if the token that's about to be consumed doesn't have the expected type.
      * 
      * @return A ParseError instance with an empty message.
     **/
@@ -120,7 +119,7 @@ class Parser{
 
     /**
      * @brief Discards tokens from the sequence of tokens that haven't been consumed yet by the parser until
-     * it hits what is most likely a statement boundary or the end of the tokens sequence
+     * it hits what is most likely a statement boundary or the end of the tokens sequence.
      *
      * This method is responsible for discarding tokens that haven't been consumed yet from the sequence of
      * tokens until it hits what is most likely a statement boundary or the end of the tokens sequence.
@@ -162,16 +161,15 @@ class Parser{
      * Otherwise, it means the parser has found a syntax error (a parsing error) and, thus, such error is
      * reported and thrown.
      * 
-     * @param type: The TokenType that the parser expects the token that's about to be consumed to have.
-     * @param errorMessage: The string (std::string_view) that has the contents of the error message that must
-     * be shown to the user in the console (terminal) if the token that's about to be consumed doesn't have the
-     * expected type.
+     * @param type: The type of token that the parser expects the token that's about to be consumed to have.
+     * @param errorMessage: The string that has the contents of the error message that must be shown to the user
+     * in the console (terminal) if the token that's about to be consumed doesn't have the expected type.
      * 
-     * @return The Token that has just been consumed by the parser. Note that this just happens if such token
+     * @return The token that has just been consumed by the parser. Note that this just happens if such token
      * is of the same type as the provided type.
      * 
      * @note If the token that's about to be consumed by the parser isn't of the same type as the provided type,
-     * then a syntax error is reported and thrown by the 'Parser' class.
+     * then a syntax error is reported and thrown by the Parser class.
     **/
     Token consume(TokenType type, std::string_view errorMessage){
       if(check(type)){
@@ -186,8 +184,8 @@ class Parser{
      * the sequence if any, and returns it.
      *
      * This method is responsible for checking whether the parser has reached the end of the token sequence.
-     * If that's not the case, then it consumes the token pointed by the 'current' attribute and returns it
-     * through the use of the 'previous' method.
+     * If that's not the case, then it consumes the token pointed by the "current" attribute and returns it
+     * through the use of the "previous" method.
      * 
      * @return The latest token that has been consumed by the parser.
     **/
@@ -202,10 +200,10 @@ class Parser{
     /**
      * @brief Checks whether the next to be consumed token has a type equal to one of the provided types.
      *
-     * This method receives a list/sequence of TokenTypes and checks whether the next token (the token that has
-     * not been consumed by the parser yet) has a TokenType equal to one of the provided TokenTypes. If it has
-     * then, the token is consumed and returns true. Otherwise, the token is not consumed and the function
-     * returns false.
+     * This method receives a list/sequence of TokenType values and checks whether the next token (the token 
+     * that has not been consumed by the parser yet) has a TokenType equal to one of the provided values in the
+     * list of TokenType. If it has then, the token is consumed and returns true. Otherwise, the token is not 
+     * consumed and the method returns false.
      * 
      * @param type: A sequence of comma separated TokenType values.
      * 
@@ -225,17 +223,18 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'statement' rule inside the CFG of the Bleach language.
+     * @brief Represents the "statement" rule inside the CFG of the Bleach language.
      *
      * This method is responsible for representing the 'statement' rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
      * 
      * @note: This method is the one that is called repeatedly when parsing a series of statements inside a 
-     * script. Therefore, this is the right place to synchronize whenever the parser goes into panic mode 
-     * (founds a parsing error).
+     * Bleach file. 
+     * Therefore, this is the right place to synchronize whenever the parser goes into panic mode (founds a 
+     * parsing error).
      * You can see that the whole body of this method is wrapped inside a "try-catch" block in order to catch
      * the exception that is thrown when the parser begins the error recovery process.
      * This is what get the parser back to trying to parse the beginning of the next statement inside the 
@@ -288,13 +287,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'block' rule inside the CFG of the Bleach language.
+     * @brief Represents the "block" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'block' rule from the Context-Free Grammar of the Bleach
+     * This method is responsible for representing the "block" rule from the Context-Free Grammar of the Bleach
      * language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::vector<std::shared_ptr<Stmt>> representing a series/sequence of Abstract Syntax Trees (AST)
-     * of the Bleach language for this rule.
+     * @return A list of instances of the Stmt struct representing a sequence of Abstract Syntax Trees (AST) 
+     * nodes of the Bleach language for this rule.
     **/
     std::vector<std::shared_ptr<Stmt>> block(){
       std::vector<std::shared_ptr<Stmt>> statements;
@@ -346,13 +345,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'doWhileStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "doWhileStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'doWhileStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "doWhileStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) of the Bleach language
+     * for this rule.
     **/
     std::shared_ptr<Stmt> doWhileStatement(){
       consume(TokenType::LEFT_BRACE, "Expected a '{' before the body of a 'do-while' loop.");
@@ -368,13 +367,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'forStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "forStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'forStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "forStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> forStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'for' keyword");
@@ -409,13 +408,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'function' rule inside the CFG of the Bleach language.
+     * @brief Represents the "function" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'function' rule from the Context-Free Grammar of the 
+     * This method is responsible for representing the "function" rule from the Context-Free Grammar of the 
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/ 
     std::shared_ptr<Function> funcDeclStatement(std::string kind){ // Pay attention to the fact that this code is very similar to that of a callExpression.
       if(kind == "method"){
@@ -442,13 +441,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'exprStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "exprStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'exprStmt' rule from the Context-Free Grammar of the 
+     * This method is responsible for representing the "exprStmt" rule from the Context-Free Grammar of the 
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> expressionStatement(){
       std::shared_ptr<Expr> value = expression();
@@ -458,13 +457,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'ifStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "ifStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'ifStmt' rule from the Context-Free Grammar of the 
+     * This method is responsible for representing the "ifStmt" rule from the Context-Free Grammar of the 
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> ifStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'if' keyword");
@@ -494,13 +493,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'printStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "printStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'printStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "printStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> printStatement(){
       std::shared_ptr<Expr> value = expression();
@@ -510,13 +509,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'returnStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "returnStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'returnStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "returnStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return A instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> returnStatement(){
       Token keyword = previous();
@@ -532,13 +531,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'varDeclStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "varDeclStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'varDeclStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "varDeclStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
      * 
      * @note: If there is no initializer expression after the variable name, then its default value is nil.
      * Look at the default value of the variable "initializer" shown below (nullptr).
@@ -561,13 +560,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'whileStmt' rule inside the CFG of the Bleach language.
+     * @brief Represents the "whileStmt" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'whileStmt' rule from the Context-Free Grammar of 
+     * This method is responsible for representing the "whileStmt" rule from the Context-Free Grammar of 
      * the Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Stmt> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Stmt struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Stmt> whileStatement(){
       consume(TokenType::LEFT_PAREN, "Expected a '(' after the 'while' keyword");
@@ -582,26 +581,26 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'expression' rule inside the CFG of the Bleach language.
+     * @brief Represents the "expression" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'expression' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "expression" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> expression(){
       return assignment();
     }
 
     /**
-     * @brief Represents the 'assignment' rule inside the CFG of the Bleach language.
+     * @brief Represents the "assignment" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'assignment' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "assignment" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> assignment(){
       std::shared_ptr<Expr> expr = ternary(); // It's expected that the it will encounter a 'Variable' expression. Remember, the left-hand side can be any expression of higher precedence.
@@ -628,13 +627,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'ternary' rule inside the CFG of the Bleach language.
+     * @brief Represents the "ternary" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'ternary' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "ternary" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> ternary(){
       std::shared_ptr<Expr> expr = logicalOr();
@@ -650,13 +649,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'logicalOr' rule inside the CFG of the Bleach language.
+     * @brief Represents the "logicalOr" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'logicalOr' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "logicalOr" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> logicalOr(){
       std::shared_ptr<Expr> expr = logicalAnd();
@@ -671,13 +670,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'logicalAnd' rule inside the CFG of the Bleach language.
+     * @brief Represents the "logicalAnd" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'logicalAnd' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "logicalAnd" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> logicalAnd(){
       std::shared_ptr<Expr> expr = equality();
@@ -692,13 +691,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'equality' rule inside the CFG of the Bleach language.
+     * @brief Represents the "equality" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'equality' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "equality" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> equality(){
       std::shared_ptr<Expr> expr = comparison();
@@ -713,13 +712,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'comparison' rule inside the CFG of the Bleach language.
+     * @brief Represents the "comparison" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'comparison' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "comparison" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> comparison(){
       std::shared_ptr<Expr> expr = term();
@@ -734,13 +733,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'term' rule inside the CFG of the Bleach language.
+     * @brief Represents the "term" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'term' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "term" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> term(){
       std::shared_ptr<Expr> expr = factor();
@@ -755,13 +754,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'factor' rule inside the CFG of the Bleach language.
+     * @brief Represents the "factor" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'factor' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "factor" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> factor(){
       std::shared_ptr<Expr> expr = unary();
@@ -776,13 +775,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'unary' rule inside the CFG of the Bleach language.
+     * @brief Represents the "unary" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'unary' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "unary" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> unary(){
       if(match(TokenType::BANG, TokenType::MINUS)){
@@ -831,13 +830,13 @@ class Parser{
     }
 
     /**
-     * @brief Represents the 'primary' rule inside the CFG of the Bleach language.
+     * @brief Represents the "primary" rule inside the CFG of the Bleach language.
      *
-     * This method is responsible for representing the 'primary' rule from the Context-Free Grammar of the
+     * This method is responsible for representing the "primary" rule from the Context-Free Grammar of the
      * Bleach language. To understand better what the method is doing, take a look at Bleach's CFG.
      * 
-     * @return A std::shared_ptr<Expr> representing an Abstract Syntax Tree (AST) of the Bleach language for 
-     * this rule.
+     * @return An instance of the Expr struct representing an Abstract Syntax Tree (AST) node of the Bleach 
+     * language for this rule.
     **/
     std::shared_ptr<Expr> primary(){
       if(match(TokenType::FALSE)){
@@ -903,7 +902,7 @@ class Parser{
      * @brief Constructs a Parser with the sequence of tokens (std::vector<Token>) that needs to be parsed. 
      *
      * This constructor initializes a Parser object with the given sequence of tokens generated by a Lexer 
-     * object, represented as a std::vector<Token>.
+     * object.
      *
      * @param tokens The sequence of tokens, produced by the Lexer, that is going to be parsed by a Parser
      * object in order to create an Abstract Syntax Tree (AST).
@@ -913,15 +912,15 @@ class Parser{
     {}
 
     /**
-     * @brief Starts the parsing step of the interpreter. Also, it represents the 'program' rule from the
+     * @brief Starts the parsing step of the interpreter. Also, it represents the "program" rule from the
      * Bleach CFG.
      *
-     * This method is responsible for starting the parsing process of the interpreter. Furthermore, this
-     * method works as a direct translation of the 'program' rule from the Bleach CFG.
+     * This method is responsible for starting the parsing process of the interpreter.
+     * Furthermore, this method works as a direct translation of the "program" rule from the Bleach CFG.
      * 
-     * @return A std::vector<std::shared_ptr<Stmt>> representing the list of ASTs of the Bleach language 
-     * generated from the whole sequence of tokens. In this scenario, each of these ASTs is the syntax tree
-     * representation of a statement.
+     * @return A list of instances of the Stmt struct representing the list of ASTs nodes of the Bleach language 
+     * generated from the whole sequence of tokens. In this scenario, each of these ASTs' nodes is the syntax 
+     * tree representation of a statement.
     **/
     std::vector<std::shared_ptr<Stmt>> parse(){
       std::vector<std::shared_ptr<Stmt>> statements;
