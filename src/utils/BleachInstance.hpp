@@ -6,9 +6,22 @@
 #include <string>
 
 
-class BleachClass;
-class Token;
+class BleachClass; // Forward declaration necessary to implement the BleachInstance class.
+class Token; // Forward declaration necessary to implement the BleachInstance class.
 
+/**
+ * @class BleachInstance
+ * 
+ * @brief This class is responsible for representing, at runtime, an instance of a user-defined class inside a 
+ * Bleach program.
+ *  
+ * The BleachInstance class is responsible for providing a runtime representation of every instance from any
+ * user-defined class that was defined by the user inside a Bleach program. This class has 2 attributes: The 
+ * first one is "klass". It is a pointer to an instance of a BleachClass class. This is used to figure out to
+ * what class an instance belongs to. The second one is "fields". It is a map that stores key-value pairs where
+ * the key is a string representing the name of an attribute/field stored inside that instance of the 
+ * BleachInstance class and its corresponding value is the value of the attribute/field. 
+**/
 class BleachInstance : public std::enable_shared_from_this<BleachInstance>{
   private:
     std::shared_ptr<BleachClass> klass;
