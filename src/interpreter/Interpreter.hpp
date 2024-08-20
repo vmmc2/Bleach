@@ -2,6 +2,7 @@
 
 #include <any>
 #include <cmath>
+#include <iomanip>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -53,10 +54,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for checking whether the operand of the unary operator ("-") is of type 
      * double.
      * 
-     * @param op: The token that represents the unary operator ("-") (TokenType::MINUS). This variable is of type
-     * const Token&.
-     * @param operand: The value of the right operand of the unary operator ("-"). This variable is of type
-     * std::any&.
+     * @param op: The token that represents the unary operator ("-") (TokenType::MINUS).
+     * @param operand: The value of the right operand of the unary operator ("-").
      * 
      * @return Nothing (void).
      * 
@@ -78,10 +77,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for checking whether the operands of the following binary operators ("-", 
      * "*", "/", ">", ">=", "<", "<=") are of type double.
      * 
-     * @param op: The token that represents any binary operator that is not "==" or "!=". This variable is of 
-     * type const Token&.
-     * @param left: The value of the left operand of the binary operator. This variable is of type std::any&.
-     * @param right: The value of the right operand of the binary operator. This variable is of type std::any&.
+     * @param op: The token that represents any binary operator that is not "==" or "!=".
+     * @param left: The value of the left operand of the binary operator.
+     * @param right: The value of the right operand of the binary operator.
      * 
      * @return Nothing (void).
      * 
@@ -110,12 +108,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @brief Works as a helper method that simply sends back an Expr AST node back into the appropriate visit
      * method of the interpreter. 
      *
-     * This method works as a helper method responsible for receiving a Expr node of the AST, calling its accept
-     * method and passing the current instance of the interpreter to it, so the node can call its appropriate
-     * visit method and evaluate its "inner" result.
+     * This method works as a helper method responsible for receiving a Expr node of the AST, calling its 
+     * accept method and passing the current instance of the interpreter to it, so the node can call its 
+     * appropriate visit method and evaluate its "inner" result.
      * 
      * @param expr: A node of the AST (Abstract Syntax Tree) that represents an Expr node from the Bleach
-     * language. Such variable is of type std::shared_ptr<Expr>.
+     * language.
      * 
      * @return The value obtained from the evaluation of the AST node that was passed to this method as its
      * argument.
@@ -128,12 +126,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @brief Works as a helper method that simply sends back the Stmt AST node back into the appropriate visit
      * method of the interpreter. 
      *
-     * This method works as a helper method responsible for receiving a Stmt node of the AST, calling its accept
-     * method and passing the current instance of the interpreter to it, so the node can call its appropriate
-     * visit method and execute its "inner" functionality.
+     * This method works as a helper method responsible for receiving a Stmt node of the AST, calling its 
+     * accept method and passing the current instance of the interpreter to it, so the node can call its 
+     * appropriate visit method and execute its "inner" functionality.
      * 
      * @param stmt: A node of an AST (Abstract Syntax Tree) that represents a Stmt node from the Bleach 
-     * language. Such variable is of type std::shared_ptr<Stmt>.
+     * language.
      * 
      * @return Nothing (void).
      */
@@ -146,13 +144,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     /**
      * @brief Checks whether the provided operands of the following operator ("==") are equal in value. 
      *
-     * This method is responsible for checking whether the operands of the following binary operator ("==") are
-     * of type double.
+     * This method is responsible for checking whether the operands of the following binary operator ("==") 
+     * are of the same type. If that's the case, then the method also checks whether or not such operands have
+     * the same value.
      * 
-     * @param left: The value of the left operand of the "==" operator. This variable is of type std::any&.
-     * @param right: The value of the right operand of the "==" operator. This variable is of type std::any&.
+     * @param left: The value of the left operand of the "==" operator.
+     * @param right: The value of the right operand of the "==" operator.
      * 
-     * @return A boolean that signal whether the two provided values are equal or not.
+     * @return A boolean that signal whether the values of the two provided operands are equal or not.
      */
     bool isEqual(const std::any& left, const std::any& right){
       if(left.type() == typeid(nullptr) && right.type() == typeid(nullptr)){
@@ -179,11 +178,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @brief Checks whether the value of the a Bleach object is considered "truthy" or not.
      *
      * This method is responsible for checking whether the value of the provided Bleach object is considered
-     * "truthy" or not. For more context, Bleach follows Ruby convention: false and nil are considered
-     * to be "falsey" values. Every other value is considered to be "truthy".
+     * "truthy" or not. 
+     * For more context, Bleach follows Ruby convention: false and nil are considered to be "falsey" values. 
+     * Every other value is considered to be "truthy".
      * 
-     * @param object: The value of a Bleach object which will be checked to see if it's "truthy" or not. This
-     * variable is of type std::any&.
+     * @param object: The value of a Bleach object which will be checked to see if it's "truthy" or not.
      * 
      * @return A boolean that signal whether or not a value is considered to be "truthy" or not.
      */
@@ -234,14 +233,15 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
     /**
-     * @brief Produces a string that represents the value present in the provided Bleach object. 
+     * @brief Produces a string that works as a representation of the value present in the provided Bleach 
+     * object. 
      *
      * This method generates a string representation of the value present inside the provided Bleach object.
      * 
-     * @param object: The value of a Bleach object which the interpreter will try to convert to a string. This
-     * variable is of type std::any&.
+     * @param object: A variable that stores the value of a Bleach object which the interpreter will try to 
+     * convert to its string representation.
      * 
-     * @return A string (std::string) representation of the value present inside the provided Bleach object.
+     * @return A string representation of the value present inside the provided Bleach object.
      * 
      * @note If the value of the Bleach object is not of any of the supported types, then this function will 
      * return a string containing an error message.
@@ -316,13 +316,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
     /**
      * @brief Interprets/Executes the list of statements that represent a Bleach program (remember that each
-     * statement represents an AST following of the Bleach language), provided by the parser. 
+     * statement represents an AST of the Bleach language), provided by the parser. 
      *
      * This method is responsible for interpreting/executing the list of statements generated by the parser 
      * (that represents a Bleach program), where each statement is an AST (Abstract Syntax Tree).
      * 
      * @param statements: The list of statements, where each statement is an AST (Abstract Syntax Tree), that 
-     * represents a program written in the Bleach lang. Such variable is of type std::vector<shared_ptr<Stmt>>&.
+     * represents a program written in the Bleach language.
      * 
      * @return Nothing (void).
      */
@@ -346,18 +346,17 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
     /**
      * @brief Creates a new environment for a block statement that is about to be executed and executes each of
-     * its statements.
+     * the statements present inside such block.
      *
      * This method acts as an auxiliary method to the 'visitBlockStmt' method from this same class. This method 
      * is responsible for creating a brand new environment for the block statement that is about to be visited
-     * (during this creation, it stores the enclosing environment of the block inside the newly created environment
-     * for the block) and also for executing each of the statements that are present inside this block.
+     * (during this creation, it stores the enclosing environment of the block inside the newly created 
+     * environment for the block) and also for executing each of the statements that are present inside this 
+     * block.
      * 
-     * @param statements: The list of statements that the block statement that is about executed contains. This
-     * variable is of type const std::vector<std::shared_ptr<Stmt>>&.
+     * @param statements: The list of statements that the block statement that is about executed contains.
      * @param enviroment: The just created environment that represents the lexical scope (static scope) of the
-     * block statement that is about to be executed by the interpreter. This variable is of type 
-     * std::shared_ptr<Environment>.
+     * block statement that is about to be executed by the interpreter.
      * 
      * @return Nothing ({}).
      */
@@ -386,8 +385,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Block Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Block Statement node. This variable is of type 
-     * std::shared_ptr<Block>.
+     * @param stmt: The node of the Bleach AST that is a Block Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -450,8 +448,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a DoWhile Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a DoWhile Statement node. This variable is of type 
-     * std::shared_ptr<DoWhile>.
+     * @param stmt: The node of the Bleach AST that is a DoWhile Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -494,8 +491,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Expression Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Expression Statement node. This variable is of type 
-     * std::shared_ptr<Expression>.
+     * @param stmt: The node of the Bleach AST that is a Expression Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -551,20 +547,17 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Function Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Function Statement node. This variable is of type 
-     * std::shared_ptr<Function>.
+     * @param stmt: The node of the Bleach AST that is a Function Statement node.
      * 
      * @return Nothing ({}).
      * 
      * @note This method is an overridden version of the 'visitFunctionStmt' method from the 'StmtVisitor' 
      * struct.
      * Moreover, pay attention to the following fact: When the interpreter visits a Function Statement node, it
-     * creates an instance of a "BleachFunction" object and stores it in the current environment. Moreover, since
-     * functions in Bleach must hold on to their parent environment, during the instance creation, the interpreter
-     * assigns the current environment that it currently is at as parent environment of the "BleachFunction" 
-     * instance. However, I think that this is not 100% correct. Because the parent environment is being defined
-     * at runtime, and as we know, the state of an environment can change during runtime. But, this will be
-     * evaluated more carefully later.
+     * creates an instance of a "BleachFunction" object and stores it in the current environment. Moreover, 
+     * since functions in Bleach must hold on to their parent environment, during the instance creation, the 
+     * interpreter assigns the current environment that it currently is at as parent environment of the 
+     * "BleachFunction" instance.
      */
     std::any visitFunctionStmt(std::shared_ptr<Function> stmt) override{
       auto function = std::make_shared<BleachFunction>(stmt, environment, false);
@@ -579,8 +572,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting an If Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is an If Statement node. This variable is of type 
-     * std::shared_ptr<Expression>.
+     * @param stmt: The node of the Bleach AST that is an If Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -610,8 +602,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Print Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Print Statement node. This variable is of type 
-     * std::shared_ptr<Print>.
+     * @param stmt: The node of the Bleach AST that is a Print Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -631,15 +622,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Return Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Return Statement node. This variable is of type 
-     * std::shared_ptr<Return>.
+     * @param stmt: The node of the Bleach AST that is a Return Statement node.
      * 
      * @return Nothing ({}).
      * 
      * @note This method is an overridden version of the 'visitReturnStmt' method from the 'StmtVisitor' struct.
      * Moreover, this method will always throw a value. The value is the one generated when evaluating the 
-     * expression that might be present"return" statement. If there is no expression, then this means the
-     * produced value is nil (C++ nullptr).
+     * expression that might be present in the "return" statement. If there is no expression, then this means
+     * the produced value is nil (nullptr).
      */
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       std::any value = nullptr;
@@ -657,8 +647,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Variable Declaration Statement node of the Bleach AST and 
      * performing the associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Variable Declaration Statement node. This variable is 
-     * of type std::shared_ptr<Var>.
+     * @param stmt: The node of the Bleach AST that is a Variable Declaration Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -683,8 +672,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a While Statement node of the Bleach AST and performing the
      * associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a While Statement node. This variable is of type 
-     * std::shared_ptr<While>.
+     * @param stmt: The node of the Bleach AST that is a While Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -723,8 +711,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting an Assign expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Assign expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Assign expression node. This variable is of type 
-     * std::shared_ptr<Assign>.
+     * @param expr: The node of the Bleach AST that is a Assign expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Assign expression node of the Bleach AST.
      * 
@@ -750,8 +737,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Binary expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Binary expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Binary expression node. This variable is of type 
-     * std::shared_ptr<Binary>.
+     * @param expr: The node of the Bleach AST that is a Binary expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Binary expression node of the Bleach AST.
      * 
@@ -814,8 +800,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Call expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Call expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Call expression node. This variable is of type 
-     * std::shared_ptr<Call>.
+     * @param expr: The node of the Bleach AST that is a Call expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Call expression node of the Bleach AST.
      * 
@@ -923,8 +908,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Grouping expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Grouping expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Grouping expression node. This variable is of type 
-     * std::shared_ptr<Grouping>.
+     * @param expr: The node of the Bleach AST that is a Grouping expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Grouping expression node of the Bleach AST.
      * 
@@ -945,8 +929,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Literal expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Literal expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Literal expression node. This variable is of type 
-     * std::shared_ptr<Literal>.
+     * @param expr: The node of the Bleach AST that is a Literal expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Literal expression node of the Bleach AST.
      * 
@@ -963,18 +946,17 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Logical expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Binary expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Binary expression node. This variable is of type 
-     * std::shared_ptr<Logical>.
+     * @param expr: The node of the Bleach AST that is a Binary expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Logical expression node of the Bleach AST.
      * 
      * @note This method is an overridden version of the 'visitLogicalExpr' method from the 'ExprVisitor' 
      * struct. Pay attention to the fact that logical operators do not return "true" or "false". Instead, they
-     * return the value itself. Moreover, note that this method applies the idea of short-circuit by first
-     * evaluating the left operand of the logical expression. After that, it checks the operator type and if
-     * its possible to short-circuit. If that's the case, it prematurely returns the value produced by the 
-     * evaluation of the left expression/operand. Otherwise, it evaluates the right expression/operand and
-     * returns its value.
+     * return the value itself. 
+     * Moreover, note that this method applies the idea of short-circuit by first evaluating the left operand 
+     * of the logical expression. After that, it checks the operator type and if it's possible to short-circuit.
+     * If that's the case, it prematurely returns the value produced by the evaluation of the left expression. 
+     * Otherwise, it evaluates the right expression and returns its value.
      */
     std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
       std::any left = evaluate(expr->left);
@@ -1030,8 +1012,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Ternary expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Ternary expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Grouping expression node. This variable is of type 
-     * std::shared_ptr<Ternary>.
+     * @param expr: The node of the Bleach AST that is a Grouping expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Ternary expression node of the Bleach AST.
      * 
@@ -1055,8 +1036,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Unary expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Unary expression node.
      * 
-     * @param expr: The node of the Bleach AST that is a Unary expression node. This variable is of type 
-     * std::shared_ptr<Unary>.
+     * @param expr: The node of the Bleach AST that is a Unary expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Unary expression node of the Bleach AST.
      * 
@@ -1083,8 +1063,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for visiting a Variable expression node of the Bleach AST, producing a value
      * that corresponds to the type of expression present inside such Variable expression node and returning it.
      * 
-     * @param expr: The node of the Bleach AST that is a Variable expression node. This variable is of type 
-     * std::shared_ptr<Variable>.
+     * @param expr: The node of the Bleach AST that is a Variable expression node.
      * 
      * @return The value obtained from the visit (evaluation) to a Variable expression node of the Bleach AST.
      * 
