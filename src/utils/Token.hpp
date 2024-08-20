@@ -29,7 +29,7 @@ class Token{
      *
      * @param type The type of the token. This specifies the category of the token (e.g., keyword, identifier).
      * @param lexeme The lexeme of the token. This is the actual string representation of the token.
-     * @param literal The literal value of the token. This can be any type and is stored as std::any.
+     * @param literal The literal value of the token. This can be of any type.
      * @param line The line number where the token was found in the source code.
      *
      * @note The lexeme and literal parameters are moved into the Token object to avoid unnecessary copies.
@@ -41,13 +41,13 @@ class Token{
     /**
      * @brief Returns the string representation of a Token instance.
      * 
-     * This method is responsible for generating a string representation of 
-     * the Token instance based on its type value, lexeme value and literal
-     * value converted to a string.
+     * This method is responsible for generating a string representation of the Token instance based on its type
+     * value, lexeme value and literal value converted to a string.
      *
      * @return The string representation of the Token instance.
      * 
-     * @note This method is a const method. Which means it doesn't modify the state of the object it is called on.
+     * @note This method is a const method. Which means it doesn't modify the state of the object it is called 
+     * on.
     **/
     std::string toString() const{
       std::string literalAsStr;
