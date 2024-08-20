@@ -9,12 +9,12 @@
  * This constructor initializes a BleachClass object with the three attributes that were mentioned inside the
  * "BleachClass.hpp" file.
  *
- * @param name: The name of the user-defined class (represented by the std::string type).
+ * @param name: The name of the user-defined class.
  * @param superclass: The superclass from which the class inherits methods. Pay attention to the fact that not
- * every class has a superclass (represented by the std::shared_ptr<BleachClass> type).
+ * every class has a superclass.
  * @param methods: The map that stores key-value pairs where, in each pair, the key is the name of a method that
  * was declared inside the class declaration and the value is the BleachFunction that represents such method
- * during runtime (represented by the std::map<std::string, std::shared_ptr<BleachFunction>> type).
+ * during runtime.
 **/
 BleachClass::BleachClass(std::string name, std::shared_ptr<BleachClass> superclass, std::map<std::string, std::shared_ptr<BleachFunction>> methods)
   : name{std::move(name)}, superclass{std::move(superclass)}, methods{std::move(methods)}
@@ -28,7 +28,7 @@ BleachClass::BleachClass(std::string name, std::shared_ptr<BleachClass> supercla
  * expected by its constructor.
  *
  * @return An integer that represents the arity (number of arguments expected by the constructor) for this 
- * class (represented by the int type).
+ * class.
  * 
  * @note: Pay attention to the fact that, if the user-defined class has no "init" method present inside its
  * declaration, then, by default, this method returns 0. Essentialy, this means that the default constructor of
@@ -51,15 +51,13 @@ int BleachClass::arity(){
  * of a BleachClass object essentialy means that an instance of that BleachClass, an object of type 
  * BleachInstance, will be created and returned.
  * 
- * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file
- * (represented by the Interpreter& type).
+ * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file.
  * @param arguments: The list of arguments that are needed to create an instance of the given BleachClass (an
  * instance of the BleachInstance class). Making an analogy, such list of arguments is the the list of arguments
- * provided to the constructor of a class (represented by the std::vector<std::any> type).
+ * provided to the constructor of a class.
  
  * @return An instance of the BleachInstance class. Such instance represents the object that was created given
- * the list of arguments to its constructor (which is, behind the scenes, this method) (represented by the 
- * std::any type).
+ * the list of arguments to its constructor (which is, behind the scenes, this method).
 **/
 std::any BleachClass::call(Interpreter& interpreter, std::vector<std::any> arguments){ // className()
   auto instance = std::make_shared<BleachInstance>(shared_from_this()); // Creates an instance of the class.
@@ -93,11 +91,11 @@ std::any BleachClass::call(Interpreter& interpreter, Token paren, std::vector<st
  * class, then the search continues in a recursive manner following the chain of superclasses, if any. If the 
  * method is not found in the class and not in the chain of superclasses, then it returns a nullptr.
  * 
- * @param name: The name of the required method (represented by the const std::string& type).
+ * @param name: The name of the required method.
  * 
  * @return The runtime representation of the method that is associated to the string "name" inside the "methods"
  * map of the class or inside the "methods" map inside any of the classes along the chain of superclasses (if
- * any) (represented by the std::shared_ptr<BleachFunction> type).
+ * any).
  * 
  * @note: If the runtime representation of the method whose name was received as an argument is not found inside
  * the "methods" map of the class or inside the "methods" map inside any of the classes along the chain of
@@ -123,8 +121,7 @@ std::shared_ptr<BleachFunction> BleachClass::findMethod(const std::string& name)
  * 
  * This method is responsible for returning the string representation of an instance of the BleachClass class.
  * 
- * @return A string that is the string representation of an instance of the BleachClass class (represented by
- * the std::string type).
+ * @return A string that is the string representation of an instance of the BleachClass class.
 **/
 std::string BleachClass::toString(){
   return "<class " + name + ">";
