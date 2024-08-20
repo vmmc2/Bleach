@@ -21,8 +21,8 @@ class BleachRuntimeError : public std::runtime_error{
     /**
      * @brief Constructs a BleachRuntimeError with the token that was responsible for causing the runtime error. 
      *
-     * This constructor initializes a BleachRuntimeError object with the token that was the cause to trigger such
-     * an error, represented as a const Token&.
+     * This constructor initializes a BleachRuntimeError object with the token that was the cause to trigger 
+     * such error.
      *
      * @param token: The token at which the runtime error has happened.
      * @param runtimeErrorMessage: The error message related to the runtime error that has happened.

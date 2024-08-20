@@ -14,10 +14,12 @@ inline bool hadError = false; /**< Variable that ensures that the BLEACH Interpr
 inline bool hadRuntimeError = false; /**< Variable that signals that the BLEACH Interpreter threw a runtime error when executing the source code. */
 
 /**
- * @brief Reports the occcurrence of a syntax error to the user through the standard error stream (usually is the console).
+ * @brief Reports the occcurrence of a syntax error to the user through the standard error stream (usually is 
+ * the console).
  * 
  * @param errorLine: The line in the source code file where the syntax error happened.
- * @param errorLocation: The location (in terms of tokens) in the source code file where the syntax error happened.
+ * @param errorLocation: The location (in terms of tokens) in the source code file where the syntax error 
+ * happened.
  * @param errorMessage: The error message related to the syntax error that has happened.
  * 
  * @return Nothing (void).
@@ -34,7 +36,8 @@ static void report(int errorLine, std::string_view errorLocation, std::string_vi
 }
 
 /**
- * @brief Calls the "report" function to register the occurrence of a syntax error (found in the lexer) in the source code file.
+ * @brief Calls the "report" function to register the occurrence of a syntax error (found in the lexer) in the 
+ * source code file.
  * 
  * @param errorLine: The line in the source code file where the syntax error happened.
  * @param errorMessage: The error message related to the syntax error that has happened.
@@ -48,9 +51,11 @@ static void error(int errorLine, std::string_view errorMessage){
 }
 
 /**
- * @brief Calls the "report" function to register the occurrence of a syntax error (found in the parser) in the source code file.
+ * @brief Calls the "report" function to register the occurrence of a syntax error (found in the parser) in the
+ * source code file.
  * 
- * @param token: The token in the source code file (from the sequence of tokens) where the syntax (parsing) error has happened.
+ * @param token: The token in the source code file (from the sequence of tokens) where the syntax (parsing) 
+ * error has happened.
  * @param errorMessage: The error message related to the syntax (parsing) error that has happened.
  * 
  * @return Nothing (void).
