@@ -12,11 +12,11 @@
  * This constructor initializes a BleachLambdaFunction object with the two attributes that were mentioned inside
  * the "BleachLambdaFunction.hpp" file.
  *
- * @param closure: The environment that is the nearest enclosing environment of the generated 
- * BleachLambdaFunction object (represented by the std::shared_ptr<Environment> type).
+ * @param closure: The environment that is the nearest enclosing environment of the generated
+ * BleachLambdaFunction object.
  * @param lambdaFunctionDeclaration: The expression that represented the generated BleachLambdaFunction object
  * during static time. Essentialy, it is the AST node that was produced when parsing the declaration of the 
- * lambda (anonymous) function (represented by the std::shared_ptr<LambdaFunction> type).
+ * lambda (anonymous) function.
 **/
 BleachLambdaFunction::BleachLambdaFunction(std::shared_ptr<LambdaFunction> lambdaFunctionDeclaration, std::shared_ptr<Environment> closure)
   : lambdaFunctionDeclaration{std::move(lambdaFunctionDeclaration)}, closure{std::move(closure)}
@@ -32,27 +32,27 @@ BleachLambdaFunction::BleachLambdaFunction(std::shared_ptr<LambdaFunction> lambd
  * amount of parameters present inside such declaration.
  * 
  * @return An integer that denotes the arity (the amount of arguments expected) for this anonymous/lambda 
- * function (represented by the int type).
+ * function.
 **/
 int BleachLambdaFunction::arity(){
   return lambdaFunctionDeclaration->parameters.size();
 }
 
 /**
- * @brief Executes the instance of the BleachLambdaFunction and returns the return value of this object, if any.
+ * @brief Executes the instance of the BleachLambdaFunction class and returns the return value of this object,
+ * if any.
  * 
- * This method is responsible for executing the instance of the BleachLambdaFunction during runtime an returning
- * its return value, if any.
+ * This method is responsible for executing the instance of the BleachLambdaFunction class during runtime and 
+ * returning its return value, if any.
  * 
- * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file
- * (represented by the Interpreter& type).
- * @param arguments: The list of arguments that are needed to execute the instance of a BleachLambdaFunction 
- * class (represented by the std::vector<std::any> type).
+ * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file.
+ * @param arguments: The list of arguments that are expected to execute the instance of the BleachLambdaFunction 
+ * class.
  * 
- * @return The value returned by the execution of the BleachLambdaFunction object during runtime (represented by
- * the std::any type). If the declaration of the LambdaFunction AST node has no return statement, then during 
- * runtime, the execution of the BleachLambdaFunction object (triggered by calling this method) will return a 
- * nullptr value (nil value in Bleach).
+ * @return The value returned by the execution of the BleachLambdaFunction object during runtime. If the
+ * declaration of the LambdaFunction AST node has no return statement, then during runtime, the execution of 
+ * the BleachLambdaFunction object (triggered by calling this method) will return a nullptr value (nil value in 
+ * Bleach).
 **/
 std::any BleachLambdaFunction::call(Interpreter& interpreter, std::vector<std::any> arguments){
   auto environment = std::make_shared<Environment>(closure); // Create an environment (scope) for the function that is about to be executed. The function environment has as its parent environment the closure that involves it.
@@ -86,8 +86,7 @@ std::any BleachLambdaFunction::call(Interpreter& interpreter, Token paren, std::
  * This method is responsible for returning the string representation of an instance of the BleachLambdaFunction
  * class.
  * 
- * @return A string that is the string representation of an instance of the BleachLambdaFunction class 
- * (represented by the std::string type).
+ * @return A string that is the string representation of an instance of the BleachLambdaFunction class.
 **/
 std::string BleachLambdaFunction::toString(){
   return "<lambda function>";
