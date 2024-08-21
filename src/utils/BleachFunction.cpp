@@ -13,13 +13,13 @@
  * "BleachFunction.hpp" file.
  *
  * @param isInitializer: A boolean that signals whether or not the instance of the BleachFunction is a 
- * constructor of a class, also known as the "init" method (represented by the bool type).
+ * constructor of a class, also known as the "init" method.
  * @param closure: A pointer that points to an instance of the nearest enclosing instance of the Environment
- * class (represented by the std::shared_ptr<Environment> type).
+ * class.
  * @param functionDeclaration: A pointer that points to an instance of the Function class, which is the 
  * corresponding static time representation of this instance of the BleachFunction class. In order words, the
- * "functionDeclaration" attribute is a pointer to the AST node that represents its corresponding function declaration
- * statement node (represented by the std::shared_ptr<Function> type).
+ * "functionDeclaration" attribute is a pointer to the AST node that represents its corresponding function 
+ * declaration statement node.
 **/BleachFunction::BleachFunction(std::shared_ptr<Function> functionDeclaration, std::shared_ptr<Environment> closure, bool isInitializer)
   : functionDeclaration{std::move(functionDeclaration)}, closure{std::move(closure)}, isInitializer{isInitializer}
 {}
@@ -33,8 +33,7 @@
  * corresponding declaration of the BleachFunction object that was parsed and returns the amount of parameters 
  * present inside such declaration.
  * 
- * @return An integer that denotes the arity (the amount of arguments expected) for this function (represented 
- * by the int type).
+ * @return An integer that denotes the arity (the amount of arguments expected) for this function.
 **/
 int BleachFunction::arity(){
   return functionDeclaration->parameters.size();
@@ -52,11 +51,9 @@ int BleachFunction::arity(){
  * instance of the BleachInstance class that was received as an argument. Finally, it returns a new instance
  * of a BleachFunction class whose environment is this new one that was created.
  * 
- * @param instance: A pointer to an instance of the BleachInstance class (represented by the 
- * std::shared_ptr<BleachInstance> type).
+ * @param instance: A pointer to an instance of the BleachInstance class.
  * 
- * @return A pointer to the newly created instance of the BleachFunction class (represented by the 
- * std::shared_ptr<BleachFunction> type).
+ * @return A pointer to the newly created instance of the BleachFunction class.
 **/
 std::shared_ptr<BleachFunction> BleachFunction::bind(std::shared_ptr<BleachInstance> instance){
   auto environment = std::make_shared<Environment>(closure);
@@ -75,14 +72,11 @@ std::shared_ptr<BleachFunction> BleachFunction::bind(std::shared_ptr<BleachInsta
  * there's no return statement inside the user-defined function or method declaration AST node stored in the 
  * instance of this class, then such function or method implicitly returns a nullptr (nil value in Bleach).
  * 
- * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file
- * (represented by the Interpreter& type).
+ * @param interpreter: The reference to the instance of the Interpreter class that is running the Bleach file.
  * @param arguments: The list of arguments that are expected to be received by the user-defined function or 
- * method during runtime (represented by the std::vector<std::any> type).
+ * method during runtime.
  
- * @return The corresponding value that the user-defined function or method is supposed to return. Since such
- * structures can return a value of any type, the Bleach interpreter needs to deal with this. Thus, the return
- * type of this method is std::any.
+ * @return The corresponding value that the user-defined function or method is supposed to return.
 **/
 std::any BleachFunction::call(Interpreter& interpreter, std::vector<std::any> arguments){
   auto environment = std::make_shared<Environment>(closure); // Create an environment (scope) for the function that is about to be executed. The function environment has as its parent environment the closure that involves it.
@@ -122,8 +116,7 @@ std::any BleachFunction::call(Interpreter& interpreter, Token paren, std::vector
  * 
  * This method is responsible for returning the string representation of an instance of the BleachFunction class.
  * 
- * @return A string that is the string representation of an instance of the BleachFunction class (represented by
- * the std::string type).
+ * @return A string that is the string representation of an instance of the BleachFunction class.
 **/
 std::string BleachFunction::toString(){
   return "<function " + functionDeclaration->name.lexeme + ">";
