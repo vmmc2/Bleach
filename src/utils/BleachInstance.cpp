@@ -10,8 +10,7 @@
  * This constructor initializes a BleachInstance object with the three attributes that were mentioned inside the
  * "BleachInstance.hpp" file.
  *
- * @param klass: The name of the user-define class that has generated an instance of this BleachInstance class 
- * (represented by the std::shared_ptr<BleachClass> type).
+ * @param klass: The name of the user-define class that has generated an instance of this BleachInstance class. 
 **/
 BleachInstance::BleachInstance(std::shared_ptr<BleachClass> klass)
   : klass{std::move(klass)}
@@ -29,8 +28,7 @@ BleachInstance::BleachInstance(std::shared_ptr<BleachClass> klass)
  * instance of the BleachInstance class and also not in the instance of the BleachClass class that created such
  * instance.
  * 
- * @param name: A token that represents the name of the property whose value is required (represented by the 
- * const Token& type).
+ * @param name: A token that represents the name of the property whose value is required.
  *
  * @return The value associated to the name of the property. If such name is not found, then a runtime error is
  * thrown.
@@ -60,16 +58,15 @@ std::any BleachInstance::get(const Token& name){
 }
 
 /**
- * @brief Creates a binding between the name of an attribute/field and its respective value in a certain instance
- * of the BleachInstance class.
+ * @brief Creates a binding between the name of an attribute/field and its respective value in a certain 
+ * instance of the BleachInstance class.
  * 
  * This method is responsible for creating a binding between the an attribute/field and its respective value. 
  * Such method is only called when a "Set" expression is evaluated.
  * 
- * @param name: A token that represents the name of the attribute/field to which a value will be assigned to 
- * (represented by the const Token& type).
+ * @param name: A token that represents the name of the attribute/field to which a value will be assigned to.
  * @param value: The value that will be assigned to the attribute/field of this instance of the BleachInstance
- * class (represented by the std::any type).
+ * class.
  *
  * @return Nothing (void).
 **/
@@ -82,10 +79,10 @@ void BleachInstance::set(const Token& name, std::any value){
 /**
  * @brief Returns the string representation of an instance of the BleachInstance class.
  * 
- * This method is responsible for returning the string representation of an instance of the BleachInstance class.
+ * This method is responsible for returning the string representation of this instance of the BleachInstance
+ * class.
  * 
- * @return A string that is the string representation of an instance of the BleachInstance class (represented by
- * the std::string type).
+ * @return A string that is the string representation of this instance of the BleachInstance class.
 **/
 std::string BleachInstance::toString(){
   return "<instance of the " + klass->toString() + " class>";
