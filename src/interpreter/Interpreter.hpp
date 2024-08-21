@@ -94,6 +94,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       throw BleachRuntimeError{op, "Operands must be numbers."};
     }
 
+    /**
+     * @brief Checks whether the provided divisor of a division operation is zero or not. 
+     *
+     * This method works as a helper method for the "visitBinaryExpr" method specifically in the case where the
+     * operator is a division operator ("/"). This method is responsible for checking whether or not the divisor
+     * of the division operator is zero. If it is, then it throws a runtime error telling the user that a division
+     * by zero is not allowed. 
+     * 
+     * @param divisor: The value that is the divisor operand of the division operator ("/").
+     * @param op: The token whose lexeme represents the division operator ("/").
+     * @param epsilon: A value that is used to check whether or not the divisor operand is zero.
+     * 
+     * @return A boolean that signals whether or not the provided divisor operand of a division operation is zero.
+     */
     void checkZeroDivisor(const std::any& divisor, const Token& op, double epsilon = 1e-10){
       double div = std::any_cast<double>(divisor);
 
@@ -182,9 +196,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * For more context, Bleach follows Ruby convention: false and nil are considered to be "falsey" values. 
      * Every other value is considered to be "truthy".
      * 
-     * @param object: The value of a Bleach object which will be checked to see if it's "truthy" or not.
+     * @param object: The value of a Bleach object that will be checked to see if it's "truthy" or not.
      * 
-     * @return A boolean that signal whether or not a value is considered to be "truthy" or not.
+     * @return A boolean that signal whether or not the provided value is considered "truthy" or not.
      */
     bool isTruthy(const std::any& object){
       if(object.type() == typeid(nullptr)){
@@ -197,6 +211,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return true;
     }
 
+    /**
+     * @brief Formats a value of number type according to the presence, absence and amount of decimal places in
+     * it.
+     *
+     * This method is responsible for formatting a value of number type according to certain criteria. Such
+     * criteria is whether or not the number has decimal place and the amount of decimal places.
+     * For example: If internally a value of number type is "4.0000", then, when printed, the user should see just
+     * "4". The same case applies to the following value "3.1415900". The user should see the value "3.14159".
+     * However, if a value of number type is "2.713575", then the user should indeed see the "2.713575" value.
+     * 
+     * @param value: A value whose type is number and will be formatted by this method.
+     * 
+     * @return A string whose value is a string representation of the formatted number value.
+     */
     std::string formatDouble(double value){
         std::ostringstream out;
 
@@ -222,6 +250,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return out.str();
     }
 
+    /**
+     * @brief Retrieves the value bounded to a specific variable given the token whose lexeme is equal to such
+     * variable's name.
+     *
+     * This method is responsible for receiving a token whose lexeme represents the name of a variable and also
+     * an expression that represents the AST node of such variable during the parsing phase.
+     * 
+     * @param name: A token whose lexeme is the name of a variable whose value the interpreter is trying
+     * retrieve.
+     * @param expr: An expression that represents the AST node of such variable in the parsing stage.
+     * 
+     * @return The value that is bound to the variable that has been requested.
+     */
     std::any lookUpVariable(const Token& name, std::shared_ptr<Expr> expr){
       auto elem = locals.find(expr);
       if(elem != locals.end()){ // If the Variable expression has been found here, then it means that it is a local variable.
@@ -338,6 +379,22 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return;
     }
 
+  /**
+     * @brief Performs a binding between an expression that represents a variable and its respective depth (the
+     * position in the environment chain where the Environment instance that contains such variable is).
+     * 
+     * This method is responsible for receiving an expression that represents a variable in the AST of the
+     * Bleach language after the parsing stage and also an integer that tells the interpreter how many hops 
+     * must be followed from the current Environment instance that the interpreter is on until the Environment
+     * instance where such variable is present is reached. With these two pieces of information, the interpreter
+     * can figure out where any local variable is (with respect to Environment instances).
+     * 
+     * @param expr: An expression that represents the AST node of the variable.
+     * @param depth: An integer that represents how many hops must be followed from the current Environment
+     * instance that the interpreter is on to find the desired local variable.
+     * 
+     * @return Nothing (void).
+     */
     void resolve(std::shared_ptr<Expr> expr, int depth){
       locals[expr] = depth;
 
@@ -348,7 +405,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @brief Creates a new environment for a block statement that is about to be executed and executes each of
      * the statements present inside such block.
      *
-     * This method acts as an auxiliary method to the 'visitBlockStmt' method from this same class. This method 
+     * This method acts as an auxiliary method to the "visitBlockStmt" method from this same class. This method 
      * is responsible for creating a brand new environment for the block statement that is about to be visited
      * (during this creation, it stores the enclosing environment of the block inside the newly created 
      * environment for the block) and also for executing each of the statements that are present inside this 
@@ -389,7 +446,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitBlockStmt' method from the 'StmtVisitor' struct.
+     * @note This method is an overridden version of the "visitBlockStmt" method from the "StmtVisitor" struct.
      */
     std::any visitBlockStmt(std::shared_ptr<Block> stmt) override{
       executeBlock(stmt->statements, std::make_shared<Environment>(environment)); // In order to execute a 'Block' statement, the interpreter needs to create an environment that represents the lexical/static scope of the block and it also needs to execute each statement inside the block.
@@ -397,10 +454,35 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a Break Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Break Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Break Statement node.
+     * 
+     * @return This method does not return anything. Instead it throws an instance of the BleachBreak struct
+     * that will be properly caught and dealt with during the execution of a loop structure during runtime.
+     * 
+     * @note This method is an overridden version of the "visitBreakStmt" method from the "StmtVisitor" struct.
+     */
     std::any visitBreakStmt(std::shared_ptr<Break> stmt) override{
       throw BleachBreak{};
     }
 
+    /**
+     * @brief Visits a Class Declaration Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Class Declaration Statement node of the Bleach AST and
+     * performing the associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Class Declaration Statement node.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the "visitClassStmt" method from the "StmtVisitor" struct.
+     */
     std::any visitClassStmt(std::shared_ptr<Class> stmt) override{
       std::any superclass;
       if(stmt->superclass != nullptr){
@@ -438,6 +520,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a Continue Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Continue Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a Continue Statement node.
+     * 
+     * @return This method does not return anything. Instead it throws an instance of the BleachContinue struct
+     * that will be properly caught and dealt with during the execution of a loop structure during runtime.
+     * 
+     * @note This method is an overridden version of the "visitContinueStmt" method from the "StmtVisitor"
+     * struct.
+     */
     std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
       throw BleachContinue{};
     }
@@ -452,7 +548,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitDoWhileStmt' method from the 'StmtVisitor' 
+     * @note This method is an overridden version of the "visitDoWhileStmt" method from the "StmtVisitor"
      * struct.
      */
     std::any visitDoWhileStmt(std::shared_ptr<DoWhile> stmt) override{
@@ -495,7 +591,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitExpressionStmt' method from the 'StmtVisitor'
+     * @note This method is an overridden version of the "visitExpressionStmt" method from the "StmtVisitor"
      * struct.
      */
     std::any visitExpressionStmt(std::shared_ptr<Expression> stmt) override{
@@ -504,6 +600,18 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    /**
+     * @brief Visits a For Statement node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a For Statement node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param stmt: The node of the Bleach AST that is a For Statement node.
+     * 
+     * @return Nothing ({}).
+     * 
+     * @note This method is an overridden version of the "visitForStmt" method from the "StmtVisitor" struct.
+     */
     std::any visitForStmt(std::shared_ptr<For> stmt) override{
       std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
 
@@ -542,12 +650,13 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
     /**
-     * @brief Visits a Function Statement node of the Bleach AST and performs the associated actions. 
+     * @brief Visits a Function Declaration Statement node of the Bleach AST and performs the associated
+     * actions. 
      *
-     * This method is responsible for visiting a Function Statement node of the Bleach AST and performing the
-     * associated actions with this type of AST node.
+     * This method is responsible for visiting a Function Declaration Statement node of the Bleach AST and
+     * performing the associated actions with this type of AST node.
      * 
-     * @param stmt: The node of the Bleach AST that is a Function Statement node.
+     * @param stmt: The node of the Bleach AST that is a Function Declaration Statement node.
      * 
      * @return Nothing ({}).
      * 
@@ -576,7 +685,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitIfStmt' method from the 'StmtVisitor' struct.
+     * @note This method is an overridden version of the "visitIfStmt" method from the "StmtVisitor" struct.
      */
     std::any visitIfStmt(std::shared_ptr<If> stmt) override{
       if(isTruthy(evaluate(stmt->ifCondition))){
@@ -606,7 +715,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitPrintStmt' method from the 'StmtVisitor' struct.
+     * @note This method is an overridden version of the "visitPrintStmt" method from the "StmtVisitor" struct.
      */
     std::any visitPrintStmt(std::shared_ptr<Print> stmt) override{
       std::any value = evaluate(stmt->expression);
@@ -626,10 +735,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitReturnStmt' method from the 'StmtVisitor' struct.
-     * Moreover, this method will always throw a value. The value is the one generated when evaluating the 
-     * expression that might be present in the "return" statement. If there is no expression, then this means
-     * the produced value is nil (nullptr).
+     * @note This method is an overridden version of the "visitReturnStmt" method from the "StmtVisitor"
+     * struct. Moreover, this method will always throw a value. The value is the one generated when evaluating
+     * the expression that might be present in the "return" statement. If there is no expression, then this
+     * means the produced value is nil (nullptr).
      */
     std::any visitReturnStmt(std::shared_ptr<Return> stmt) override{
       std::any value = nullptr;
@@ -651,7 +760,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitVarStmt' method from the 'StmtVisitor' struct.
+     * @note This method is an overridden version of the "visitVarStmt" method from the "StmtVisitor" struct.
      */
     std::any visitVarStmt(std::shared_ptr<Var> stmt) override{
       std::string variableName = stmt->name.lexeme;
@@ -676,7 +785,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return Nothing ({}).
      * 
-     * @note This method is an overridden version of the 'visitWhileStmt' method from the 'StmtVisitor' struct.
+     * @note This method is an overridden version of the "visitWhileStmt" method from the "StmtVisitor" struct.
      */
     std::any visitWhileStmt(std::shared_ptr<While> stmt) override{
       std::shared_ptr<Environment> previous = this->environment; // Stores the current environment that the interpreter is looking at inside this "previous" variable.
@@ -713,9 +822,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @param expr: The node of the Bleach AST that is a Assign expression node.
      * 
-     * @return The value obtained from the visit (evaluation) to a Assign expression node of the Bleach AST.
+     * @return The value obtained from the visit (evaluation of) to a Assign expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitAssignExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the "visitAssignExpr" method from the "ExprVisitor"
+     * struct.
      */
     std::any visitAssignExpr(std::shared_ptr<Assign> expr) override{
       std::any value = evaluate(expr->value);
@@ -739,9 +849,10 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @param expr: The node of the Bleach AST that is a Binary expression node.
      * 
-     * @return The value obtained from the visit (evaluation) to a Binary expression node of the Bleach AST.
+     * @return The value obtained from the visit (evaluation of) to a Binary expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitBinaryExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the "visitBinaryExpr" method from the "ExprVisitor"
+     * struct.
      */
     std::any visitBinaryExpr(std::shared_ptr<Binary> expr) override{
       std::any left = evaluate(expr->left);
@@ -804,7 +915,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Call expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitCallExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the "visitCallExpr" method from the "ExprVisitor" struct.
      */
     std::any visitCallExpr(std::shared_ptr<Call> expr) override{
       std::any callee = evaluate(expr->callee); // First, the interpreter needs to evaluate the callee. Typically, this expression is just an identifier that looks up the function by its name, but it could be anything.
@@ -891,6 +1002,18 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       throw BleachRuntimeError{expr->paren, "Can only call classes, functions, lambda functions, methods and native functions."};
     }
 
+    /**
+     * @brief Visits a Get Expression node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Get Expression node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Get Expression node.
+     * 
+     * @return The value obtained from the visit (evaluation of) to a Get expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the "visitGetExpr" method from the "ExprVisitor" struct.
+     */
     std::any visitGetExpr(std::shared_ptr<Get> expr) override{
       std::any object = evaluate(expr->object);
 
@@ -919,6 +1042,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return evaluate(expr->expression);
     }
 
+    /**
+     * @brief Visits a LambdaFunction Expression node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a LambdaFunction Expression node of the Bleach AST and
+     * performing the associated actions with this type of AST node.
+     * 
+     * @param expr: The node of the Bleach AST that is a LambdaFunction Expression node.
+     * 
+     * @return The value obtained from the visit (evaluation of) to a LambdaFunction expression node of the
+     * Bleach AST.
+     * 
+     * @note This method is an overridden version of the "visitLambdaFunctionExpr" method from the
+     * "ExprVisitor" struct.
+     */
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
       return std::make_shared<BleachLambdaFunction>(expr, environment);
     }
@@ -933,7 +1070,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Literal expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitLiteralExpr' method from the 'ExprVisitor' 
+     * @note This method is an overridden version of the "visitLiteralExpr" method from the "ExprVisitor" 
      * struct.
      */
     std::any visitLiteralExpr(std::shared_ptr<Literal> expr) override{
@@ -950,13 +1087,14 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Logical expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitLogicalExpr' method from the 'ExprVisitor' 
-     * struct. Pay attention to the fact that logical operators do not return "true" or "false". Instead, they
-     * return the value itself. 
-     * Moreover, note that this method applies the idea of short-circuit by first evaluating the left operand 
-     * of the logical expression. After that, it checks the operator type and if it's possible to short-circuit.
-     * If that's the case, it prematurely returns the value produced by the evaluation of the left expression. 
-     * Otherwise, it evaluates the right expression and returns its value.
+     * @note This method is an overridden version of the "visitLogicalExpr" method from the "ExprVisitor" 
+     * struct.
+     * Moreover, pay attention to the fact that logical operators do not return "true" or "false". Instead,
+     * they return the value itself. 
+     * Furthermore, note that this method applies the idea of short-circuit by first evaluating the left
+     * operand of the logical expression. After that, it checks the operator type and if it's possible to
+     * short-circuit. If that's the case, it prematurely returns the value produced by the evaluation of the
+     * left expression. Otherwise, it evaluates the right expression and returns its value.
      */
     std::any visitLogicalExpr(std::shared_ptr<Logical> expr) override{
       std::any left = evaluate(expr->left);
@@ -974,10 +1112,34 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return evaluate(expr->right);
     }
 
+    /**
+     * @brief Visits a Self Expression node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Self Expression node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Self Expression node.
+     * 
+     * @return The value obtained from the visit (evaluation of) to a Self expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the "visitSelfExpr" method from the "ExprVisitor" struct.
+     */
     std::any visitSelfExpr(std::shared_ptr<Self> expr) override{
       return lookUpVariable(expr->keyword, expr);
     }
 
+    /**
+     * @brief Visits a Set Expression node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Set Expression node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Set Expression node.
+     * 
+     * @return The value obtained from the visit (evaluation of) to a Set expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the "visitSetExpr" method from the "ExprVisitor" struct.
+     */
     std::any visitSetExpr(std::shared_ptr<Set> expr) override{
       std::any object = evaluate(expr->object);
 
@@ -991,6 +1153,18 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return value;
     }
 
+    /**
+     * @brief Visits a Super Expression node of the Bleach AST and performs the associated actions. 
+     *
+     * This method is responsible for visiting a Super Expression node of the Bleach AST and performing the
+     * associated actions with this type of AST node.
+     * 
+     * @param expr: The node of the Bleach AST that is a Super Expression node.
+     * 
+     * @return The value obtained from the visit (evaluation of) to a Super expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the "visitSuperExpr" method from the "ExprVisitor" struct.
+     */
     std::any visitSuperExpr(std::shared_ptr<Super> expr) override{
       int distance = locals[expr];
 
@@ -1016,7 +1190,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Ternary expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitTernaryExpr' method from the 'ExprVisitor' 
+     * @note This method is an overridden version of the "visitTernaryExpr" method from the "ExprVisitor"
      * struct.
      */
     std::any visitTernaryExpr(std::shared_ptr<Ternary> expr) override{
@@ -1040,7 +1214,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Unary expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitUnaryExpr' method from the 'ExprVisitor' struct.
+     * @note This method is an overridden version of the "visitUnaryExpr" method from the "ExprVisitor" struct.
      */
     std::any visitUnaryExpr(std::shared_ptr<Unary> expr) override{
       std::any right = evaluate(expr->right);
@@ -1067,7 +1241,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * 
      * @return The value obtained from the visit (evaluation) to a Variable expression node of the Bleach AST.
      * 
-     * @note This method is an overridden version of the 'visitVariableExpr' method from the 'ExprVisitor' 
+     * @note This method is an overridden version of the "visitVariableExpr" method from the "ExprVisitor" 
      * struct.
      */
     std::any visitVariableExpr(std::shared_ptr<Variable> expr) override{
