@@ -121,7 +121,7 @@ chmod +x bleach_test_pipeline.sh
 program → statement* EOF
 statement → block | breakStmt | classDeclStmt | continueStmt | doWhileStmt | exprStmt | forStmt | funcDeclStmt | ifStmt | printStmt | returnStmt | varDeclStmt | whileStmt
 block → "{" statement* "}"
-break → "break" ";"
+breakStmt → "break" ";"
 classDeclStmt → "class" IDENTIFIER ( "inherits" IDENTIFIER )? "{" methodDeclStmt* "}"
 methodDeclStmt → "method" method
 method → IDENTIFIER "(" parameters? ")" block
