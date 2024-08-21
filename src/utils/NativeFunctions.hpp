@@ -10,8 +10,8 @@
 #include "./BleachCallable.hpp"
 #include "../error/BleachRuntimeError.hpp"
 
-class Interpreter;
 
+class Interpreter;
 
 // std::chrono::clock
 class NativeClock : public BleachCallable{
