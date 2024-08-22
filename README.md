@@ -58,7 +58,7 @@
 
 ## How to use it?
 1. Clone this repository in your local machine.
-2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it:
+2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
 cd scripts
 chmod +x bleach.sh
@@ -70,8 +70,20 @@ chmod +x bleach.sh
 ```
 
 
+## How to clean the built Bleach Tree-Walk Interpreter?
+1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
+```sh
+cd scripts
+chmod +x bleach_clean.sh
+```
+2. Execute the script that cleans the build of the Bleach Tree-Walk Interpreter (if any is present):
+```sh
+./bleach_clean.sh
+```
+
+
 ## How to run the unit tests of the Bleach Tree-Walk Interpreter?
-1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it:
+1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
 cd scripts
 chmod +x bleach_test_pipeline.sh
