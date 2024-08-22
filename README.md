@@ -49,7 +49,7 @@
 
 
 ## Bleach Language Documentation
-* The link to the official Bleach Language documentation page will be inserted later on.
+* You can read the official documentation of the Bleach language here: [Bleach Official Documentation](vmmc2.github.io/Bleach-Docs/)
 
 
 ## Bleach Language Syntax Highlight VSCode Extension
