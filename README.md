@@ -52,8 +52,9 @@
 * You can read the official documentation of the Bleach language here: [Bleach Official Documentation](vmmc2.github.io/Bleach-Docs/)
 
 
-## Bleach Language Syntax Highlight VSCode Extension
-* The link to the official Bleach Language syntax highlight VSCode extension will be inserted later on.
+## Bleach Language Syntax Highlight Visual Studio Code Extension
+* You can install the official Bleach Syntax Highlight extension for Visual Studio Code here: [Bleach Official Syntax Highlight Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=VictorMigueldeMoraisCosta.bleach-language-syntax-highlight)
+* __Remember that a Bleach file must have the ```.bch``` extension. Otherwise, the extension won't work properly.__
 
 
 ## How to use it?
