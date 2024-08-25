@@ -21,9 +21,14 @@
   09. Classes
   10. Inheritance
 
+## Who is the target audience of this project?
+* The main audience are professors, instructors and teaching assistants that are responsible for lecturing any undergraduate level 'Compilers' course.
+* Hobbists and people interested in the Compilers, Interpreters or Programming Languages.
+* __A note for the main audience: Please note that even if this interpreter for the Bleach language was written in C++, it does not limit any professor or instructor to choose another language (whether it's C, Haskell, Ocaml, Python, Racket, Scheme, SML or any other) to make assignments for their students so they can make their own implementation of Bleach. Feel free and encouraged to do so.__
+
 
 ## Why use Bleach?
-* As said previously, Bleach is a programming language whose focus is on concepts. This means that the language will have features (mentioned above) that make it minimally interesting.
+* As said previously, Bleach is a programming language whose focus is on concepts. This means that the language will have features (mentioned above) that make it interesting for the students.
 * The language implementation is made with the purpose of being clean and simple to understand. Thus, we can focus on the semantics of Bleach, instead of wasting time coding hacks and tricks or "leaving thigs as an exercise for the reader/student".
 * By adopting this approach, it's expected that it will make us, students, more comfortable with basic and essential techniques used in the implementation of a programming language. Moreover, this approach will also improve our understanding of how exactly the language is supposed to behave.
 
