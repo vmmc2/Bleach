@@ -220,7 +220,7 @@ std::io::print(triangle.describe(), "with area:", triangle.area());
 
 
 ## Bleach Language Documentation
-* You can read the official documentation of the Bleach language here: [Bleach Official Documentation](vmmc2.github.io/Bleach-Docs/)
+* You can read the official documentation of the Bleach language here: [Bleach Official Documentation](https://vmmc2.github.io/Bleach-Docs/)
 
 
 ## Bleach Language Syntax Highlight Visual Studio Code Extension
