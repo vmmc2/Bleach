@@ -54,7 +54,19 @@ std::io::print(fat(5)); // 120
 
 3. Fibonacci
 ```ts
+function fibonacci(n) {
+  if(n <= 0){
+    return 0;
+  }elif(n == 1){
+    return 1;
+  }else{
+    return fibonacci(n - 1) + fibonacci(n - 2);
+  }
+}
 
+let n = 10;
+let result = fibonacci(n);
+std::io::print("The", n, "th Fibonacci number is:", result);
 ```
 
 4. Basic Arithmetic Operations
@@ -98,16 +110,113 @@ std::io::print("BOOM!"); // "BOOM!"
 ```
 
 7. Loop Control Flow II
+```ts
+let counter = 1;
+
+do{
+  std::io::print("Counter is: ", counter);
+  counter = counter + 1;
+}while(count <= 5);
+```
 
 8. Loop Control Flow III
+```ts
+for(let i = 1; i <= 5; i = i + 1){
+    std::io::print("Current Iteration: ", i);
+}
+
+std::io::print("For loop execution has ended!");
+```
 
 9. Get User Input
+```ts
+std::io::print("Enter your name:");
+
+let name = std::io::readLine()
+
+let greeting = "Hello, " + name + "!"
+
+std::io::print(greeting);
+```
 
 10. String Manipulation
+```ts
+let first_name = "John";
+let last_name = "Doe";
 
-11. Class and Instances Usage
+let full_name = first_name + " " + last_name;
+std::io::print("The full name of the person is:", full_name);
+```
 
-12. Linked-List Implementation
+11. Class, Inheritance and Instances Usage
+```ts
+// Base class
+class Shape {
+  method init(name){
+    self.name = name;
+  }
+
+  method area(){
+    // To be overridden by subclasses
+    return 0;
+  }
+
+  method describe() {
+    return "This is a " + self.name;
+  }
+}
+
+// Derived class: Circle
+class Circle inherits Shape {
+  method init(radius){
+    // Call the base class constructor
+    super.init("Circle");
+    self.radius = radius;
+  }
+
+  method area(){
+    return std::math::pow(self.radius, 2) * 3.14159;
+  }
+}
+
+// Derived class: Rectangle
+class Rectangle extends Shape {
+  method init(width, height){
+    // Call the base class constructor
+    super.init("Rectangle");
+    self.width = width;
+    self.height = height;
+  }
+
+  method area(){
+    return self.width * self.height;
+  }
+}
+
+// Derived class: Triangle
+class Triangle extends Shape {
+  method init(base, height) {
+    // Call the base class constructor
+    super.init("Triangle");
+    self.base = base;
+    self.height = height;
+  }
+
+  method area(){
+    return (self.base * self.height) / 2;
+  }
+}
+
+// Create instances of each shape
+let circle = Circle(5);
+let rectangle = Rectangle(4, 6);
+let triangle = Triangle(3, 7);
+
+// Print descriptions and areas.
+std::io::print(circle.describe(), "with area:", circle.area());
+std::io::print(rectangle.describe(), "with area:", rectangle.area());
+std::io::print(triangle.describe(), "with area:", triangle.area());
+```
 
 
 ## The undergraduate thesis
@@ -224,8 +333,7 @@ lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
 * The implementation of the Bleach Interpreter was written in C++ due to a couple of reasons which include, but are not restricted to:
   * __Educational Value:__  C++ provides a solid foundation in many concepts of Computer Science, such as: memory management, data structures, and low-level programming concepts. These concepts are transferable to many other languages and also deepen one's understanding of programming in general.
   * __Execution Speed:__ While the interpreter itself might not need to execute code as quickly as an application built for real-time processing or high-performance computing, it's still desirable for it to be efficient. This efficiency can manifest in faster parsing, optimization, and execution of the code written in the interpreted language. Since C++ is a high-performance language, it can contribute to faster execution of these tasks, resulting in quicker interpretation of code.
-  * __Memory Management:__ Compilers and interpreters often deal with large amounts of data, including source code, abstract syntax trees, intermediate representations, and compiled code. Efficient memory management is crucial to handle this data without excessive memory consumption or leaks. C++ offers manual memory management capabilities, along with smart pointers and memory management libraries, allowing developers to fine-tune memory usage for optimal performance.
-  * __Familiarity:__ I could use another language like Haskell, OCaml, Rust of Python. However, in my point of view, implementing Bleach in C++ is a better idea because most students have already some previous contact with it in their Algorithm & Data Structures course or in their Operating Systems course. Also, the performance of an implementation is an important aspect, so it makes sense for us to use this language.
+  * __Familiarity:__ One could argue that another language like Haskell, OCaml, Racket, Scheme or SML is more suitable for this task. However I don't consider myself proficient enough in such language to tackle a project of this scope. Moreover, in my point of view, implementing Bleach in C++ is a good idea because most students have already worked with either in their "Introduction to Programming", "Algorithms & Data Structures" or "Operating Systems" course. Thus, they don't need to learn a new language just to understand the code written here. Also, the performance of an implementation is an important aspect, so it makes sense for, me at least, to use C++.
   * __Industry Adoption:__ This reason is specially aimed to those that, like me, want to work in this field of Computer Science. Nowadays, C++ is the 'lingua franca' in it. Some examples to highlight this are:
     * __Clang:__ C, C++, and Objective-C compiler front-end for the LLVM compiler infrastructure. Known for its fast compile times and excelent error diagnostics.
     * __Chromium V8:__ Google's open-source JavaScript runtime engine, used in the Chrome browser and Node.js.
