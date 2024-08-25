@@ -3,9 +3,9 @@
 
 
 ## Intro
-* The implementation of my undergraduate thesis in Computer Engineering
-  * Author: Victor Miguel de Morais Costa
-  * Advisor: Leopoldo Motta Teixeira
+* __The implementation of my undergraduate thesis to obtain my Bachelor's degree in Computer Engineering: "Bleach: A programming language aimed for teaching introductory 'Compilers' courses at universities."__ 
+  * __Author/Student: Victor Miguel de Morais Costa__
+  * __Advisor: Leopoldo Motta Teixeira__
 
 
 ## What is Bleach?
@@ -26,22 +26,88 @@
 * As said previously, Bleach is a programming language whose focus is on concepts. This means that the language will have features (mentioned above) that make it minimally interesting.
 * The language implementation is made with the purpose of being clean and simple to understand. Thus, we can focus on the semantics of Bleach, instead of wasting time coding hacks and tricks or "leaving thigs as an exercise for the reader/student".
 * By adopting this approach, it's expected that it will make us, students, more comfortable with basic and essential techniques used in the implementation of a programming language. Moreover, this approach will also improve our understanding of how exactly the language is supposed to behave.
-* The implementation provided here is written in C++. Contrary to the common claims that C++ is an old and dying language not worthy of one's investment, I'd say that C++ is not only an extremely important language but also that it's not going anywhere soon. Moreover, there are strong reasons for this specific choice, such as:
-  * __Educational Value:__  C++ provides a solid foundation in many concepts of Computer Science, such as: memory management, data structures, and low-level programming concepts. These concepts are transferable to many other languages and also deepen one's understanding of programming in general.
-  * __Continuous Development:__ Contrary to what many might think, C++ did not "stop in time". The language is in a constant and steady state of evolution in order to meet the changing needs of software development. To address that, the C++ standards committee regularly introduces new features and improvements to it, ensuring that it remains modern and relevant.
-  * __Execution Speed:__ While the interpreter itself might not need to execute code as quickly as an application built for real-time processing or high-performance computing, it's still desirable for it to be efficient. This efficiency can manifest in faster parsing, optimization, and execution of the code written in the interpreted language. Since C++ is a high-performance language, it can contribute to faster execution of these tasks, resulting in quicker interpretation of code.
-  * __Memory Management:__ Compilers and interpreters often deal with large amounts of data, including source code, abstract syntax trees, intermediate representations, and compiled code. Efficient memory management is crucial to handle this data without excessive memory consumption or leaks. C++ offers manual memory management capabilities, along with smart pointers and memory management libraries, allowing developers to fine-tune memory usage for optimal performance.
-  * __Familiarity:__ I could use another language like Haskell, OCaml, Rust of Python. However, in my point of view, implementing Bleach in C++ is a better idea because most students have already some previous contact with it in their Algorithm & Data Structures course or in their Operating Systems course. Also, the performance of an implementation is an important aspect, so it makes sense for us to use this language.
-  * __Industry Adoption:__ This reason is specially aimed to those that, like me, found themselves in this area of Computer Science. Nowadays, C++ is the 'lingua franca' when it comes to the implementation of compilers, interpreters and runtimes. Some examples to highlight this are:
-    * __Clang:__ C, C++, and Objective-C compiler front-end for the LLVM compiler infrastructure. Known for its fast compile times and excelent error diagnostics.
-    * __Chromium V8:__ Google's open-source JavaScript runtime engine, used in the Chrome browser and Node.js.
-    * __Emscripten:__ An LLVM-to-WebAssembly Compiler
-    * __glow:__ A compiler for Neural Network hardware accelerators
-    * __g++:__ The C++ front-end of the GCC compiler, also written in C++.
-    * __ICC (Intel C++ Compiler):__ This one, often used for optimizing performance on Intel architectures, is implemented majorly in C++.
-    * __LLVM (Low Level Virtual Machine):__ A compiler infrastructure project that includes a collection of modular and reusable compiler and toolchain components. While LLVM itself is written in C++, it provides support for multiple programming languages.
-    * __MSVC (Microsoft Visual C++ Compiler):__ A part of the famous Visual Studio IDE.
-    * __Swift Compiler:__ A compiler to the famous programming language developed by Apple, is written in C++.
+
+
+## Examples of simple yet useful programs written in Bleach
+1. Hello, World!
+```ts
+function greet(){
+  print "Hello, World!"; // "Hello, World!"
+  std::io::print("Hello, World!"); // "Hello, World!"
+}
+
+greet();
+```
+
+2. Fatorial
+```ts
+function fat(n){
+  if(n == 0){
+    return 1;
+  }
+
+  return n * fat(n - 1);
+}
+
+std::io::print(fat(5)); // 120
+```
+
+3. Fibonacci
+```ts
+
+```
+
+4. Basic Arithmetic Operations
+```ts
+let a = 5;
+let b = 6;
+
+let sum = a + b;
+let difference = a - b;
+let product = a * b;
+let quotient = a / b;
+
+std::io::print("Sum: ", sum) // 11
+std::io::print("Difference: ", difference) // -1
+std::io::print("Product: ", product) // 30
+std::io::print("Quotient: ", quotient) // 0.833333333333333
+```
+
+5. Logical Control Flow
+```ts
+let number = 42;
+
+if(number > 0){
+  std::io::print("Positive Number."); // "Positive Number."
+}elif(number < 0){
+  std::io::print("Negative Number.");
+}else{
+  std::io::print("Zero.");
+}
+```
+
+6. Loop Control Flow I
+```ts
+let count = 5;
+
+while(count > 0){
+    std::io::print("Countdown: ", count);
+    count = count - 1;
+}
+std::io::print("BOOM!"); // "BOOM!"
+```
+
+7. Loop Control Flow II
+
+8. Loop Control Flow III
+
+9. Get User Input
+
+10. String Manipulation
+
+11. Class and Instances Usage
+
+12. Linked-List Implementation
 
 
 ## The undergraduate thesis
@@ -95,26 +161,11 @@ chmod +x bleach_test_pipeline.sh
 ```
 
 
-## Roadmap
-- [x] __Part 1: Scanning (Review Implementation)__
-  - [x] Add support Multi-line comments (```/* */```)
-- [x] __Part 2: Representing Code (Review Implementation)__
-- [x] __Part 3: Parsing Expressions (Review Implementation)__
-- [x] __Part 4: Evaluating Expressions (Review Implementation)__
-  - [x] Add support to the ternary operator (```expression ? expression_1 : expression_2```)
-  - [x] Make division by ```0``` a runtime error
-- [x] __Part 5: Statements and State (Review Implementation)__
-- [x] __Part 6: Control Flow (Review Implementation)__
-  - [x] Add support to the ```elif``` keyword available along with ```if``` and ```else``` keywords
-  - [x] Add support to the ```do-while``` loop
-  - [x] Add ```break``` and ```continue``` keywords make them usable only inside loops
-  - [x] Make if-elif-else statements and for-dowhile-while loops have their own environment/scope
-- [x] __Part 7: Functions (Review Implementation)__
-  - [x] Add support for some built-in/native functions (```std::chrono```, ```std::io```, ```std::math```, ```std::random```)
-  - [x] Add support for anonymous functions
-- [x] __Part 8: Resolving and Binding (Review Implementation)__
-- [x] __Part 9: Classes (Review Implementation)__
-- [x] __Part 10: Inheritance (Review Implementation)__
+## To Do
+- [ ] Add the remaining unit tests that cover every single AST node of the Bleach language.
+- [ ] Add support for the remainder operator (```%```).
+- [ ] Implement the remaining native functions from the ```std::io``` and ````std::math``` namespaces.
+- [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 
 
 ## Future Steps
@@ -167,6 +218,21 @@ arguments → expression ( "," expression )*
 primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER | "super" . IDENTIFIER
 lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
 ```
+
+
+## Why was Bleach written in C++?
+* The implementation of the Bleach Interpreter was written in C++ due to a couple of reasons which include, but are not restricted to:
+  * __Educational Value:__  C++ provides a solid foundation in many concepts of Computer Science, such as: memory management, data structures, and low-level programming concepts. These concepts are transferable to many other languages and also deepen one's understanding of programming in general.
+  * __Execution Speed:__ While the interpreter itself might not need to execute code as quickly as an application built for real-time processing or high-performance computing, it's still desirable for it to be efficient. This efficiency can manifest in faster parsing, optimization, and execution of the code written in the interpreted language. Since C++ is a high-performance language, it can contribute to faster execution of these tasks, resulting in quicker interpretation of code.
+  * __Memory Management:__ Compilers and interpreters often deal with large amounts of data, including source code, abstract syntax trees, intermediate representations, and compiled code. Efficient memory management is crucial to handle this data without excessive memory consumption or leaks. C++ offers manual memory management capabilities, along with smart pointers and memory management libraries, allowing developers to fine-tune memory usage for optimal performance.
+  * __Familiarity:__ I could use another language like Haskell, OCaml, Rust of Python. However, in my point of view, implementing Bleach in C++ is a better idea because most students have already some previous contact with it in their Algorithm & Data Structures course or in their Operating Systems course. Also, the performance of an implementation is an important aspect, so it makes sense for us to use this language.
+  * __Industry Adoption:__ This reason is specially aimed to those that, like me, want to work in this field of Computer Science. Nowadays, C++ is the 'lingua franca' in it. Some examples to highlight this are:
+    * __Clang:__ C, C++, and Objective-C compiler front-end for the LLVM compiler infrastructure. Known for its fast compile times and excelent error diagnostics.
+    * __Chromium V8:__ Google's open-source JavaScript runtime engine, used in the Chrome browser and Node.js.
+    * __g++:__ The C++ front-end of the GCC compiler, also written in C++.
+    * __LLVM (Low Level Virtual Machine):__ A compiler infrastructure project that includes a collection of modular and reusable compiler and toolchain components. While LLVM itself is written in C++, it provides support for multiple programming languages.
+    * __MSVC (Microsoft Visual C++ Compiler):__ A part of the famous Visual Studio IDE.
+
 
 <!--
 ## LLVM Version of the Bleach Language (Not priority right now)
