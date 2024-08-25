@@ -269,7 +269,7 @@ chmod +x bleach_test_pipeline.sh
 ## To Do
 - [ ] Add the remaining unit tests that cover every single AST node of the Bleach language.
 - [ ] Add support for the remainder operator (```%```).
-- [ ] Implement the remaining native functions from the ```std::io``` and ````std::math``` namespaces.
+- [ ] Implement the remaining native functions from the ```std::io``` and ```std::math``` namespaces.
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 
 
