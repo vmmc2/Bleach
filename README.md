@@ -219,10 +219,6 @@ std::io::print(triangle.describe(), "with area:", triangle.area());
 ```
 
 
-## The undergraduate thesis
-* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
-
-
 ## Bleach Language Documentation
 * You can read the official documentation of the Bleach language here: [Bleach Official Documentation](vmmc2.github.io/Bleach-Docs/)
 
@@ -286,6 +282,10 @@ chmod +x bleach_test_pipeline.sh
   - [ ] Think about how to parse a ```list``` literal (AST node).
   - [ ] Think about how the resolver should deal with a ```list``` literal.
   - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```list``` value. Think about how the sorting of a ```list``` value should work.
+
+
+## The undergraduate thesis
+* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
 
 
 ## Current State of the Bleach Language Context-Free Grammar
