@@ -84,10 +84,10 @@ let difference = a - b;
 let product = a * b;
 let quotient = a / b;
 
-std::io::print("Sum: ", sum) // 11
-std::io::print("Difference: ", difference) // -1
-std::io::print("Product: ", product) // 30
-std::io::print("Quotient: ", quotient) // 0.833333333333333
+std::io::print("Sum:", sum); // 11
+std::io::print("Difference:", difference); // -1
+std::io::print("Product:", product); // 30
+std::io::print("Quotient:", quotient); // 0.833333333333333
 ```
 
 5. Logical Control Flow
@@ -108,7 +108,7 @@ if(number > 0){
 let count = 5;
 
 while(count > 0){
-    std::io::print("Countdown: ", count);
+    std::io::print("Countdown:", count);
     count = count - 1;
 }
 std::io::print("BOOM!"); // "BOOM!"
@@ -119,7 +119,7 @@ std::io::print("BOOM!"); // "BOOM!"
 let counter = 1;
 
 do{
-  std::io::print("Counter is: ", counter);
+  std::io::print("Counter is:", counter);
   counter = counter + 1;
 }while(count <= 5);
 ```
@@ -127,7 +127,7 @@ do{
 8. Loop Control Flow III
 ```ts
 for(let i = 1; i <= 5; i = i + 1){
-    std::io::print("Current Iteration: ", i);
+    std::io::print("Current Iteration:", i);
 }
 
 std::io::print("For loop execution has ended!");
@@ -137,9 +137,9 @@ std::io::print("For loop execution has ended!");
 ```ts
 std::io::print("Enter your name:");
 
-let name = std::io::readLine()
+let name = std::io::readLine();
 
-let greeting = "Hello, " + name + "!"
+let greeting = "Hello, " + name + "!";
 
 std::io::print(greeting);
 ```
@@ -185,7 +185,7 @@ class Circle inherits Shape {
 }
 
 // Derived class: Rectangle
-class Rectangle extends Shape {
+class Rectangle inherits Shape {
   method init(width, height){
     // Call the base class constructor
     super.init("Rectangle");
@@ -199,7 +199,7 @@ class Rectangle extends Shape {
 }
 
 // Derived class: Triangle
-class Triangle extends Shape {
+class Triangle inherits Shape {
   method init(base, height) {
     // Call the base class constructor
     super.init("Triangle");
