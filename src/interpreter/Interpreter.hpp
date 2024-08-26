@@ -885,7 +885,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           if(left.type() == typeid(double) && right.type() == typeid(std::string)){
             return formatDouble(std::any_cast<double>(left)) + std::any_cast<std::string>(right);
           }
-          if((left.type() == typeid(std::string) || right.type() == typeid(double))){
+          if((left.type() == typeid(std::string) && right.type() == typeid(double))){
             return std::any_cast<std::string>(left) + formatDouble(std::any_cast<double>(right));
           }
           throw BleachRuntimeError{expr->op, "Operands must be two numbers or two strings or one number and one string."};
@@ -899,6 +899,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           checkNumberOperands(expr->op, left, right);
           checkZeroDivisor(right, expr->op);
           return std::any_cast<double>(left) / std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
+        case(TokenType::REMAINDER):
+          checkNumberOperands(expr->op, left, right);
+          checkZeroDivisor(right, expr->op);
+          double dividend = std::any_cast<double>(left);
+          double divisor = std::any_cast<double>(right);
+          if(std::floor(dividend) == dividend && std::floor(divisor) == divisor){
+            return static_cast<double>(static_cast<int>(dividend) % static_cast<int>(divisor));
+          }else{
+            throw BleachRuntimeError{expr->op, "Operands must be integer numbers. If you want to perform such operation on floating-point numbers, use the std::math::fmod native function instead."};
+          }
       }
 
       // Unreachable

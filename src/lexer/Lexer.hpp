@@ -416,6 +416,9 @@ class Lexer{
             addToken(TokenType::MINUS);
           }
           break;
+        case('%'):
+          addToken(TokenType::REMAINDER);
+          break;
         case('*'):
           addToken(TokenType::STAR);
           break;

@@ -799,7 +799,7 @@ class Parser{
     std::shared_ptr<Expr> factor(){
       std::shared_ptr<Expr> expr = unary();
 
-      while(match(TokenType::STAR, TokenType::SLASH)){
+      while(match(TokenType::STAR, TokenType::SLASH, TokenType::REMAINDER)){
         Token op = previous();
         std::shared_ptr<Expr> right = unary();
         expr = std::make_shared<Binary>(expr, op, right); // The left-to-right associativity of the '*' and '/' operators is made evident here.
