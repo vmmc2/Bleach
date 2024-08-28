@@ -44,17 +44,17 @@ function greet(){
 greet();
 ```
 
-2. Fatorial
+2. Factorial
 ```ts
-function fat(n){
+function factorial(n){
   if(n == 0){
     return 1;
   }
 
-  return n * fat(n - 1);
+  return n * factorial(n - 1);
 }
 
-std::io::print(fat(5)); // 120
+std::io::print(factorial(5)); // 120
 ```
 
 3. Fibonacci
@@ -83,11 +83,13 @@ let sum = a + b;
 let difference = a - b;
 let product = a * b;
 let quotient = a / b;
+let remainder = a % b;
 
 std::io::print("Sum:", sum); // 11
 std::io::print("Difference:", difference); // -1
 std::io::print("Product:", product); // 30
 std::io::print("Quotient:", quotient); // 0.833333333333333
+std::io::print("Remainder:", remainder); // 5
 ```
 
 5. Logical Control Flow
