@@ -325,6 +325,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
       }
+      if(object.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
+        return std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(object)->toString();
+      }
       if(object.type() == typeid(std::shared_ptr<NativeLogarithm>)){
         return std::any_cast<std::shared_ptr<NativeLogarithm>>(object)->toString();
       }
@@ -349,8 +352,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       // globals->define("std::io::fileRead", std::make_shared<NativeFileRead>());
       // globals->define("std::io::fileWrite", std::make_shared<NativeFileWrite>());
       globals->define("std::math::abs", std::make_shared<NativeAbsoluteValue>());
-      globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
+      globals->define("std::math::fmod", std::make_shared<NativeDoubleRemainder>());
       globals->define("std::math::log", std::make_shared<NativeLogarithm>());
+      globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
       globals->define("std::math::sqrt", std::make_shared<NativeSquareRoot>());
       globals->define("std::random::random", std::make_shared<NativeRandom>());
     }
@@ -966,47 +970,52 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       else if(callee.type() == typeid(std::shared_ptr<NativeReadLine>)){
         function = std::any_cast<std::shared_ptr<NativeReadLine>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativePrint>)){
         function = std::any_cast<std::shared_ptr<NativePrint>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeFileRead>)){
         function = std::any_cast<std::shared_ptr<NativeFileRead>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeFileWrite>)){
         function = std::any_cast<std::shared_ptr<NativeFileWrite>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         function = std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
+        function = std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeExponentiation>)){
         function = std::any_cast<std::shared_ptr<NativeExponentiation>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeLogarithm>)){
         function = std::any_cast<std::shared_ptr<NativeLogarithm>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
         function = std::any_cast<std::shared_ptr<NativeSquareRoot>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeRandom>)){
         function = std::any_cast<std::shared_ptr<NativeRandom>>(callee);
 
-         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
 
       throw BleachRuntimeError{expr->paren, "Can only call classes, functions, lambda functions, methods and native functions."};

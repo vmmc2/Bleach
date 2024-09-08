@@ -163,6 +163,46 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 };
 
+// std::math::fmod
+class NativeDoubleRemainder : public BleachCallable{
+  public:
+    int arity() override{
+      return 2;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeDoubleRemainder' class." << std::endl;
+      
+      return {};
+    }
+
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      const double epsilon = 1e-9;
+      Token functionName{TokenType::IDENTIFIER, "std::math::fmod", toString(), paren.line};
+
+      if(arguments.size() != 2){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+        throw BleachRuntimeError{functionName, "The two arguments of the 'std::math::fmod' function must be numbers."};
+      }
+
+      double dividend = std::any_cast<double>(arguments[0]);
+      double divisor = std::any_cast<double>(arguments[1]);
+
+      if(std::fabs(divisor) <= epsilon){
+        throw BleachRuntimeError{functionName, "The second argument (the divisor of the double-precision floating-point remainder) of the 'std::math::fmod' must be different than 0."};
+      }
+
+      return std::fmod(dividend, divisor);
+    }
+
+    std::string toString() override{
+      return "<native function: std::math::fmod>";
+    }
+};
+
 // std::math::log
 class NativeLogarithm : public BleachCallable{
   public:
