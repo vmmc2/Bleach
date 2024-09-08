@@ -179,7 +179,69 @@ class NativeFileRead : public BleachCallable{
 
 // std::io::fileWrite
 class NativeFileWrite : public BleachCallable{
+  public:
+    int arity() override{
+      return 4;
+    }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeFileWrite' class." << std::endl;
+      
+      return {};
+    }
+
+    bool hasTxtExtension(std::string filePath){
+      const std::string extension = ".txt";
+
+      if (filePath.length() >= extension.length()) {
+          return (filePath.rfind(extension) == (filePath.length() - extension.length()));
+      }
+
+      return false;
+    }
+
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::io::fileWrite", toString(), paren.line};
+      if(arguments.size() != 4){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string) || arguments[1].type() != typeid(std::string) || arguments[2].type() != typeid(std::string) || arguments[3].type() != typeid(bool)){
+        throw BleachRuntimeError{functionName, "The first 3 arguments of the 'std::io::fileWrite' function must be all strings. The fourth and last one must be a boolean."};
+      }
+
+      std::string filePath = std::any_cast<std::string>(arguments[0]); // Can either be complete/full path or relative path.
+      std::string openMode = std::any_cast<std::string>(arguments[1]); // Can either be "w" (write) or "a" (append).
+      std::string contentToWrite = std::any_cast<std::string>(arguments[2]); // The content that will be written to the destination file.
+      bool insertNewLine = std::any_cast<bool>(arguments[3]); // Boolean that signals whether or not a newline must be added to the file after writing the provided content.
+
+      if(!hasTxtExtension(filePath)){
+        throw BleachRuntimeError{functionName, "The 'std::io::fileWrite' native function can only write content to files with a '.txt' extension."};
+      }
+      if(openMode != "w" && openMode != "a"){
+        throw BleachRuntimeError{functionName, "The 'std::io::fileWrite' native function only has two modes of opening and writing to a file: 'a' (append) or 'w' (write)."};
+      }
+
+      std::ofstream file(filePath, openMode == "a" ? std::ios::app : std::ios::out);
+      if(!file){
+        throw BleachRuntimeError{functionName, "Could not open the provided file: '" + filePath + "' in the given mode."};
+      }
+
+      file << contentToWrite;
+      if(!file){
+        throw BleachRuntimeError{functionName, "Could not write the content to the provided file: '" + filePath + "' in the given mode."};
+      }
+
+      if(insertNewLine){
+        file << "\n";
+      }
+
+      return {};
+    }
+
+    std::string toString() override{
+      return "<native function: std::io::fileWrite>";
+    }
 };
 
 // std::math::abs

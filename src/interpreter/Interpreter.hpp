@@ -326,7 +326,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::shared_ptr<NativeFileRead>>(object)->toString();
       }
       if(object.type() == typeid(std::shared_ptr<NativeFileWrite>)){
-
+        return std::any_cast<std::shared_ptr<NativeFileWrite>>(object)->toString();
       }
       if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
@@ -356,7 +356,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       globals->define("std::io::readLine", std::make_shared<NativeReadLine>());
       globals->define("std::io::print", std::make_shared<NativePrint>());
       globals->define("std::io::fileRead", std::make_shared<NativeFileRead>());
-      // globals->define("std::io::fileWrite", std::make_shared<NativeFileWrite>());
+      globals->define("std::io::fileWrite", std::make_shared<NativeFileWrite>());
       globals->define("std::math::abs", std::make_shared<NativeAbsoluteValue>());
       globals->define("std::math::fmod", std::make_shared<NativeDoubleRemainder>());
       globals->define("std::math::log", std::make_shared<NativeLogarithm>());
