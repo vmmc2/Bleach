@@ -281,7 +281,8 @@ chmod +x bleach_test_pipeline.sh
 ## Future Steps
 - [ ] Make the ```str``` type more robust.
   - [ ] Think about which methods to include in this type.
-  - [ ] Think about how to index a value of string type. 
+  - [ ] Think about how to index a value of string type.
+  - [ ] Change every place to use the more robust version of the ```str``` type.
 - [ ] Add the ```list``` type.
   - [ ] Think about how to lex/scan a ```list``` literal.
   - [ ] Think about how to parse a ```list``` literal (AST node).
