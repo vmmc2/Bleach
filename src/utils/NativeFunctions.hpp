@@ -3,7 +3,9 @@
 #include <any>
 #include <cmath>
 #include <chrono>
+#include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -122,7 +124,57 @@ class NativePrint : public BleachCallable{
 
 // std::io::fileRead
 class NativeFileRead : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
 
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeFileRead' class." << std::endl;
+      
+      return {};
+    }
+
+    bool hasTxtExtension(std::string filePath){
+      const std::string extension = ".txt";
+
+      if (filePath.length() >= extension.length()) {
+          return (filePath.rfind(extension) == (filePath.length() - extension.length()));
+      }
+
+      return false;
+    }
+
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::io::fileRead", toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::io::fileRead' function must be a string."};
+      }
+
+      std::string filePath = std::any_cast<std::string>(arguments[0]); // Can either be complete/full path or relative path.
+
+      if(!hasTxtExtension(filePath)){
+        throw BleachRuntimeError{functionName, "The 'std::io::fileRead' native function can only read the contents of files with a '.txt' extension."};
+      }
+
+      std::ifstream file(filePath);
+      if(!file){
+        throw BleachRuntimeError{functionName, "Could not open the provided file: '" + filePath + "'."};
+      }
+
+      std::ostringstream fileContent;
+      fileContent << file.rdbuf();
+
+      return fileContent.str();
+    }
+
+    std::string toString() override{
+      return "<native function: std::io::fileRead>";
+    }
 };
 
 // std::io::fileWrite
