@@ -878,6 +878,10 @@ class Parser{
         }else if(match(TokenType::DOT)){
           Token name = consume(TokenType::IDENTIFIER, "Expected a property name after '.'");
           expr = std::make_shared<Get>(expr, name); // It will create a tree with left-associativity. Which means the properties are going to be evaluated from left to right.
+        }else if(match(TokenType::LEFT_BRACKET)){
+          std::shared_ptr<Expr> index = expression();
+          Token rightBracket = consume(TokenType::RIGHT_BRACKET, "Expect a ']' after an index.");
+          expr = std::make_shared<Index>(expr, index, rightBracket); // It will create a tree with left-associativity. Which means the indexes are going to be evaluated from left to right.
         }else{
           break;
         }
