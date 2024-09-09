@@ -1081,7 +1081,28 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitIndexExpr(std::shared_ptr<Index> expr) override{
-      
+      std::any object = evaluate(expr->object);
+
+      if(object.type() == typeid(std::string)){
+        std::any indexObject = evaluate(expr->index);
+        if(indexObject.type() != typeid(double)){
+          throw BleachRuntimeError{expr->rightBracket, "Only values of type 'num' can be used to index a value of type 'str'."};
+        }
+        std::string str = std::any_cast<std::string>(object);
+        double index = std::any_cast<double>(indexObject);
+        if(std::floor(index) != index){
+          throw BleachRuntimeError{expr->rightBracket, "Only integer values of type 'num' can be used to index a value of type 'str'."};
+        }
+        if(std::floor(index) < 0 || std::floor(index) >= str.length()){
+          throw BleachRuntimeError{expr->rightBracket, "Index out of bounds. The value of 'str' type has length equal " + std::to_string(str.length()) + ", but the index provided was equal to: " + formatDouble(std::floor(index)) + "."};
+        }
+        std::string indexedStr = "";
+        indexedStr += str[std::floor(index)];
+
+        return indexedStr;
+      }
+
+      throw BleachRuntimeError{expr->rightBracket, "Only values of type 'array' and 'str' can be indexed."};
     }
 
     /**
