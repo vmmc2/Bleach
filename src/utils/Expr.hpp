@@ -14,6 +14,7 @@ struct Binary;
 struct Call;
 struct Get;
 struct Grouping;
+struct Index;
 struct LambdaFunction;
 struct Literal;
 struct Logical;
@@ -46,6 +47,7 @@ struct ExprVisitor{
   virtual std::any visitCallExpr(std::shared_ptr<Call> expr) = 0;
   virtual std::any visitGetExpr(std::shared_ptr<Get> expr) = 0;
   virtual std::any visitGroupingExpr(std::shared_ptr<Grouping> expr) = 0;
+  virtual std::any visitIndexExpr(std::shared_ptr<Index> expr) = 0;
   virtual std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
   virtual std::any visitLogicalExpr(std::shared_ptr<Logical> expr) = 0;
@@ -252,6 +254,45 @@ struct Grouping : Expr, public std::enable_shared_from_this<Grouping>{
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitGroupingExpr(shared_from_this());
+  }
+};
+
+/**
+ * @struct Index
+ * 
+ * @brief Defines a struct to represent an indexing expression node from the AST of the Bleach language.
+ *
+ * The Index struct defines a struct to represent an indexing expression node from the AST (Abstract Syntax 
+ * Tree) of the Bleach language. An indexing expression is just an expression that is enclosed by square brackets.
+ * This struct has three attributes. The first one is called "object". This one represents the value that is
+ * being indexed. The second one is called "index". This one represents the expression inside the square
+ * brackets. The third (and last one) is called "rightBracket". This attribute is just stored in case an error
+ * must be reported to the user.
+ */
+struct Index : Expr, public std::enable_shared_from_this<Index>{
+  const std::shared_ptr<Expr> object; // The object being indexed, can be a variable (that holds a value of list type or str type) or a literal (list literal or string literal).
+  const std::shared_ptr<Expr> index;
+  const Token rightBracket;
+
+  /**
+   * @brief Constructs an Index node of the Bleach AST (Abstract Syntax Tree). 
+   *
+   * This constructor initializes an Index object with the three attributes that were mentioned above ("object",
+   * "index" and "rightBracket").
+   *
+   * @param object: The expression that must be evaluated into a specific callable entity during runtime (an
+   * instance of the "BleachListInstance" class or an instance of the "BleachStrInstance" class).
+   * @param index: The expression whose value computed at runtime gives the index that will be accessed from the
+   * value of "list" or "str" type. 
+   * @param rightBracket: The token that represents a right bracket (']'). This token is used for error reporting
+   * purposes.
+  **/
+  Index(std::shared_ptr<Expr> object, std::shared_ptr<Expr> index, Token rightBracket)
+    : object{std::move(object)}, index{std::move(index)}, rightBracket{std::move(rightBracket)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitIndexExpr(shared_from_this());
   }
 };
 
