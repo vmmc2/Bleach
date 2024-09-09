@@ -1068,6 +1068,23 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     }
 
     /**
+     * @brief Visits an Index expression node of the Bleach AST and produces the corresponding value. 
+     *
+     * This method is responsible for visiting an Index expression node of the Bleach AST, producing a value
+     * that corresponds to the type of expression present inside such Index expression node.
+     * 
+     * @param expr: The node of the Bleach AST that is an Index expression node.
+     * 
+     * @return The value obtained from the visit (evaluation) to an Index expression node of the Bleach AST.
+     * 
+     * @note This method is an overridden version of the 'visitIndexExpr' method from the 'ExprVisitor' 
+     * struct.
+     */
+    std::any visitIndexExpr(std::shared_ptr<Index> expr) override{
+      
+    }
+
+    /**
      * @brief Visits a LambdaFunction Expression node of the Bleach AST and performs the associated actions. 
      *
      * This method is responsible for visiting a LambdaFunction Expression node of the Bleach AST and
