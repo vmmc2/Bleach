@@ -160,6 +160,13 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitIndexExpr(std::shared_ptr<Index> expr) override{
+      resolve(expr->object);
+      resolve(expr->index);
+
+      return {};
+    }
+
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
       FunctionType enclosingFunction = currentFunction;
       currentFunction = FunctionType::LAMBDAFUNCTION;
