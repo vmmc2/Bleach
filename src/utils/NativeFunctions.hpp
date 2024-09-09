@@ -477,3 +477,139 @@ class NativeRandom : public BleachCallable{
       return "<native function: std::random::random>";
     }  
 };
+
+// std::utils::ord
+class NativeOrd : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeOrd' class." << std::endl;
+      
+      return {};
+    }
+
+   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::utils::ord", this->toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::ord' function must be a string."};
+      }
+
+      std::string str = std::any_cast<std::string>(arguments[0]);
+      if(str.length() != 1){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::ord' function cannot be a string of length different than 1."};
+      }
+
+      return static_cast<double>(static_cast<int>(str[0]));
+    }
+
+    std::string toString() override{
+      return "<native function: std::utils::ord>";
+    }
+};
+
+// std::utils::numToStr
+class NativeNumberToString : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::string formatDouble(double value){
+      std::ostringstream out;
+
+      // Check if the value has a fractional part
+      if(value == static_cast<int>(value)){
+        // If the value is an integer, don't show decimal places
+        out << std::fixed << std::setprecision(0) << value;
+      }else{
+        // If the value has a fractional part, show it with the required precision
+        out << std::fixed << std::setprecision(15) << value;
+
+        // Remove trailing zeros
+        std::string result = out.str();
+        result.erase(result.find_last_not_of('0') + 1, std::string::npos);
+
+        // If the last character is a '.', remove it as well
+        if(result.back() == '.'){
+          result.pop_back();
+        }
+        return result;
+      }
+
+      return out.str();
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeNumberToString' class." << std::endl;
+      
+      return {};
+    }
+
+   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::utils::numToStr", this->toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::numToStr' function must be a number."};
+      }
+
+      double num = std::any_cast<double>(arguments[0]);
+
+      return formatDouble(num);
+    }
+
+    std::string toString() override{
+      return "<native function: std::utils::numToStr>";
+    }
+};
+
+// std::utils::strToNum
+class NativeStringToNumber : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeStringToNumber' class." << std::endl;
+      
+      return {};
+    }
+
+   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::utils::strToNum", this->toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::strToNum' function must be a string."};
+      }
+
+      std::string str = std::any_cast<std::string>(arguments[0]);
+      double answer;
+
+      try{
+        answer = std::stod(str);
+      }catch(const std::invalid_argument& e){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::strToNum' function could not be converted to a number."};
+      }catch(const std::out_of_range& e){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::strToNum' function overflowed the range of the 'num' type."};
+      }
+
+      return answer;
+    }
+
+    std::string toString() override{
+      return "<native function: std::utils::strToNum>";
+    }
+};

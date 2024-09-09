@@ -36,7 +36,8 @@ class Lexer{
       "std::chrono::clock", 
       "std::io::readLine", "std::io::print", "std::io::fileRead", "std::io::fileWrite",
       "std::math::abs", "std::math::fmod", "std::math::log", "std::math::pow", "std::math::sqrt",
-      "std::random::random"
+      "std::random::random",
+      "std::utils::ord", "std::utils::numToStr", "std::utils::strToNum"
     };
     std::map<std::string, TokenType> keywords = { /** Variable that maps string values of Bleach keywords to its respective TokenType enum values. */
       {"and",           TokenType::AND},

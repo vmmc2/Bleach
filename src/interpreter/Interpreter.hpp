@@ -288,6 +288,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * return a string containing an error message.
      */
     std::string stringify(const std::any& object){
+      std::cout << "Inside the 'stringify' method." << std::endl;
+
       if(object.type() == typeid(nullptr)){
         return "nil";
       }
@@ -298,6 +300,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::string>(object);
       }
       if(object.type() == typeid(double)){
+        std::cout << "Inside correct if" << std::endl;
         double value = std::any_cast<double>(object);
         return formatDouble(value);
       }
@@ -346,6 +349,15 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       if(object.type() == typeid(std::shared_ptr<NativeRandom>)){
         return std::any_cast<std::shared_ptr<NativeRandom>>(object)->toString();
       }
+      if(object.type() == typeid(std::shared_ptr<NativeOrd>)){
+        return std::any_cast<std::shared_ptr<NativeOrd>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeNumberToString>)){
+        return std::any_cast<std::shared_ptr<NativeNumberToString>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
+        return std::any_cast<std::shared_ptr<NativeStringToNumber>>(object)->toString();
+      }
 
       return "Error in stringify: object type not recognized.";
     }
@@ -363,6 +375,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
       globals->define("std::math::sqrt", std::make_shared<NativeSquareRoot>());
       globals->define("std::random::random", std::make_shared<NativeRandom>());
+      globals->define("std::utils::ord", std::make_shared<NativeOrd>());
+      globals->define("std::utils::numToStr", std::make_shared<NativeNumberToString>());
+      globals->define("std::utils::strToNum", std::make_shared<NativeStringToNumber>());
     }
 
     /**
@@ -730,6 +745,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
     std::any visitPrintStmt(std::shared_ptr<Print> stmt) override{
       std::any value = evaluate(stmt->expression);
 
+      std::cout << "Inside 'visitPrintStmt' method." << std::endl;
+
       std::cout << stringify(value) << std::endl;
 
       return {};
@@ -1020,6 +1037,21 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeRandom>)){
         function = std::any_cast<std::shared_ptr<NativeRandom>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeOrd>)){
+        function = std::any_cast<std::shared_ptr<NativeOrd>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeNumberToString>)){
+        function = std::any_cast<std::shared_ptr<NativeNumberToString>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
+        function = std::any_cast<std::shared_ptr<NativeStringToNumber>>(callee);
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
