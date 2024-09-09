@@ -328,7 +328,7 @@ comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )*
 term → factor ( ( "-" | "+" ) factor )*
 factor → unary ( ( "/" | "*" | "%" ) unary )*
 unary → ( "!" | "-" ) unary | call
-call → primary ( "(" arguments? ")" | "." IDENTIFIER )*
+call → primary ( "(" arguments? ")" | "." IDENTIFIER | "[" expression "]" )*
 arguments → expression ( "," expression )*
 primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | lambdaFunctionExpr | IDENTIFIER | "super" . IDENTIFIER
 lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
