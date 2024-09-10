@@ -22,6 +22,7 @@
 #include "../error/Error.hpp"
 #include "../utils/Environment.hpp"
 #include "../utils/Expr.hpp"
+#include "../utils/NativeCollectionTypes.hpp"
 #include "../utils/NativeFunctions.hpp"
 #include "../utils/Stmt.hpp"
 
