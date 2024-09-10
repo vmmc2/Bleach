@@ -288,8 +288,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * return a string containing an error message.
      */
     std::string stringify(const std::any& object){
-      std::cout << "Inside the 'stringify' method." << std::endl;
-
       if(object.type() == typeid(nullptr)){
         return "nil";
       }
@@ -300,7 +298,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::string>(object);
       }
       if(object.type() == typeid(double)){
-        std::cout << "Inside correct if" << std::endl;
         double value = std::any_cast<double>(object);
         return formatDouble(value);
       }
@@ -744,8 +741,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      */
     std::any visitPrintStmt(std::shared_ptr<Print> stmt) override{
       std::any value = evaluate(stmt->expression);
-
-      std::cout << "Inside 'visitPrintStmt' method." << std::endl;
 
       std::cout << stringify(value) << std::endl;
 
