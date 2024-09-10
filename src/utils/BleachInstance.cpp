@@ -84,6 +84,11 @@ void BleachInstance::set(const Token& name, std::any value){
  * 
  * @return A string that is the string representation of this instance of the BleachInstance class.
 **/
-std::string BleachInstance::toString(){
-  return "<instance of the " + klass->toString() + " class>";
+std::string BleachInstance::toString(Interpreter& interpreter){
+  std::shared_ptr<BleachFunction> instanceReprMethod = klass->findMethod("str");
+  if(instanceReprMethod != nullptr){
+    return std::any_cast<std::string>(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}));
+  }else{
+    return "<instance of the " + klass->toString() + " class>";
+  }
 }

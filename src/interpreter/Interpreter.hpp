@@ -308,7 +308,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<std::shared_ptr<BleachFunction>>(object)->toString();
       }
       if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
-        return std::any_cast<std::shared_ptr<BleachInstance>>(object)->toString();
+        return std::any_cast<std::shared_ptr<BleachInstance>>(object)->toString(*this);
       }
       if(object.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
         return std::any_cast<std::shared_ptr<BleachLambdaFunction>>(object)->toString();

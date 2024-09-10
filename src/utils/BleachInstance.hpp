@@ -4,9 +4,12 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 
 class BleachClass; // Forward declaration necessary to implement the BleachInstance class.
+class BleachFunction; // Forward declaration necessary to implement the BleachInstance class.
+class Interpreter; // Forward declaration necessary to implement the BleachInstance class.
 class Token; // Forward declaration necessary to implement the BleachInstance class.
 
 /**
@@ -30,5 +33,5 @@ class BleachInstance : public std::enable_shared_from_this<BleachInstance>{
     BleachInstance(std::shared_ptr<BleachClass> klass);
     std::any get(const Token& name);
     void set(const Token& name, std::any value);
-    std::string toString();
+    std::string toString(Interpreter& interpreter);
 };
