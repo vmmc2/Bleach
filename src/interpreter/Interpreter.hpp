@@ -1122,6 +1122,21 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return std::floor(stringMethod());
       }
+      // "str" method: "split".
+      else if(callee.type() == typeid(std::function<std::shared_ptr<std::vector<std::any>>(std::string)>)){
+        auto stringMethod = std::any_cast<std::function<std::shared_ptr<std::vector<std::any>>(std::string)>>(callee);
+
+        if(arguments.size() != 1){
+          throw BleachRuntimeError{expr->paren, "Expected 1 arguments for the 'split' method."};
+        }
+        if(arguments[0].type() != typeid(std::string)){
+          throw BleachRuntimeError{expr->paren, "Expected 1 argument of type 'str' for the 'split' method."};
+        }
+
+        std::string separator = std::any_cast<std::string>(arguments[0]);
+
+        return stringMethod(separator);
+      }
       // "str" method: "substr".
       else if(callee.type() == typeid(std::function<std::string(double, double)>)){
         auto stringMethod = std::any_cast<std::function<std::string(double, double)>>(callee);
@@ -1293,6 +1308,20 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         }else if(methodName == "empty"){
           return std::function<bool()>([str](){
             return str.empty();
+          });
+        }else if(methodName == "split"){
+          return std::function<std::shared_ptr<std::vector<std::any>>(std::string)>([str, methodToken](std::string separator){
+            auto result = std::make_shared<std::vector<std::any>>();
+            size_t start = 0;
+            size_t end = 0;
+
+            while ((end = str.find(separator, start)) != std::string::npos) {
+                result->push_back(str.substr(start, end - start));
+                start = end + separator.length();
+            }
+            result->push_back(str.substr(start));
+
+            return result;
           });
         }else if(methodName == "substr"){
           return std::function<std::string(double, double)>([str, methodToken](double left, double right){
