@@ -1216,6 +1216,30 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return nullptr;
       }
+      // "list" method: "fill".
+      else if(callee.type() == typeid(std::function<void(std::any, int)>)){
+        auto listMethod = std::any_cast<std::function<void(std::any, int)>>(callee);
+
+        if(arguments.size() != 2){
+          throw BleachRuntimeError{expr->paren, "Expected 2 arguments for the 'fill' method."};
+        }
+        if(arguments[1].type() != typeid(double)){
+          throw BleachRuntimeError{expr->paren, "Expected the second argument to be of type 'num' for the 'fill' method."};
+        }
+
+        double indexObject = std::any_cast<double>(arguments[1]);
+
+        if(std::floor(indexObject) != indexObject){
+          throw BleachRuntimeError{expr->paren, "The value of the second argument must be an integer of type 'num' for the 'fill' method."};
+        }
+
+        int index = std::floor(indexObject);
+        std::any value = arguments[0];
+
+        listMethod(value, index);
+
+        return nullptr;
+      }
 
 
       throw BleachRuntimeError{expr->paren, "Can only call classes, functions, lambda functions, methods and native functions."};
@@ -1293,7 +1317,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           return std::function<bool()>([vecPtr](){
             return vecPtr->empty();
           });
-        }else if(methodName == "pop"){ // DONE
+        }else if(methodName == "fill"){ // DONE
+          return std::function<void(std::any, int)>([vecPtr, methodToken](std::any value, int size){
+            if(size < 0){
+              throw BleachRuntimeError{methodToken, "Index out of bounds. The size of 'list' type cannot be negative. The value provided as the second argument was: " + std::to_string(size) + "."};
+            }
+            vecPtr->resize(size);
+            for(int i = 0; i < vecPtr->size(); i++){
+              (*vecPtr)[i] = value;
+            }
+            return;
+          });
+        }
+        else if(methodName == "pop"){ // DONE
           return std::function<std::any()>([vecPtr, methodToken](){
             if(vecPtr->empty()){
               throw BleachRuntimeError{methodToken, "The value of 'list' type is already empty."};
