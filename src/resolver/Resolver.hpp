@@ -202,6 +202,14 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
+    std::any visitListLiteralExpr(std::shared_ptr<ListLiteral> expr) override{
+      for(int i = 0; i < expr->elements.size(); i++){
+        resolve(expr->elements[i]);
+      }
+
+      return {};
+    }
+
     std::any visitLiteralExpr(std::shared_ptr<Literal> expr) override{
       return {};
     }

@@ -935,6 +935,17 @@ class Parser{
         consume(TokenType::RIGHT_PAREN, "Expect a ')' after an expression");
         return std::make_shared<Grouping>(expr);
       }
+      if(match(TokenType::LEFT_BRACKET)){
+        std::vector<std::shared_ptr<Expr>> elements;
+        if(!check(TokenType::RIGHT_BRACKET)){
+          do{
+            elements.push_back(expression());
+          }while(match(TokenType::COMMA));
+        }
+        consume(TokenType::RIGHT_BRACKET, "Expect ']' after the elements of a 'list' type.");
+
+        return std::make_shared<ListLiteral>(elements);
+      }
       if(match(TokenType::LAMBDA)){
         return lambdaExpression();
       }

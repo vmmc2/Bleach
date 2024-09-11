@@ -278,18 +278,6 @@ chmod +x bleach_test_pipeline.sh
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 
 
-## Future Steps
-- [ ] Make the ```str``` type more robust.
-  - [ ] Think about which methods to include in this type.
-  - [ ] Think about how to index a value of string type.
-  - [ ] Change every place to use the more robust version of the ```str``` type.
-- [ ] Add the ```list``` type.
-  - [ ] Think about how to lex/scan a ```list``` literal.
-  - [ ] Think about how to parse a ```list``` literal (AST node).
-  - [ ] Think about how the resolver should deal with a ```list``` literal.
-  - [ ] Think about how this type should be represented during runtime. Think about what methods this new type should have and how each of them should behave. Think about how one could iterate through elements of a ```list``` value. Think about how the sorting of a ```list``` value should work.
-
-
 ## The undergraduate thesis
 * If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
 

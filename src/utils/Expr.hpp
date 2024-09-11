@@ -17,6 +17,7 @@ struct Grouping;
 struct Index;
 struct IndexAssign;
 struct LambdaFunction;
+struct ListLiteral;
 struct Literal;
 struct Logical;
 struct Self;
@@ -51,6 +52,7 @@ struct ExprVisitor{
   virtual std::any visitIndexExpr(std::shared_ptr<Index> expr) = 0;
   virtual std::any visitIndexAssignExpr(std::shared_ptr<IndexAssign> expr) = 0;
   virtual std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) = 0;
+  virtual std::any visitListLiteralExpr(std::shared_ptr<ListLiteral> expr) = 0;
   virtual std::any visitLiteralExpr(std::shared_ptr<Literal> expr) = 0;
   virtual std::any visitLogicalExpr(std::shared_ptr<Logical> expr) = 0;
   virtual std::any visitSelfExpr(std::shared_ptr<Self> expr) = 0;
@@ -377,6 +379,18 @@ struct LambdaFunction : Expr, public std::enable_shared_from_this<LambdaFunction
 
   std::any accept(ExprVisitor& visitor) override{
     return visitor.visitLambdaFunctionExpr(shared_from_this());
+  }
+};
+
+struct ListLiteral : Expr, std::enable_shared_from_this<ListLiteral>{
+  std::vector<std::shared_ptr<Expr>> elements;
+
+  ListLiteral(std::vector<std::shared_ptr<Expr>> elements)
+    : elements{std::move(elements)}
+  {}
+
+  std::any accept(ExprVisitor& visitor) override{
+    return visitor.visitListLiteralExpr(shared_from_this());
   }
 };
 

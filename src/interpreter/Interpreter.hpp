@@ -314,6 +314,23 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       if(object.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
         return std::any_cast<std::shared_ptr<BleachLambdaFunction>>(object)->toString();
       }
+      if(object.type() == typeid(std::shared_ptr<std::vector<std::any>>)){  
+        std::shared_ptr<std::vector<std::any>> vecPtr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(object);
+        std::string listAsString = "[";
+
+        for(int i = 0; i < vecPtr->size(); i++){
+          if(i == vecPtr->size() - 1){
+            listAsString += stringify(vecPtr->at(i));
+          }else{
+            listAsString += stringify(vecPtr->at(i));
+            listAsString += ", ";
+          }
+        }
+
+        listAsString += "]";
+
+        return listAsString;
+      }
       if(object.type() == typeid(std::shared_ptr<NativeClock>)){
         return std::any_cast<std::shared_ptr<NativeClock>>(object)->toString();
       }
@@ -911,7 +928,15 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           if((left.type() == typeid(std::string) && right.type() == typeid(double))){
             return std::any_cast<std::string>(left) + formatDouble(std::any_cast<double>(right));
           }
-          throw BleachRuntimeError{expr->op, "Operands must be two numbers or two strings or one number and one string."};
+          if(left.type() == typeid(std::shared_ptr<std::vector<std::any>>) && right.type() == typeid(std::shared_ptr<std::vector<std::any>>)){
+            auto result = std::make_shared<std::vector<std::any>>();
+            auto vec1Ptr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(left);
+            auto vec2Ptr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(right);
+            result->insert(result->end(), vec1Ptr->begin(), vec1Ptr->end());
+            result->insert(result->end(), vec2Ptr->begin(), vec2Ptr->end());
+            return result;
+          }
+          throw BleachRuntimeError{expr->op, "Operands must be two numbers, or two strings, or two lists, or one number and one string."};
         case(TokenType::MINUS):
           checkNumberOperands(expr->op, left, right);
           return std::any_cast<double>(left) - std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
@@ -1052,6 +1077,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
       // Methods from 'list' and/or 'str' types:
+      // "str" method: "find".
       else if(callee.type() == typeid(std::function<double(std::string)>)){
         auto stringMethod = std::any_cast<std::function<double(std::string)>>(callee);
 
@@ -1064,6 +1090,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return stringMethod(std::any_cast<std::string>(arguments[0]));
       }
+      // "list" and "str" method: "empty".
       else if(callee.type() == typeid(std::function<bool()>)){
         auto stringMethod = std::any_cast<std::function<bool()>>(callee);
 
@@ -1073,6 +1100,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return stringMethod();
       }
+      // "list" method: "size" ---- "str" method: "length".
       else if(callee.type() == typeid(std::function<double()>)){
         auto stringMethod = std::any_cast<std::function<double()>>(callee);
 
@@ -1082,6 +1110,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return std::floor(stringMethod());
       }
+      // "str" method: "substr".
       else if(callee.type() == typeid(std::function<std::string(double, double)>)){
         auto stringMethod = std::any_cast<std::function<std::string(double, double)>>(callee);
 
@@ -1101,8 +1130,91 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         if(left < 0 || right < 0){
           throw BleachRuntimeError{expr->paren, "The values of both arguments cannot be negative for the 'substr' method."};
         }
+        if(std::floor(left) != left || std::floor(right) != right){
+          throw BleachRuntimeError{expr->paren, "The value of both arguments must integers of type 'num'."};
+        }
 
         return stringMethod(std::floor(left), std::floor(right));
+      }
+      // "list" method: "append".
+      else if(callee.type() == typeid(std::function<void(std::any)>)){
+        auto listMethod = std::any_cast<std::function<void(std::any)>>(callee);
+
+        if(arguments.size() != 1){
+          throw BleachRuntimeError{expr->paren, "Expected 1 arguments for the 'append' method."};
+        }
+
+        std::any value = arguments[0];
+        listMethod(value);
+
+        return nullptr;
+      }
+      // "list" method: "getAt".
+      else if(callee.type() == typeid(std::function<std::any(int)>)){
+        auto listMethod = std::any_cast<std::function<std::any(int)>>(callee);
+
+        if(arguments.size() != 1){
+          throw BleachRuntimeError{expr->paren, "Expected 1 arguments for the 'getAt' method."};
+        }
+        if(arguments[0].type() != typeid(double)){
+          throw BleachRuntimeError{expr->paren, "Expected 1 argument of type 'num' for the 'getAt' method."};
+        }
+
+        double indexObject = std::any_cast<double>(arguments[0]);
+
+        if(std::floor(indexObject) != indexObject){
+          throw BleachRuntimeError{expr->paren, "The value of the first argument must be an integer of type 'num' for the 'getAt' method."};
+        }
+
+        int index = std::floor(indexObject);
+
+        return listMethod(index);
+      }
+      // "list" method: "clear".
+      else if(callee.type() == typeid(std::function<void()>)){
+        auto listMethod = std::any_cast<std::function<void()>>(callee);
+
+        if(arguments.size() != 0){
+          throw BleachRuntimeError{expr->paren, "Expected 0 arguments for the 'clear' method."};
+        }
+
+        listMethod();
+
+        return nullptr;
+      }
+      // "list" method: "pop".
+      else if(callee.type() == typeid(std::function<std::any()>)){
+        auto listMethod = std::any_cast<std::function<std::any()>>(callee);
+
+        if(arguments.size() != 0){
+          throw BleachRuntimeError{expr->paren, "Expected 0 arguments for the 'pop' method."};
+        }
+
+        return listMethod();
+      }
+      // "list" method: "setAt".
+      else if(callee.type() == typeid(std::function<void(int, std::any)>)){
+        auto listMethod = std::any_cast<std::function<void(int, std::any)>>(callee);
+
+        if(arguments.size() != 2){
+          throw BleachRuntimeError{expr->paren, "Expected 2 arguments for the 'setAt' method."};
+        }
+        if(arguments[0].type() != typeid(double)){
+          throw BleachRuntimeError{expr->paren, "Expected the first argument to be of type 'num' for the 'setAt' method."};
+        }
+
+        double indexObject = std::any_cast<double>(arguments[0]);
+
+        if(std::floor(indexObject) != indexObject){
+          throw BleachRuntimeError{expr->paren, "The value of the first argument must be an integer of type 'num' for the 'setAt' method."};
+        }
+
+        int index = std::floor(indexObject);
+        std::any value = arguments[1];
+
+        listMethod(index, value);
+
+        return nullptr;
       }
 
 
@@ -1126,7 +1238,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
         return std::any_cast<std::shared_ptr<BleachInstance>>(object)->get(expr->name);
-
       }else if(object.type() == typeid(std::string)){
         std::string str = std::any_cast<std::string>(object);
         Token methodToken = expr->name;
@@ -1161,7 +1272,54 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         }
 
         throw BleachRuntimeError{expr->name, "Undefined method of the 'str' type."};
-      }else if(object.type() == typeid(std::vector<std::any>)){
+      }else if(object.type() == typeid(std::shared_ptr<std::vector<std::any>>)){
+        auto vecPtr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(object);
+        Token methodToken = expr->name;
+        std::string methodName = expr->name.lexeme;
+
+        if(methodName == "getAt"){ // DONE
+          return std::function<std::any(int)>([vecPtr, methodToken](int index){
+            if(index < 0 || index >= vecPtr->size()){
+              throw BleachRuntimeError{methodToken, "Index out of bounds. The value of 'list' type has size equal " + std::to_string(vecPtr->size()) + ", but the index provided was equal to: " + std::to_string(static_cast<int>(std::floor(index))) + "."};
+            }
+            return vecPtr->at(index);
+          });
+        }else if(methodName == "clear"){ // DONE
+          return std::function<void()>([vecPtr](){
+            vecPtr->clear();
+            return;
+          });
+        }else if(methodName == "empty"){ // DONE
+          return std::function<bool()>([vecPtr](){
+            return vecPtr->empty();
+          });
+        }else if(methodName == "pop"){ // DONE
+          return std::function<std::any()>([vecPtr, methodToken](){
+            if(vecPtr->empty()){
+              throw BleachRuntimeError{methodToken, "The value of 'list' type is already empty."};
+            }
+            std::any lastValue = vecPtr->at(vecPtr->size() - 1);
+            vecPtr->pop_back();
+            return lastValue;
+          });
+        }else if(methodName == "append"){ // DONE
+          return std::function<void(std::any)>([vecPtr](std::any value){
+            vecPtr->push_back(value);
+            return;
+          });
+        }else if(methodName == "setAt"){ // DONE
+          return std::function<void(int, std::any)>([vecPtr, methodToken](int index, std::any value){
+            if(index < 0 || index >= vecPtr->size()){
+              throw BleachRuntimeError{methodToken, "Index out of bounds. The value of 'list' type has size equal " + std::to_string(vecPtr->size()) + ", but the index provided was equal to: " + std::to_string(static_cast<int>(std::floor(index))) + "."};
+            }
+            (*vecPtr)[index] = value;
+            return;
+          });
+        }else if(methodName == "size"){ // DONE
+          return std::function<double()>([vecPtr](){
+            return static_cast<double>(vecPtr->size());
+          });
+        }
 
         throw BleachRuntimeError{expr->name, "Undefined method of the 'list' type."};
       }
@@ -1266,6 +1424,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      */
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
       return std::make_shared<BleachLambdaFunction>(expr, environment);
+    }
+
+    std::any visitListLiteralExpr(std::shared_ptr<ListLiteral> expr) override{
+      std::vector<std::any> vec;
+
+      for(int i = 0; i < expr->elements.size(); i++){
+        vec.push_back(evaluate(expr->elements[i]));
+      }
+
+      return std::make_shared<std::vector<std::any>>(vec);
     }
 
     /**
