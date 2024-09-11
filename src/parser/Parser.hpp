@@ -654,6 +654,8 @@ class Parser{
           return std::make_shared<Assign>(std::move(name), value); // This also makes the right-to-left associativity of the assignment expression/operator evident. Recursion -> right associativity and Loop -> left associativity.
         }else if(Get* get = dynamic_cast<Get*>(expr.get())){
           return std::make_shared<Set>(get->object, get->name, value); // This here is responsible for transforming a "Get" expression into a "Set" expression.
+        }else if(Index* index = dynamic_cast<Index*>(expr.get())){
+          return std::make_shared<IndexAssign>(index->name, index->index, index->rightBracket, value);
         }
       
         error(equals, "Invalid assignment target");
@@ -879,10 +881,12 @@ class Parser{
         }else if(match(TokenType::DOT)){
           Token name = consume(TokenType::IDENTIFIER, "Expected a property name after '.'");
           expr = std::make_shared<Get>(expr, name); // It will create a tree with left-associativity. Which means the properties are going to be evaluated from left to right.
-        }else if(match(TokenType::LEFT_BRACKET)){
+        }else if(check(TokenType::LEFT_BRACKET)){
+          Token name = previous();
+          match(TokenType::LEFT_BRACKET);
           std::shared_ptr<Expr> index = expression();
           Token rightBracket = consume(TokenType::RIGHT_BRACKET, "Expect a ']' after an index.");
-          expr = std::make_shared<Index>(expr, index, rightBracket); // It will create a tree with left-associativity. Which means the indexes are going to be evaluated from left to right.
+          expr = std::make_shared<Index>(name, index, rightBracket); // It will create a tree with left-associativity. Which means the indexes are going to be evaluated from left to right.
         }else{
           break;
         }

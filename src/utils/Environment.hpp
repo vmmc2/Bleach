@@ -121,6 +121,36 @@ class Environment : public std::enable_shared_from_this<Environment>{
       throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};
     }
 
+    void assignIndex(const Token& name, int index, std::any value){
+      auto elem = values.find(name.lexeme);
+
+      if(elem != values.end()){
+        std::any currentValue = values[name.lexeme];
+        if(currentValue.type() == typeid(std::string)){
+          std::string str = std::any_cast<std::string>(currentValue);
+          std::string ch = std::any_cast<std::string>(value);
+          if(index < 0 || index > str.length()){
+            throw BleachRuntimeError{name, "The provided index is " + std::to_string(index) + ", but the value of 'str' type has a size of " + std::to_string(str.length())};
+          }
+          if(ch.size() != 1){
+            throw BleachRuntimeError{name, "The provided value to be assigned at an index of a value of 'str' must be a value of 'str' type with size 1."};
+          }
+          str[index] = ch[0];
+          values[name.lexeme] = std::move(str);
+        }
+        return;
+      }
+
+      if(enclosing != nullptr){
+        enclosing->assignIndex(name, index, std::move(value));
+        return;
+      }
+      if(name.lexeme == "]"){
+        throw BleachRuntimeError{name, "Values of 'str' type do not suport nesting indexing."};
+      }
+      throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};
+    }
+
     /**
      * @brief Assigns, at a specific environment (determined by the received value of the "distance" parameter), 
      * the received value to the variable which the lexeme of the received token refers to. 
@@ -142,6 +172,25 @@ class Environment : public std::enable_shared_from_this<Environment>{
      */
     void assignAt(const Token& name, std::any value, int distance){
       ancestor(distance)->values[name.lexeme] = std::move(value);
+
+      return;
+    }
+
+    void assignIndexAt(const Token& name, int index, std::any value, int distance){
+      std::any currentValue = ancestor(distance)->values[name.lexeme];
+
+      if(currentValue.type() == typeid(std::string)){
+        std::string str = std::any_cast<std::string>(currentValue);
+        std::string ch = std::any_cast<std::string>(value);
+        if(index < 0 || index > str.length()){
+          throw BleachRuntimeError{name, "The provided index is " + std::to_string(index) + ", but the value of 'str' type has a size of " + std::to_string(str.length())};
+        }
+        if(ch.size() != 1){
+          throw BleachRuntimeError{name, "The provided value to be assigned at an index of a value of 'str' must be a value of 'str' type with size 1."};
+        }
+        str[index] = ch[0];
+        ancestor(distance)->values[name.lexeme] = std::move(str);
+      }
 
       return;
     }
@@ -194,6 +243,10 @@ class Environment : public std::enable_shared_from_this<Environment>{
       
       if(enclosing != nullptr){
         return enclosing->get(name);
+      }
+
+      if(name.lexeme == "]"){
+        throw BleachRuntimeError{name, "Values of 'str' type do not suport nesting indexing."};
       }
 
       throw BleachRuntimeError{name, "Undefined variable '" + name.lexeme + "'."};

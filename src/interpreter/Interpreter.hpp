@@ -1201,18 +1201,19 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * struct.
      */
     std::any visitIndexExpr(std::shared_ptr<Index> expr) override{
-      std::any object = evaluate(expr->object);
+      std::any indexObject = evaluate(expr->index);
+      if(indexObject.type() != typeid(double)){
+        throw BleachRuntimeError{expr->rightBracket, "Only values of type 'num' can be used to index a value of type 'str'."};
+      }
+      double index = std::any_cast<double>(indexObject);
+      if(std::floor(index) != index){
+        throw BleachRuntimeError{expr->rightBracket, "Only integer values of type 'num' can be used to index a value of type 'str'."};
+      }
 
-      if(object.type() == typeid(std::string)){
-        std::any indexObject = evaluate(expr->index);
-        if(indexObject.type() != typeid(double)){
-          throw BleachRuntimeError{expr->rightBracket, "Only values of type 'num' can be used to index a value of type 'str'."};
-        }
-        std::string str = std::any_cast<std::string>(object);
-        double index = std::any_cast<double>(indexObject);
-        if(std::floor(index) != index){
-          throw BleachRuntimeError{expr->rightBracket, "Only integer values of type 'num' can be used to index a value of type 'str'."};
-        }
+      std::any variableValue = lookUpVariable(expr->name, expr);
+
+      if(variableValue.type() == typeid(std::string)){
+        std::string str = std::any_cast<std::string>(variableValue);
         if(std::floor(index) < 0 || std::floor(index) >= str.length()){
           throw BleachRuntimeError{expr->rightBracket, "Index out of bounds. The value of 'str' type has length equal " + std::to_string(str.length()) + ", but the index provided was equal to: " + formatDouble(std::floor(index)) + "."};
         }
@@ -1222,7 +1223,31 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return indexedStr;
       }
 
-      throw BleachRuntimeError{expr->rightBracket, "Only values of type 'array' and 'str' can be indexed."};
+      throw BleachRuntimeError{expr->rightBracket, "Only values of type 'str' can be indexed."};
+    }
+
+    std::any visitIndexAssignExpr(std::shared_ptr<IndexAssign> expr) override{
+      std::any indexObject = evaluate(expr->index);
+      std::any value = evaluate(expr->value);
+
+      if(indexObject.type() != typeid(double)){
+        throw BleachRuntimeError{expr->name, "Index must be of type 'num'."};
+      }
+      double index = std::any_cast<double>(indexObject);
+      if(index != std::floor(index)){
+        throw BleachRuntimeError{expr->name, "Index must be an integer value of type 'num'."};
+      }
+      int idxInt = std::floor(index);
+
+      auto elem = locals.find(expr);
+      if(elem != locals.end()){
+        int distance = elem->second;
+        environment->assignIndexAt(expr->name, idxInt, value, distance);
+      }else{
+        globals->assignIndex(expr->name, idxInt, value);
+      }
+
+      return value;
     }
 
     /**
