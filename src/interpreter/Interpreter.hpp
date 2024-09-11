@@ -2,6 +2,7 @@
 
 #include <any>
 #include <cmath>
+#include <functional>
 #include <iomanip>
 #include <memory>
 #include <sstream>
@@ -22,7 +23,6 @@
 #include "../error/Error.hpp"
 #include "../utils/Environment.hpp"
 #include "../utils/Expr.hpp"
-#include "../utils/NativeCollectionTypes.hpp"
 #include "../utils/NativeFunctions.hpp"
 #include "../utils/Stmt.hpp"
 
@@ -1051,6 +1051,60 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
+      // Methods from 'list' and/or 'str' types:
+      else if(callee.type() == typeid(std::function<double(std::string)>)){
+        auto stringMethod = std::any_cast<std::function<double(std::string)>>(callee);
+
+        if(arguments.size() != 1){
+          throw BleachRuntimeError{expr->paren, "Expected 1 argument for the 'find' method."};
+        }
+        if(arguments[0].type() != typeid(std::string)){
+          throw BleachRuntimeError{expr->paren, "Expected 1 argument of type 'str' for the 'find' method."};
+        }
+
+        return stringMethod(std::any_cast<std::string>(arguments[0]));
+      }
+      else if(callee.type() == typeid(std::function<bool()>)){
+        auto stringMethod = std::any_cast<std::function<bool()>>(callee);
+
+        if(arguments.size() != 0){
+          throw BleachRuntimeError{expr->paren, "Expected no arguments for the 'empty' method."};
+        }
+
+        return stringMethod();
+      }
+      else if(callee.type() == typeid(std::function<double()>)){
+        auto stringMethod = std::any_cast<std::function<double()>>(callee);
+
+        if(arguments.size() != 0){
+          throw BleachRuntimeError{expr->paren, "Expected no arguments for the 'length' method."};
+        }
+
+        return std::floor(stringMethod());
+      }
+      else if(callee.type() == typeid(std::function<std::string(double, double)>)){
+        auto stringMethod = std::any_cast<std::function<std::string(double, double)>>(callee);
+
+        if(arguments.size() != 2){
+          throw BleachRuntimeError{expr->paren, "Expected 2 arguments for the 'substr' method."};
+        }
+        if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
+          throw BleachRuntimeError{expr->paren, "Expected 2 arguments of type 'num' for the 'substr' method."};
+        }
+
+        double left = std::any_cast<double>(arguments[0]);
+        double right = std::any_cast<double>(arguments[1]);
+
+        if(left > right){
+          throw BleachRuntimeError{expr->paren, "The value of the first argument cannot be larger than the second argument for the 'substr' method."};
+        }
+        if(left < 0 || right < 0){
+          throw BleachRuntimeError{expr->paren, "The values of both arguments cannot be negative for the 'substr' method."};
+        }
+
+        return stringMethod(std::floor(left), std::floor(right));
+      }
+
 
       throw BleachRuntimeError{expr->paren, "Can only call classes, functions, lambda functions, methods and native functions."};
     }
@@ -1072,6 +1126,44 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
         return std::any_cast<std::shared_ptr<BleachInstance>>(object)->get(expr->name);
+
+      }else if(object.type() == typeid(std::string)){
+        std::string str = std::any_cast<std::string>(object);
+        Token methodToken = expr->name;
+        std::string methodName = expr->name.lexeme;
+
+        if(methodName == "find"){
+          return std::function<double(std::string)>([str](std::string substr){
+            if(str.find(substr) == std::string::npos){
+              return static_cast<double>(-1);
+            }
+            return static_cast<double>(str.find(substr));
+          });
+        }else if(methodName == "length"){
+          return std::function<double()>([str](){
+            return static_cast<double>(str.size());
+          });
+        }else if(methodName == "empty"){
+          return std::function<bool()>([str](){
+            return str.empty();
+          });
+        }else if(methodName == "substr"){
+          return std::function<std::string(double, double)>([str, methodToken](double left, double right){
+            int start = static_cast<int>(std::floor(left));
+            int end = static_cast<int>(std::floor(right));
+
+            if(start >= str.length()){
+              throw BleachRuntimeError{methodToken, "The value of the first argument cannot be equal to or larger than the size of the value of 'str' type."};
+            }
+
+            return str.substr(start, end - start + 1);
+          });
+        }
+
+        throw BleachRuntimeError{expr->name, "Undefined method of the 'str' type."};
+      }else if(object.type() == typeid(std::vector<std::any>)){
+
+        throw BleachRuntimeError{expr->name, "Undefined method of the 'list' type."};
       }
 
       throw BleachRuntimeError{expr->name, "Only instances, lists or strings have properties."};
