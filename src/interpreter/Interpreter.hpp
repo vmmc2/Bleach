@@ -288,7 +288,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * @note If the value of the Bleach object is not of any of the supported types, then this function will 
      * return a string containing an error message.
      */
-    std::string stringify(const std::any& object){
+    std::string stringify(const std::any& object, bool isInsideList = false){
       if(object.type() == typeid(nullptr)){
         return "nil";
       }
@@ -296,6 +296,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
         return std::any_cast<bool>(object) ? "true" : "false";
       }
       if(object.type() == typeid(std::string)){
+        if(isInsideList){
+          return "\"" + std::any_cast<std::string>(object) + "\"";
+        }
         return std::any_cast<std::string>(object);
       }
       if(object.type() == typeid(double)){
@@ -320,9 +323,9 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         for(int i = 0; i < vecPtr->size(); i++){
           if(i == vecPtr->size() - 1){
-            listAsString += stringify(vecPtr->at(i));
+            listAsString += stringify(vecPtr->at(i), true);
           }else{
-            listAsString += stringify(vecPtr->at(i));
+            listAsString += stringify(vecPtr->at(i), true);
             listAsString += ", ";
           }
         }
