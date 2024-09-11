@@ -393,6 +393,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       globals->define("std::utils::ord", std::make_shared<NativeOrd>());
       globals->define("std::utils::numToStr", std::make_shared<NativeNumberToString>());
       globals->define("std::utils::strToNum", std::make_shared<NativeStringToNumber>());
+      globals->define("std::utils::strToBool", std::make_shared<NativeStringToBool>());
+      globals->define("std::utils::strToNil", std::make_shared<NativeStringToNil>());
     }
 
     /**
@@ -1073,6 +1075,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
         function = std::any_cast<std::shared_ptr<NativeStringToNumber>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeStringToBool>)){
+        function = std::any_cast<std::shared_ptr<NativeStringToBool>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeStringToNil>)){
+        function = std::any_cast<std::shared_ptr<NativeStringToNil>>(callee);
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }

@@ -613,3 +613,77 @@ class NativeStringToNumber : public BleachCallable{
       return "<native function: std::utils::strToNum>";
     }
 };
+
+// std::utils::strToBool
+class NativeStringToBool : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeStringToBool' class." << std::endl;
+      
+      return {};
+    }
+
+   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::utils::strToBool", this->toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::strToBool' function must be a number."};
+      }
+
+      std::string str = std::any_cast<std::string>(arguments[0]);
+      if(str == "true"){
+        return true;
+      }else if(str == "false"){
+        return false;
+      }
+
+      throw BleachRuntimeError{functionName, "Could not convert the string value: " + str + " to a bool value."};
+    }
+
+    std::string toString() override{
+      return "<native function: std::utils::strToBool>";
+    }
+};
+
+// std::utils::strToNil
+class NativeStringToNil : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeStringToNil' class." << std::endl;
+      
+      return {};
+    }
+
+   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::utils::strToNil", this->toString(), paren.line};
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(std::string)){
+        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::strToNil' function must be a number."};
+      }
+
+      std::string str = std::any_cast<std::string>(arguments[0]);
+      if(str == "nil"){
+        return nullptr;
+      }
+
+      throw BleachRuntimeError{functionName, "Could not convert the string value: " + str + " to the nil value."};
+    }
+
+    std::string toString() override{
+      return "<native function: std::utils::strToNil>";
+    }
+};

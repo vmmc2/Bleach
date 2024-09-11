@@ -43,7 +43,7 @@ class Parser{
       "std::io::readLine", "std::io::print", "std::io::fileRead", "std::io::fileWrite",
       "std::math::abs", "std::math::fmod", "std::math::log", "std::math::pow", "std::math::sqrt",
       "std::random::random",
-      "std::utils::ord", "std::utils::numToStr", "std::utils::strToNum"
+      "std::utils::ord", "std::utils::numToStr", "std::utils::strToNum", "std::utils::strToBool", "std::utils::strToNil"
     };
 
     /**
