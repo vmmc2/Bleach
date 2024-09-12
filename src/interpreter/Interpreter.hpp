@@ -933,6 +933,12 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           if((left.type() == typeid(std::string) && right.type() == typeid(double))){
             return std::any_cast<std::string>(left) + formatDouble(std::any_cast<double>(right));
           }
+          if(left.type() == typeid(std::string) && right.type() == typeid(std::shared_ptr<BleachInstance>)){
+            return std::any_cast<std::string>(left) + std::any_cast<std::shared_ptr<BleachInstance>>(right)->toString(*this);
+          }
+          if(left.type() == typeid(std::shared_ptr<BleachInstance>) && right.type() == typeid(std::string)){
+            return std::any_cast<std::shared_ptr<BleachInstance>>(left)->toString(*this) + std::any_cast<std::string>(right);
+          }
           if(left.type() == typeid(std::shared_ptr<std::vector<std::any>>) && right.type() == typeid(std::shared_ptr<std::vector<std::any>>)){
             auto result = std::make_shared<std::vector<std::any>>();
             auto vec1Ptr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(left);
@@ -941,6 +947,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
             result->insert(result->end(), vec2Ptr->begin(), vec2Ptr->end());
             return result;
           }
+
           throw BleachRuntimeError{expr->op, "Operands must be two numbers, or two strings, or two lists, or one number and one string."};
         case(TokenType::MINUS):
           checkNumberOperands(expr->op, left, right);
