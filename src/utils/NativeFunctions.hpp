@@ -463,6 +463,10 @@ class NativeRandom : public BleachCallable{
       double left = std::any_cast<double>(arguments[0]);
       double right = std::any_cast<double>(arguments[1]);
 
+      if(left > right){
+        throw BleachRuntimeError{functionName, "The first argument cannot be larger than the second argument."};
+      }
+
       unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 
       std::mt19937 gen(seed);
