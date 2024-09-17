@@ -114,7 +114,7 @@ class NativePrint : public BleachCallable{
 
       std::cout << std::endl;
 
-      return {};
+      return nullptr;
     }
 
     std::string toString() override{
