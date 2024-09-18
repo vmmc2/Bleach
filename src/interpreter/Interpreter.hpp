@@ -274,6 +274,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
     }
 
+  public:
     /**
      * @brief Produces a string that works as a representation of the value present in the provided Bleach 
      * object. 
@@ -380,7 +381,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       return "Error in stringify: object type not recognized.";
     }
 
-  public:
     Interpreter(){
       globals->define("std::chrono::clock", std::make_shared<NativeClock>());
       globals->define("std::io::readLine", std::make_shared<NativeReadLine>());

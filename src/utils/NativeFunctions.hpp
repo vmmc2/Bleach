@@ -75,53 +75,6 @@ class NativeReadLine : public BleachCallable{
     } 
 };
 
-// std::io::print
-// I will need to implement a more robust version of this class. It must also be able to deal with the following
-// types: BleachList, BleachDict, BleachInstance.
-class NativePrint : public BleachCallable{
-  public:
-    int arity() override{
-      return -1; // This means that the native function expects a variable number of arguments.
-    }
-
-    void printValue(Token functionName, std::any value){
-      if(value.type() == typeid(double)){
-        std::cout << std::any_cast<double>(value) << " ";
-      }else if(value.type() == typeid(bool)){
-        std::cout << std::any_cast<bool>(value) << " ";
-      }else if(value.type() == typeid(nullptr)){
-        std::cout << "nil" << " ";
-      }else if(value.type() == typeid(std::string)){
-        std::cout << std::any_cast<std::string>(value) << " ";
-      }else{
-        throw BleachRuntimeError{functionName, "The value cannot be printed."};
-      }
-
-      return;
-    }
-
-    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      std::cout << "No implementation of this method available for the 'NativePrint' class." << std::endl;
-      
-      return {};
-    }
-
-    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
-      Token functionName{TokenType::IDENTIFIER, "std::io::print", toString(), paren.line};
-      for(std::any argument : arguments){
-        printValue(functionName, argument);
-      }
-
-      std::cout << std::endl;
-
-      return nullptr;
-    }
-
-    std::string toString() override{
-      return "<native function: std::io::print>";
-    } 
-};
-
 // std::io::fileRead
 class NativeFileRead : public BleachCallable{
   public:
@@ -758,4 +711,152 @@ class NativeStringToNil : public BleachCallable{
     std::string toString() override{
       return "<native function: std::utils::strToNil>";
     }
+};
+
+// std::io::print
+// I will need to implement a more robust version of this class. It must also be able to deal with the following
+// types: BleachList, BleachDict, BleachInstance.
+class NativePrint : public BleachCallable{
+  public:
+    int arity() override{
+      return -1; // This means that the native function expects a variable number of arguments.
+    }
+
+    std::string formatDouble(double value){
+        std::ostringstream out;
+
+        // Check if the value has a fractional part
+        if(value == static_cast<int>(value)){
+          // If the value is an integer, don't show decimal places
+          out << std::fixed << std::setprecision(0) << value;
+        }else{
+          // If the value has a fractional part, show it with the required precision
+          out << std::fixed << std::setprecision(15) << value;
+
+          // Remove trailing zeros
+          std::string result = out.str();
+          result.erase(result.find_last_not_of('0') + 1, std::string::npos);
+
+          // If the last character is a '.', remove it as well
+          if(result.back() == '.'){
+            result.pop_back();
+          }
+          return result;
+        }
+
+        return out.str();
+    }
+
+    std::string printValue(Interpreter& interpreter, Token functionName, std::any object, bool isInsideList=false){
+      if(object.type() == typeid(nullptr)){
+        return "nil";
+      }
+      if(object.type() == typeid(bool)){
+        return std::any_cast<bool>(object) ? "true" : "false";
+      }
+      if(object.type() == typeid(std::string)){
+        if(isInsideList){
+          return "\"" + std::any_cast<std::string>(object) + "\"";
+        }
+        return std::any_cast<std::string>(object);
+      }
+      if(object.type() == typeid(double)){
+        double value = std::any_cast<double>(object);
+        return formatDouble(value);
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachClass>)){
+        return std::any_cast<std::shared_ptr<BleachClass>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachFunction>)){
+        return std::any_cast<std::shared_ptr<BleachFunction>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachInstance>)){
+        return std::any_cast<std::shared_ptr<BleachInstance>>(object)->toString(interpreter);
+      }
+      if(object.type() == typeid(std::shared_ptr<BleachLambdaFunction>)){
+        return std::any_cast<std::shared_ptr<BleachLambdaFunction>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<std::vector<std::any>>)){  
+        std::shared_ptr<std::vector<std::any>> vecPtr = std::any_cast<std::shared_ptr<std::vector<std::any>>>(object);
+        std::string listAsString = "[";
+
+        for(int i = 0; i < vecPtr->size(); i++){
+          if(i == vecPtr->size() - 1){
+            listAsString += printValue(interpreter, functionName, vecPtr->at(i), true);
+          }else{
+            listAsString += printValue(interpreter, functionName, vecPtr->at(i), true);
+            listAsString += ", ";
+          }
+        }
+
+        listAsString += "]";
+
+        return listAsString;
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeClock>)){
+        return std::any_cast<std::shared_ptr<NativeClock>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeReadLine>)){
+        return std::any_cast<std::shared_ptr<NativeReadLine>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativePrint>)){
+        return std::any_cast<std::shared_ptr<NativePrint>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeFileRead>)){
+        return std::any_cast<std::shared_ptr<NativeFileRead>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeFileWrite>)){
+        return std::any_cast<std::shared_ptr<NativeFileWrite>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
+        return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
+        return std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeLogarithm>)){
+        return std::any_cast<std::shared_ptr<NativeLogarithm>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeExponentiation>)){
+        return std::any_cast<std::shared_ptr<NativeExponentiation>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeSquareRoot>)){
+        return std::any_cast<std::shared_ptr<NativeSquareRoot>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeRandom>)){
+        return std::any_cast<std::shared_ptr<NativeRandom>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeOrd>)){
+        return std::any_cast<std::shared_ptr<NativeOrd>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeNumberToString>)){
+        return std::any_cast<std::shared_ptr<NativeNumberToString>>(object)->toString();
+      }
+      if(object.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
+        return std::any_cast<std::shared_ptr<NativeStringToNumber>>(object)->toString();
+      }
+
+      return "Error in stringify: object type not recognized.";
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativePrint' class." << std::endl;
+      
+      return {};
+    }
+
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::io::print", toString(), paren.line};
+      for(std::any argument : arguments){
+        std::cout << printValue(interpreter, functionName, argument) << " ";
+      }
+
+      std::cout << std::endl;
+
+      return nullptr;
+    }
+
+    std::string toString() override{
+      return "<native function: std::io::print>";
+    } 
 };
