@@ -236,7 +236,7 @@ class NativeFileWrite : public BleachCallable{
         file << "\n";
       }
 
-      return {};
+      return nullptr;
     }
 
     std::string toString() override{
