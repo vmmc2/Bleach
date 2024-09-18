@@ -388,6 +388,8 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       globals->define("std::io::fileRead", std::make_shared<NativeFileRead>());
       globals->define("std::io::fileWrite", std::make_shared<NativeFileWrite>());
       globals->define("std::math::abs", std::make_shared<NativeAbsoluteValue>());
+      globals->define("std::math::ceil", std::make_shared<NativeCeil>());
+      globals->define("std::math::floor", std::make_shared<NativeFloor>());
       globals->define("std::math::fmod", std::make_shared<NativeDoubleRemainder>());
       globals->define("std::math::log", std::make_shared<NativeLogarithm>());
       globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
@@ -1045,6 +1047,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         function = std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeCeil>)){
+        function = std::any_cast<std::shared_ptr<NativeCeil>>(callee);
+
+        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
+      }
+      else if(callee.type() == typeid(std::shared_ptr<NativeFloor>)){
+        function = std::any_cast<std::shared_ptr<NativeFloor>>(callee);
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
