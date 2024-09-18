@@ -277,6 +277,45 @@ class NativeAbsoluteValue : public BleachCallable{
     }
 };
 
+// std::math::ceil
+class NativeCeil : public BleachCallable{
+  public:
+    int arity() override{
+      return 1;
+    }
+
+    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
+      std::cout << "No implementation of this method available for the 'NativeCeil' class." << std::endl;
+      
+      return {};
+    }
+
+    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
+      Token functionName{TokenType::IDENTIFIER, "std::math::ceil", toString(), paren.line};
+
+      if(arguments.size() != 1){
+        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
+      }
+
+      if(arguments[0].type() != typeid(double)){
+        throw BleachRuntimeError{functionName, "The argument of the 'std::math::ceil' function must be numbers."};
+      }
+
+      double value = std::any_cast<double>(arguments[0]);
+
+      return std::ceil(value);
+    }
+
+    std::string toString() override{
+      return "<native function: std::math::ceil>";
+    }
+};
+
+// std::math::floor
+class NativeFloor : public BleachCallable{
+
+};
+
 // std::math::fmod
 class NativeDoubleRemainder : public BleachCallable{
   public:
