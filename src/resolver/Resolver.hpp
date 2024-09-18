@@ -160,29 +160,6 @@ class Resolver : public ExprVisitor, public StmtVisitor{
       return {};
     }
 
-    std::any visitIndexExpr(std::shared_ptr<Index> expr) override{
-      if(!scopes.empty()){
-        auto& scope = scopes.back();
-        auto elem = scope.find(expr->name.lexeme);
-        if(elem != scope.end() && elem->second == false){ // Remember: If the interpreter is visiting this node, then its visiting a name that references a variable inside an expression.
-          error(expr->name, "Cannot read local variable in its own initializer"); // If the variable that it refers to has a false value associated to it in the scope, then it means we are inside an initializer using a variable that is refering to the variable that is being declared. Not allowed.
-        }
-      }
-
-      resolveLocal(expr, expr->name);
-      resolve(expr->index);
-
-      return {};
-    }
-
-    std::any visitIndexAssignExpr(std::shared_ptr<IndexAssign> expr) override{
-      resolve(expr->value);
-      resolve(expr->index);
-      resolveLocal(expr, expr->name);
-
-      return {};
-    }
-
     std::any visitLambdaFunctionExpr(std::shared_ptr<LambdaFunction> expr) override{
       FunctionType enclosingFunction = currentFunction;
       currentFunction = FunctionType::LAMBDAFUNCTION;
