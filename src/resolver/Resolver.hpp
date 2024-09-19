@@ -315,7 +315,7 @@ class Resolver : public ExprVisitor, public StmtVisitor{
 
     std::any visitContinueStmt(std::shared_ptr<Continue> stmt) override{
       if(currentLoop == InsideLoop::NO_LOOP){
-        error(stmt->keyword, "Cannot use the 'break' keyword outside of a 'do-while', 'for' or 'while' loop");
+        error(stmt->keyword, "Cannot use the 'continue' keyword outside of a 'do-while', 'for' or 'while' loop");
       } 
 
       return {};
