@@ -1,0 +1,97 @@
+/*
+Code that implements the Stack data-structure by using a linked-list approach.
+*/
+
+class Node{
+  method init(value){
+    self.value = value;
+    self.next = nil;
+  }
+
+  method str(){
+    return self.value;
+  }
+}
+
+class Stack{
+  method init(){
+    self.root = nil;
+    self.length = 0;
+  }
+
+  method empty(){
+    return self.length == 0 ? true : false;
+  }
+
+  method size(){
+    return self.length;
+  }
+
+  method push(value){
+    let newNode = Node(value);
+    if(self.root == nil){
+      self.root = newNode;
+    }else{
+      newNode.next = self.root;
+      self.root = newNode;
+    }
+
+    self.length = self.length + 1;
+
+    return nil;
+  }
+
+  method pop(){
+    if(self.root == nil){
+      return "The stack is empty.";
+    }else{
+      let poppedValue = self.root;
+      self.root = self.root.next;
+
+      self.length = self.length - 1;
+
+      return poppedValue;
+    }
+  }
+
+  method str(){
+    let stackAsString = "";
+    let curr = self.root;
+    while(curr != nil){
+      stackAsString = stackAsString + (curr.value + " -> ");
+      curr = curr.next;
+    }
+    stackAsString = stackAsString + " nil";
+
+    return stackAsString;
+  }
+
+  method top(){
+    if(self.root == nil){
+      return "The stack is empty.";
+    }else{
+      return self.root;
+    }
+  }
+}
+
+function main(){
+  let s = Stack();
+
+  std::io::print("Is the stack empty?", s.empty());
+  std::io::print(s.top());
+
+  for(let i = 0; i <= 10; i = i + 1){
+    s.push(i);
+    std::io::print(s);
+  }
+
+  std::io::print(s.size());
+  std::io::print("Is the stack empty?", s.empty());
+  std::io::print("The element at the top of the stack is:", s.top());
+  let popped = s.pop();
+  std::io::print("Popped element from the stack:", popped);
+  std::io::print("The element at the top of the stack is:", s.top());
+}
+
+main();
