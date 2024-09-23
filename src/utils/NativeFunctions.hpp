@@ -298,46 +298,6 @@ class NativeFloor : public BleachCallable{
     }
 };
 
-// std::math::fmod
-class NativeDoubleRemainder : public BleachCallable{
-  public:
-    int arity() override{
-      return 2;
-    }
-
-    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      std::cout << "No implementation of this method available for the 'NativeDoubleRemainder' class." << std::endl;
-      
-      return {};
-    }
-
-    std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
-      const double epsilon = 1e-9;
-      Token functionName{TokenType::IDENTIFIER, "std::math::fmod", toString(), paren.line};
-
-      if(arguments.size() != 2){
-        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
-      }
-
-      if(arguments[0].type() != typeid(double) || arguments[1].type() != typeid(double)){
-        throw BleachRuntimeError{functionName, "The two arguments of the 'std::math::fmod' function must be numbers."};
-      }
-
-      double dividend = std::any_cast<double>(arguments[0]);
-      double divisor = std::any_cast<double>(arguments[1]);
-
-      if(std::fabs(divisor) <= epsilon){
-        throw BleachRuntimeError{functionName, "The second argument (the divisor of the double-precision floating-point remainder) of the 'std::math::fmod' must be different than 0."};
-      }
-
-      return std::fmod(dividend, divisor);
-    }
-
-    std::string toString() override{
-      return "<native function: std::math::fmod>";
-    }
-};
-
 // std::math::log
 class NativeLogarithm : public BleachCallable{
   public:
@@ -536,64 +496,6 @@ class NativeOrd : public BleachCallable{
 
     std::string toString() override{
       return "<native function: std::utils::ord>";
-    }
-};
-
-// std::utils::numToStr
-class NativeNumberToString : public BleachCallable{
-  public:
-    int arity() override{
-      return 1;
-    }
-
-    std::string formatDouble(double value){
-      std::ostringstream out;
-
-      // Check if the value has a fractional part
-      if(value == static_cast<int>(value)){
-        // If the value is an integer, don't show decimal places
-        out << std::fixed << std::setprecision(0) << value;
-      }else{
-        // If the value has a fractional part, show it with the required precision
-        out << std::fixed << std::setprecision(15) << value;
-
-        // Remove trailing zeros
-        std::string result = out.str();
-        result.erase(result.find_last_not_of('0') + 1, std::string::npos);
-
-        // If the last character is a '.', remove it as well
-        if(result.back() == '.'){
-          result.pop_back();
-        }
-        return result;
-      }
-
-      return out.str();
-    }
-
-    std::any call(Interpreter& interpreter, std::vector<std::any> arguments) override{
-      std::cout << "No implementation of this method available for the 'NativeNumberToString' class." << std::endl;
-      
-      return {};
-    }
-
-   std::any call(Interpreter& interpreter, Token paren, std::vector<std::any> arguments) override{
-      Token functionName{TokenType::IDENTIFIER, "std::utils::numToStr", this->toString(), paren.line};
-      if(arguments.size() != 1){
-        throw BleachRuntimeError{functionName, "Invalid number of arguments. Expected " + std::to_string(arity()) + " arguments but received " + std::to_string(arguments.size()) + " arguments."};
-      }
-
-      if(arguments[0].type() != typeid(double)){
-        throw BleachRuntimeError{functionName, "Argument of the 'std::utils::numToStr' function must be a number."};
-      }
-
-      double num = std::any_cast<double>(arguments[0]);
-
-      return formatDouble(num);
-    }
-
-    std::string toString() override{
-      return "<native function: std::utils::numToStr>";
     }
 };
 
@@ -811,9 +713,6 @@ class NativePrint : public BleachCallable{
       if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
       }
-      if(object.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
-        return std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(object)->toString();
-      }
       if(object.type() == typeid(std::shared_ptr<NativeLogarithm>)){
         return std::any_cast<std::shared_ptr<NativeLogarithm>>(object)->toString();
       }
@@ -828,9 +727,6 @@ class NativePrint : public BleachCallable{
       }
       if(object.type() == typeid(std::shared_ptr<NativeOrd>)){
         return std::any_cast<std::shared_ptr<NativeOrd>>(object)->toString();
-      }
-      if(object.type() == typeid(std::shared_ptr<NativeNumberToString>)){
-        return std::any_cast<std::shared_ptr<NativeNumberToString>>(object)->toString();
       }
       if(object.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
         return std::any_cast<std::shared_ptr<NativeStringToNumber>>(object)->toString();

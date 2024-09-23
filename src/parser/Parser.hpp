@@ -41,9 +41,9 @@ class Parser{
     std::set<std::string> nativeFunctions = { /** Variable that stores the names of Bleach native functions. */
       "std::chrono::clock", 
       "std::io::readLine", "std::io::print", "std::io::fileRead", "std::io::fileWrite",
-      "std::math::abs", "std::math::ceil", "std::math::floor", "std::math::fmod", "std::math::log", "std::math::pow", "std::math::sqrt",
+      "std::math::abs", "std::math::ceil", "std::math::floor", "std::math::log", "std::math::pow", "std::math::sqrt",
       "std::random::random",
-      "std::utils::ord", "std::utils::numToStr", "std::utils::strToNum", "std::utils::strToBool", "std::utils::strToNil"
+      "std::utils::ord", "std::utils::strToNum", "std::utils::strToBool", "std::utils::strToNil"
     };
 
     /**

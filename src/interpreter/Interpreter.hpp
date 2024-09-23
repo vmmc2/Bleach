@@ -353,9 +353,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       if(object.type() == typeid(std::shared_ptr<NativeAbsoluteValue>)){
         return std::any_cast<std::shared_ptr<NativeAbsoluteValue>>(object)->toString();
       }
-      if(object.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
-        return std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(object)->toString();
-      }
       if(object.type() == typeid(std::shared_ptr<NativeLogarithm>)){
         return std::any_cast<std::shared_ptr<NativeLogarithm>>(object)->toString();
       }
@@ -370,9 +367,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       if(object.type() == typeid(std::shared_ptr<NativeOrd>)){
         return std::any_cast<std::shared_ptr<NativeOrd>>(object)->toString();
-      }
-      if(object.type() == typeid(std::shared_ptr<NativeNumberToString>)){
-        return std::any_cast<std::shared_ptr<NativeNumberToString>>(object)->toString();
       }
       if(object.type() == typeid(std::shared_ptr<NativeStringToNumber>)){
         return std::any_cast<std::shared_ptr<NativeStringToNumber>>(object)->toString();
@@ -390,13 +384,11 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       globals->define("std::math::abs", std::make_shared<NativeAbsoluteValue>());
       globals->define("std::math::ceil", std::make_shared<NativeCeil>());
       globals->define("std::math::floor", std::make_shared<NativeFloor>());
-      globals->define("std::math::fmod", std::make_shared<NativeDoubleRemainder>());
       globals->define("std::math::log", std::make_shared<NativeLogarithm>());
       globals->define("std::math::pow", std::make_shared<NativeExponentiation>());
       globals->define("std::math::sqrt", std::make_shared<NativeSquareRoot>());
       globals->define("std::random::random", std::make_shared<NativeRandom>());
       globals->define("std::utils::ord", std::make_shared<NativeOrd>());
-      globals->define("std::utils::numToStr", std::make_shared<NativeNumberToString>());
       globals->define("std::utils::strToNum", std::make_shared<NativeStringToNumber>());
       globals->define("std::utils::strToBool", std::make_shared<NativeStringToBool>());
       globals->define("std::utils::strToNil", std::make_shared<NativeStringToNil>());
@@ -966,11 +958,7 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           checkZeroDivisor(right, expr->op);
           double dividend = std::any_cast<double>(left);
           double divisor = std::any_cast<double>(right);
-          if(std::floor(dividend) == dividend && std::floor(divisor) == divisor){
-            return static_cast<double>(static_cast<int>(dividend) % static_cast<int>(divisor));
-          }else{
-            throw BleachRuntimeError{expr->op, "Operands must be integer numbers. If you want to perform such operation on floating-point numbers, use the std::math::fmod native function instead."};
-          }
+          return std::fmod(dividend, divisor);
       }
 
       // Unreachable
@@ -1060,11 +1048,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
-      else if(callee.type() == typeid(std::shared_ptr<NativeDoubleRemainder>)){
-        function = std::any_cast<std::shared_ptr<NativeDoubleRemainder>>(callee);
-
-        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
-      }
       else if(callee.type() == typeid(std::shared_ptr<NativeExponentiation>)){
         function = std::any_cast<std::shared_ptr<NativeExponentiation>>(callee);
 
@@ -1087,11 +1070,6 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
       }
       else if(callee.type() == typeid(std::shared_ptr<NativeOrd>)){
         function = std::any_cast<std::shared_ptr<NativeOrd>>(callee);
-
-        return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
-      }
-      else if(callee.type() == typeid(std::shared_ptr<NativeNumberToString>)){
-        function = std::any_cast<std::shared_ptr<NativeNumberToString>>(callee);
 
         return function->call(*this, std::move(expr->paren), std::move(arguments)); // Finally, the interpreter calls a Bleach native function.
       }
