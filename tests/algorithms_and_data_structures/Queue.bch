@@ -1,0 +1,117 @@
+/*
+Code that implements the Queue data-structure by using a linked-list approach.
+*/
+
+class Node{
+  method init(value){
+    self.value = value;
+    self.next = nil;
+  }
+
+  method str(){
+    return self.value;
+  }
+}
+
+class Queue{
+  method init(){
+    self.left = nil;
+    self.right = nil;
+    self.length = 0;
+  }
+
+  method empty(){
+    return self.length == 0 ? true : false;
+  }
+
+  method size(){
+    return self.length;
+  }
+
+  method front(){
+    if(self.left == nil){
+      return "The queue is empty.";
+    }else{
+      return self.left;
+    }
+  }
+
+  method back(){
+    if(self.right == nil){
+      return "The queue is empty";
+    }else{
+      return self.right;
+    }
+  }
+
+  method push(value){
+    if(self.left == nil and self.right == nil){
+      let newNode = Node(value);
+      self.left = newNode;
+      self.right = newNode;
+
+      self.length = self.length + 1;
+
+      return nil;
+    }else{
+      let newNode = Node(value);
+      self.right.next = newNode;
+      self.right = newNode;
+
+      self.length = self.length + 1;
+
+      return nil;
+    }
+  }
+
+  method pop(){
+    if(self.left == nil and self.right == nil){
+      return "The queue is empty.";
+    }else{
+      let poppedValue = self.left;
+      self.left = self.left.next;
+
+      self.length = self.length - 1;
+
+      return poppedValue;
+    }
+  }
+
+  method str(){
+    let queueAsString = "front ->";
+    let curr = self.left;
+    while(curr != nil){
+      if(curr != nil and curr.next != nil){
+        queueAsString = queueAsString + (curr.value + " -> ");
+      }else{
+        queueAsString = queueAsString + curr.value;
+      }
+      curr = curr.next;
+    }
+    queueAsString = queueAsString + " <- back";
+
+    return queueAsString;
+  }
+}
+
+function main(){
+  let q = Queue();
+  std::io::print("The size of the queue is:", q.size());
+  std::io::print("Is the queue empty?", q.empty());
+  std::io::print(q);
+
+  for(let i = 1; i <= 10; i = i + 1){
+    q.push(i);
+    std::io::print(q);
+  }
+
+  std::io::print(q.front());
+  std::io::print(q.back());
+  q.pop();
+  q.pop();
+  q.pop();
+  std::io::print(q);
+  std::io::print("The size of the queue is:", q.size());
+}
+
+main();
