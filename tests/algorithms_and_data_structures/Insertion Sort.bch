@@ -1,0 +1,29 @@
+/*
+Code that implements the Insertion Sort algorithm.
+*/
+
+function insertionSort(l){
+  let n = l.size();
+
+  for(let i = 0; i < n; i = i + 1){
+    let curr = i;
+    while(curr > 0 and l.getAt(curr) < l.getAt(curr - 1)){
+      let temp = l.getAt(curr);
+      l.setAt(curr, l.getAt(curr - 1));
+      l.setAt(curr - 1, temp);
+      curr = curr - 1;
+    }
+  }
+
+  return;
+}
+
+function main(){
+  let l = [23, 4, -10, 5, 3.14159, 2.71, 42, 52, -3, 10, 1234];
+
+  std::io::print("List before applying the Insertion Sort algorithm:", l);
+  insertionSort(l);
+  std::io::print("List after applying the Insertion Sort algorithm:", l);
+}
+
+main();
