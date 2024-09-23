@@ -16,6 +16,31 @@ BleachInstance::BleachInstance(std::shared_ptr<BleachClass> klass)
   : klass{std::move(klass)}
 {}
 
+std::string BleachInstance::formatDouble(double value){
+  std::ostringstream out;
+
+  // Check if the value has a fractional part
+  if(value == static_cast<int>(value)){
+    // If the value is an integer, don't show decimal places
+    out << std::fixed << std::setprecision(0) << value;
+  }else{
+    // If the value has a fractional part, show it with the required precision
+    out << std::fixed << std::setprecision(15) << value;
+
+    // Remove trailing zeros
+    std::string result = out.str();
+    result.erase(result.find_last_not_of('0') + 1, std::string::npos);
+
+    // If the last character is a '.', remove it as well
+    if(result.back() == '.'){
+      result.pop_back();
+    }
+    return result;
+  }
+
+  return out.str();
+}
+
 /**
  * @brief Tries to retrieve the value associated to a property whose name was given as an argument.
  * 
@@ -87,7 +112,11 @@ void BleachInstance::set(const Token& name, std::any value){
 std::string BleachInstance::toString(Interpreter& interpreter){
   std::shared_ptr<BleachFunction> instanceReprMethod = klass->findMethod("str");
   if(instanceReprMethod != nullptr){
-    return std::any_cast<std::string>(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}));
+    if(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}).type() == typeid(std::string)){
+      return std::any_cast<std::string>(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}));
+    }else if(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}).type() == typeid(double)){
+      return formatDouble(std::any_cast<double>(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{})));
+    }
   }else{
     return "<instance of the " + klass->toString() + " class>";
   }
