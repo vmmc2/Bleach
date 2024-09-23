@@ -1,0 +1,34 @@
+function dfs(source, adjacencyList, visitingOrder, visited){
+  visited.setAt(source, true);
+
+  visitingOrder.append(source);
+
+  for(let i = 0; i < adjacencyList.getAt(source).size(); i = i + 1){
+    
+  }
+
+}
+
+function main(){
+  let adjacencyList = [
+    [1, 2],
+    [],
+    [],
+    [],
+    []
+  ];
+
+  let source = 0
+
+  let visited = [];
+  visited.fill(false, 5);
+  
+  let visitingOrder = [];
+
+  dfs(source, adjacencyList, visitingOrder, visited);
+
+  std::io::print("Visiting Order List:", visitingOrder)
+  std::io::print("Visited Array:", visited);
+}
+
+main();
