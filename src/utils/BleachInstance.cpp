@@ -117,7 +117,7 @@ std::string BleachInstance::toString(Interpreter& interpreter){
     }else if(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{}).type() == typeid(double)){
       return formatDouble(std::any_cast<double>(instanceReprMethod->bind(shared_from_this())->call(interpreter, std::vector<std::any>{})));
     }
-  }else{
-    return "<instance of the " + klass->toString() + " class>";
   }
+  
+  return "<instance of the " + klass->toString() + " class>";
 }

@@ -112,6 +112,7 @@ function main(){
   q.pop();
   std::io::print(q);
   std::io::print("The size of the queue is:", q.size());
+  std::io::print("Is the queue empty?", q.empty());
 }
 
 main();
