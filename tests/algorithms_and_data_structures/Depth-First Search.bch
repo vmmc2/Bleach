@@ -1,34 +1,40 @@
 function dfs(source, adjacencyList, visitingOrder, visited){
   visited.setAt(source, true);
-
   visitingOrder.append(source);
 
   for(let i = 0; i < adjacencyList.getAt(source).size(); i = i + 1){
-    
+    let neighbor = adjacencyList.getAt(source).getAt(i);
+    if(!visited.getAt(neighbor)){
+      dfs(neighbor, adjacencyList, visitingOrder, visited);
+    }
   }
 
+  return;
 }
 
 function main(){
   let adjacencyList = [
-    [1, 2],
-    [],
-    [],
-    [],
+    [1, 2, 5],
+    [2],
+    [3],
+    [1, 4],
+    [1, 5],
     []
   ];
 
-  let source = 0
+  let source = 0;
 
   let visited = [];
-  visited.fill(false, 5);
+  visited.fill(false, 6);
   
   let visitingOrder = [];
 
   dfs(source, adjacencyList, visitingOrder, visited);
 
-  std::io::print("Visiting Order List:", visitingOrder)
+  std::io::print("Visiting Order List:", visitingOrder);
   std::io::print("Visited Array:", visited);
+
+  return;
 }
 
 main();
