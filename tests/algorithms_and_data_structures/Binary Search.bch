@@ -1,0 +1,37 @@
+/*
+Code that implements the Binary Search algorithm in a list of values where each value is of type 'num'. 
+The list is expected to be sorted.
+*/
+
+function binarySearch(list, target){
+  let left = 0;
+  let right = list.size() - 1;
+
+  while(left <= right){
+    let mid = std::math::floor((left + right) / 2);
+    if(list.getAt(mid) == target){
+      return mid;
+    }elif(list.getAt(mid) > target){
+      right = mid - 1;
+    }else{
+      left = mid + 1;
+    }
+  }
+
+  return -1; // Target value not present inside the list.
+}
+
+function main(){
+  let l = [-53, -10, 20, 33.5, 42, 52, 97, 103, 460, 555];
+  let target = 20;
+
+  let targetIndex = binarySearch(l, target);
+
+  if(targetIndex == -1){
+    std::io::print("Target value not found inside the provided sorted list.");
+  }else{
+    std::io::print("Target value founded at the index:", targetIndex, "of the provided sorted list.");
+  }
+}
+
+main();
