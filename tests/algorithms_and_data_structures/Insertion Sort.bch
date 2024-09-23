@@ -1,5 +1,6 @@
 /*
 Code that implements the Insertion Sort algorithm.
+Assumes it is a list where every value is of type 'num'.
 */
 
 function insertionSort(l){
