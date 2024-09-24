@@ -1,0 +1,134 @@
+/*
+Code that implements the Binary Search Tree data-structure by using a pointers approach.
+*/
+
+class TreeNode{
+  method init(key, value){
+    self.key = key;
+    self.value = value;
+    self.left = nil;
+    self.right = nil;
+  }
+
+  method str(){
+    return "Node Key: " + self.key + " - Node Value: " + self.value;
+  }
+}
+
+class BST{
+  method init(){
+    self.root = nil;
+    self.length = 0;
+  }
+
+  method insert(key, value){
+    let y = nil;
+    let curr = self.root;
+
+    while(curr != nil){
+      y = curr;
+      if(key < curr.key){
+        curr = curr.left;
+      }else{
+        curr = curr.right;
+      }
+    }
+
+    if(curr == nil){ // The BST was empty.
+      self.root = TreeNode(key, value);
+    }elif(key < y.key){
+      y.left = TreeNode(key, value);
+    }else{
+      y.right = TreeNode(key, value);
+    }
+
+    self.length = self.length + 1;
+
+    return;
+  }
+
+  method delete(key){
+    // TODO: Implement this method.
+  }
+
+  method find(key){
+    let curr = self.root;
+
+    while(curr != nil and curr.key != key){
+      if(key < curr.key){
+        curr = curr.left;
+      }else{
+        curr = curr.right;
+      }
+    }
+
+    return curr == nil ? "Could not find the key inside the BST" : curr.value;
+  }
+
+  method size(){
+    return self.length;
+  }
+
+  method findMaximum(){
+    let curr = self.root;
+
+    if(curr == nil){
+      return "The BST is empty.";
+    }
+
+    while(curr.right != nil){
+      curr = curr.right;
+    }
+
+    return curr.value;
+  }
+
+  method findMinimum(){
+    let curr = self.root;
+
+    if(curr == nil){
+      return "The BST is empty";
+    }
+
+    while(curr.left != nil){
+      curr = curr.left;
+    }
+
+    return curr.value;
+  }
+
+  method preorderTraversal(){
+    
+  }
+
+  method inorderTraversal(){
+
+  }
+
+  method postorderTraversal(){
+
+  }
+
+  method str(){
+    return "BST representation.";
+  }
+}
+
+function main(){
+  let bst = BST();
+  
+  bst.insert(10, 10);
+  print bst.findMinimum();
+
+  bst.insert(2, 2);
+  print bst.findMinimum();
+
+  bst.insert(23, 23);
+  print bst.findMinimum();
+
+  print bst.findMaximum();
+
+  return;
+}
+
+main();
