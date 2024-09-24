@@ -140,9 +140,7 @@ function main(){
   let bst = BST();
   
   bst.insert(10, 10);
-
   bst.insert(2, 2);
-
   bst.insert(23, 23);
 
   bst.inorderTraversal(bst.root);

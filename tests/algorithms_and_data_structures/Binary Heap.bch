@@ -1,3 +1,15 @@
 /*
 Code that implements the Binary Heap data-structure.
 */
+
+class BinaryHeap{
+  method init(){
+
+  }
+}
+
+function main(){
+
+}
+
+main();
