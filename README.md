@@ -292,6 +292,19 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Unary
     - [ ] Variable
   - Statements Nodes
+    - [ ] Block
+    - [ ] Break
+    - [ ] Class
+    - [ ] Continue
+    - [ ] DoWhile
+    - [ ] Expression
+    - [ ] For
+    - [ ] Function
+    - [ ] If
+    - [ ] Print
+    - [ ] Return
+    - [ ] Var
+    - [ ] While
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 
 
