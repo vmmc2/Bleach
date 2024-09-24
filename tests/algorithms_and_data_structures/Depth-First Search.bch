@@ -32,7 +32,7 @@ function main(){
   dfs(source, adjacencyList, visitingOrder, visited);
 
   std::io::print("Visiting Order List:", visitingOrder);
-  std::io::print("Visited Array:", visited);
+  std::io::print("Visited List:", visited);
 
   return;
 }
