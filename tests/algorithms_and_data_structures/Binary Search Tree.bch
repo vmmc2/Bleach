@@ -22,24 +22,23 @@ class BST{
   }
 
   method insert(key, value){
-    let y = nil;
-    let curr = self.root;
-
-    while(curr != nil){
-      y = curr;
-      if(key < curr.key){
-        curr = curr.left;
-      }else{
-        curr = curr.right;
-      }
-    }
-
-    if(curr == nil){ // The BST was empty.
+    if(self.root == nil){
       self.root = TreeNode(key, value);
-    }elif(key < y.key){
-      y.left = TreeNode(key, value);
     }else{
-      y.right = TreeNode(key, value);
+      let curr = self.root;
+      while(true){
+        if(key < curr.key and curr.left == nil){
+          curr.left = TreeNode(key, value);
+          break;
+        }elif(key < curr.key and curr.left != nil){
+          curr = curr.left;
+        }elif(curr.key < key and curr.right == nil){
+          curr.right = TreeNode(key, value);
+          break;
+        }else{
+          curr = curr.right;
+        }
+      }
     }
 
     self.length = self.length + 1;
@@ -97,16 +96,37 @@ class BST{
     return curr.value;
   }
 
-  method preorderTraversal(){
-    
+  method preorderTraversal(curr){
+    if(curr == nil){
+      return;
+    }
+    std::io::print(curr);
+    self.preorderTraversal(curr.left);
+    self.preorderTraversal(curr.right);
+  
+    return;
   }
 
-  method inorderTraversal(){
-
+  method inorderTraversal(curr){
+    if(curr == nil){
+      return;
+    }
+    self.preorderTraversal(curr.left);
+    std::io::print(curr);
+    self.preorderTraversal(curr.right);
+  
+    return;
   }
 
-  method postorderTraversal(){
+  method postorderTraversal(curr){
+    if(curr == nil){
+      return;
+    }
+    self.preorderTraversal(curr.left);
+    self.preorderTraversal(curr.right);
+    std::io::print(curr);
 
+    return;
   }
 
   method str(){
@@ -118,15 +138,12 @@ function main(){
   let bst = BST();
   
   bst.insert(10, 10);
-  print bst.findMinimum();
 
   bst.insert(2, 2);
-  print bst.findMinimum();
 
   bst.insert(23, 23);
-  print bst.findMinimum();
 
-  print bst.findMaximum();
+  bst.inorderTraversal(bst.root);
 
   return;
 }
