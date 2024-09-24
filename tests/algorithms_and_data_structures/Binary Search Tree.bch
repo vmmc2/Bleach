@@ -47,7 +47,13 @@ class BST{
   }
 
   method delete(key){
-    // TODO: Implement this method.
+    // TODO: Finish implementation of this.
+    let deletedNode;
+
+
+    self.length = self.length - 1;
+
+    return deletedNode;
   }
 
   method find(key){
@@ -61,7 +67,7 @@ class BST{
       }
     }
 
-    return curr == nil ? "Could not find the key inside the BST" : curr.value;
+    return curr == nil ? "Could not find the key inside the BST" : curr;
   }
 
   method size(){
@@ -70,11 +76,9 @@ class BST{
 
   method findMaximum(){
     let curr = self.root;
-
     if(curr == nil){
       return "The BST is empty.";
     }
-
     while(curr.right != nil){
       curr = curr.right;
     }
@@ -84,11 +88,9 @@ class BST{
 
   method findMinimum(){
     let curr = self.root;
-
     if(curr == nil){
       return "The BST is empty";
     }
-
     while(curr.left != nil){
       curr = curr.left;
     }
