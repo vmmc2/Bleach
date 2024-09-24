@@ -38,39 +38,44 @@ class Queue{
 
   method back(){
     if(self.right == nil){
-      return "The queue is empty";
+      return "The queue is empty.";
     }else{
       return self.right;
     }
   }
 
   method push(value){
-    if(self.left == nil and self.right == nil){
+    if(self.length == 0){
       let newNode = Node(value);
       self.left = newNode;
-      self.right = newNode;
-
-      self.length = self.length + 1;
-
-      return nil;
+      self.right = self.left;
     }else{
       let newNode = Node(value);
       self.right.next = newNode;
       self.right = newNode;
-
-      self.length = self.length + 1;
-
-      return nil;
     }
+
+    self.length = self.length + 1;
+
+    return;
   }
 
   method pop(){
-    if(self.left == nil and self.right == nil){
+    if(self.length == 0){ // Queue is empty.
       return "The queue is empty.";
-    }else{
-      let poppedValue = self.left;
-      self.left = self.left.next;
+    }elif(self.length == 1){ // Queue is not empty and has only one element.
+      let poppedValue = self.left.value;
 
+      self.left = nil;
+      self.right = nil;
+
+      self.length = self.length - 1;
+
+      return poppedValue;
+    }else{ // Queue is not empty and has more than one element.
+      let poppedValue = self.left.value;
+
+      self.left = self.left.next;
       self.length = self.length - 1;
 
       return poppedValue;
@@ -78,7 +83,7 @@ class Queue{
   }
 
   method str(){
-    let queueAsString = "front ->";
+    let queueAsString = "front -> ";
     let curr = self.left;
     while(curr != nil){
       if(curr != nil and curr.next != nil){
@@ -113,6 +118,10 @@ function main(){
   std::io::print(q);
   std::io::print("The size of the queue is:", q.size());
   std::io::print("Is the queue empty?", q.empty());
+  q.push(13);
+  std::io::print(q);
+  q.pop();
+  std::io::print(q);
 }
 
 main();
