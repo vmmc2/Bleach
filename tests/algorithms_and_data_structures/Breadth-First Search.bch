@@ -1,0 +1,149 @@
+class Node{
+  method init(value){
+    self.value = value;
+    self.next = nil;
+  }
+
+  method str(){
+    return self.value;
+  }
+}
+
+class Queue{
+  method init(){
+    self.left = nil;
+    self.right = nil;
+    self.length = 0;
+  }
+
+  method empty(){
+    return self.length == 0 ? true : false;
+  }
+
+  method size(){
+    return self.length;
+  }
+
+  method front(){
+    if(self.left == nil){
+      return "The queue is empty.";
+    }else{
+      return self.left;
+    }
+  }
+
+  method back(){
+    if(self.right == nil){
+      return "The queue is empty.";
+    }else{
+      return self.right;
+    }
+  }
+
+  method push(value){
+    if(self.length == 0){
+      let newNode = Node(value);
+      self.left = newNode;
+      self.right = self.left;
+    }else{
+      let newNode = Node(value);
+      self.right.next = newNode;
+      self.right = newNode;
+    }
+
+    self.length = self.length + 1;
+
+    return;
+  }
+
+  method pop(){
+    if(self.length == 0){ // Queue is empty.
+      return "The queue is empty.";
+    }elif(self.length == 1){ // Queue is not empty and has only one element.
+      let poppedValue = self.left.value;
+
+      self.left = nil;
+      self.right = nil;
+
+      self.length = self.length - 1;
+
+      return poppedValue;
+    }else{ // Queue is not empty and has more than one element.
+      let poppedValue = self.left.value;
+
+      self.left = self.left.next;
+      self.length = self.length - 1;
+
+      return poppedValue;
+    }
+  }
+
+  method str(){
+    let queueAsString = "front -> ";
+    let curr = self.left;
+    while(curr != nil){
+      if(curr != nil and curr.next != nil){
+        queueAsString = queueAsString + (curr.value + " -> ");
+      }else{
+        queueAsString = queueAsString + curr.value;
+      }
+      curr = curr.next;
+    }
+    queueAsString = queueAsString + " <- back";
+
+    return queueAsString;
+  }
+}
+
+
+function bfs(source, adjacencyList, visited, distance){
+  visited.setAt(source, true);
+  distance.setAt(source, 0);
+
+  let queue = Queue();
+  queue.push(source);
+
+  while(!queue.empty()){
+    let currNode = queue.pop();
+
+    for(let i = 0; i < adjacencyList.getAt(currNode).size(); i = i + 1){
+      let neighbor = adjacencyList.getAt(currNode).getAt(i);
+
+      if(!visited.getAt(neighbor)){
+        visited.setAt(neighbor, true);
+        distance.setAt(neighbor, 1 + distance.getAt(currNode));
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return;
+}
+
+function main(){
+  let adjacencyList = [
+    [1, 2, 5],
+    [2],
+    [3],
+    [1, 4],
+    [1, 5],
+    []
+  ];
+
+  let source = 0;
+
+  let visited = [];
+  visited.fill(false, 6);
+
+  let distance = [];
+  distance.fill(0, 6);
+
+  bfs(source, adjacencyList, visited, distance);
+
+  std::io::print("Distance List:", distance);
+  std::io::print("Visited List:", visited);
+
+  return;
+}
+
+main();
