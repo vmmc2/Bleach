@@ -235,17 +235,24 @@ std::io::print(triangle.describe(), "with area:", triangle.area());
 * __Remember that a Bleach file must have the ```.bch``` extension. Otherwise, the extension won't work properly.__
 
 
-## How to use it?
+## How to build the Bleach Tree-Walk Interpreter?
 1. Clone this repository in your local machine.
 2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
 cd scripts
-chmod +x bleach.sh
+chmod +x bleach_build.sh
 ```
-3. Execute the script that starts up the Bleach Tree-Walk Interpreter:
+3. Execute the script that builds the Bleach Tree-Walk Interpreter:
 ```sh
-./bleach.sh # Executes the interpreter in the interactive mode (REPL mode).
-./bleach.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+./bleach_build.sh
+```
+
+
+## How to run the Bleach Tree-Walk Interpreter?
+1. Execute the script that starts up the Bleach Tree-Walk Interpreter:
+```sh
+./bleach_run.sh # Executes the interpreter in the interactive mode (REPL mode).
+./bleach_run.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
 ```
 
 
