@@ -284,7 +284,7 @@ chmod +x bleach_test_pipeline.sh
 - [ ] Add the remaining unit tests that cover every single AST node of the Bleach language.
   - Expression Nodes
     - [x] Assign
-    - [ ] Binary
+    - [x] Binary
     - [ ] Call
     - [ ] Get
     - [ ] Grouping
@@ -307,7 +307,7 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Expression
     - [ ] For
     - [ ] Function
-    - [ ] If
+    - [x] If
     - [x] Print
     - [ ] Return
     - [x] Var
