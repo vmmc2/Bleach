@@ -1,0 +1,5 @@
+// This test is responsible for checking whether the 'let' statement for variable declaration is correctly
+// functioning. Here we check a variable declaration with an initializer expression.
+
+let foo = 42;
+print foo;

@@ -1,0 +1,26 @@
+// This test is responsible for checking whether the 'Assign' node is correctly functioning.
+// Here we check variable assignment in the global scope.
+
+let foo = "bar";
+print foo;
+
+foo = true;
+print foo;
+
+foo = false;
+print foo;
+
+foo = 42;
+print foo;
+
+foo = 3.14159;
+print foo;
+
+foo = nil;
+print foo;
+
+foo = [1,2,3,4,5];
+print foo;
+
+foo = [1, "hello", "world", true, false, nil, [1,2,3]];
+print foo;

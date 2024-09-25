@@ -1,0 +1,16 @@
+// This test is responsible for checking whether the 'Block' node is correctly functioning.
+// Here we check variable shadowing by using such type of node.
+
+let x = "foo";
+
+print x;
+
+{
+
+  let x = "bar";
+
+  print x;
+
+}
+
+print x;

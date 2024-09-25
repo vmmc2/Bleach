@@ -1,0 +1,8 @@
+bar
+true
+false
+42
+3.14159
+nil
+[1, 2, 3, 4, 5]
+[1, "hello", "world", true, false, nil, [1, 2, 3]]

@@ -283,7 +283,7 @@ chmod +x bleach_test_pipeline.sh
 ## To Do
 - [ ] Add the remaining unit tests that cover every single AST node of the Bleach language.
   - Expression Nodes
-    - [ ] Assign
+    - [x] Assign
     - [ ] Binary
     - [ ] Call
     - [ ] Get
@@ -299,7 +299,7 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Unary
     - [ ] Variable
   - Statements Nodes
-    - [ ] Block
+    - [x] Block
     - [ ] Break
     - [ ] Class
     - [ ] Continue
@@ -308,9 +308,9 @@ chmod +x bleach_test_pipeline.sh
     - [ ] For
     - [ ] Function
     - [ ] If
-    - [ ] Print
+    - [x] Print
     - [ ] Return
-    - [ ] Var
+    - [x] Var
     - [ ] While
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 

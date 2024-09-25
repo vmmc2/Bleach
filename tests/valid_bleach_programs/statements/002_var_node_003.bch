@@ -1,0 +1,20 @@
+// This test is responsible for checking whether the 'let' statement for variable declaration is correctly
+// functioning. Here we check a variable re-declaration in the global scope.
+
+let foo;
+print foo;
+
+let foo = 42;
+print foo;
+
+let foo = "bar";
+print foo;
+
+let foo = nil;
+print foo;
+
+let foo = true;
+print foo;
+
+let foo = [1,2,3];
+print foo;
