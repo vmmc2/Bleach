@@ -1,0 +1,10 @@
+// This test is responsible for checking whether the 'If' node is correctly functioning. Here we check a different
+// scenario where the 'if' branch is the only branch in such node.
+
+let foo = false;
+
+if(foo){
+  print "Hello from the if clause!";
+}
+
+print "Hello from the global scope!";
