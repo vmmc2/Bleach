@@ -1,0 +1,38 @@
+// This test is responsible for checking whether the 'Binary' node is correctly functioning.
+// Here we check each of the binary operators available in Bleach and their behavior depending on the operands.
+
+// Binary Arithmetic Operators when both operands are of type 'num'.
+print 3 + 4;
+print 3.14 + 2.71;
+
+print 3 - 4;
+print 3.14 - 2.71;
+
+print 3 * 4;
+print 3.14 * 2.71;
+
+print 3 / 4;
+print 3.14 / 2.71;
+
+print 3 % 4;
+print 3.14 % 2.71;
+
+
+// Binary Arithmetic Operators when both operands are of type 'str'.
+print "hello," + " world!";
+
+
+// Binary Arithmetic Operators when both operands are of type 'list'.
+print [1, 2, 3] + [4, 5, 6];
+
+
+// Binary Arithmetic Operators when one operand is of type 'num' and the other is of type 'str'.
+print "Hello " + 42;
+
+print 42 + " Hello";
+
+
+// Binary Comparison Operators when both operands are of type 'num'.
+
+
+// Binary Equality Operators when both operands are of type 'num'.
