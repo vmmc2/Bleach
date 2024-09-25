@@ -1,0 +1,10 @@
+// This test is responsible for checking whether the 'If' node is correctly functioning. 
+// Here we check a scenario where the 'else' branch is taken during execution.
+
+let x = 42;
+
+if(x != 42){
+  print "The value of the variable x is not 42.";
+}else{
+  print "The value of the variable x is 42.";
+}

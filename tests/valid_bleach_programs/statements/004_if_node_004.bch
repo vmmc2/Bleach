@@ -1,0 +1,12 @@
+// This test is responsible for checking whether the 'If' node is correctly functioning. 
+// Here we check a scenario where an 'elif' branch is taken during execution.
+
+let x = 2;
+
+if(x == 1){
+  print "The value of the variable x is 1.";
+}elif(x == 2){
+  print "The value of the variable x is 2.";
+}else{
+  print "The value of the variable x is 3.";
+}
