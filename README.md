@@ -311,7 +311,7 @@ chmod +x bleach_test_pipeline.sh
     - [x] Print
     - [ ] Return
     - [x] Var
-    - [ ] While
+    - [x] While
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
 
 

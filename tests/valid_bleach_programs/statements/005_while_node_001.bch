@@ -1,0 +1,11 @@
+// This test is responsible for checking whether the 'While' node is correctly functioning. 
+// Here, we check a scenario whether a 'while' loop is used to perform a countdown.
+
+let counter = 10;
+
+while(counter >= 0){
+  print counter;
+  counter = counter - 1;
+}
+
+print "Countdown Finished! BOOM!";
