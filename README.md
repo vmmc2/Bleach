@@ -305,8 +305,8 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Continue
     - [x] DoWhile
     - [ ] Expression
-    - [ ] For
-    - [ ] Function
+    - [x] For
+    - [x] Function
     - [x] If
     - [x] Print
     - [ ] Return

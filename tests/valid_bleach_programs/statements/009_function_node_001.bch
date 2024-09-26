@@ -1,0 +1,29 @@
+// This test is responsible for checking whether the 'Function' node is correctly functioning. 
+// Here, we check a scenario whether a few function declaration statements are performed.
+
+// All functions below, with the exception of function "add", expect two arguments of type 'num'.
+
+// Function called "add".
+function add(a, b){
+  print a + b;
+}
+
+// Function called "sub".
+function sub(a, b){
+  print a - b;
+}
+
+// Function called "mul".
+function mul(a, b){
+  print a * b;
+}
+
+// Function called "div".
+function div(a, b){
+  print a / b;
+}
+
+// Function called "rem".
+function rem(a, b){
+  print a % b;
+}

@@ -1,0 +1,8 @@
+// This test is responsible for checking whether the 'For' node is correctly functioning. 
+// Here, we check a scenario whether a 'for' loop is used to perform a countdown.
+
+for(let counter = 10; counter >= 0; counter = counter - 1){
+  print counter;
+}
+
+print "Countdown Finished! BOOM!";
