@@ -295,7 +295,7 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Self
     - [ ] Set
     - [ ] Super
-    - [ ] Ternary
+    - [x] Ternary
     - [x] Unary
     - [ ] Variable
   - Statements Nodes

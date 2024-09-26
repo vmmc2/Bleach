@@ -1,0 +1,6 @@
+// This test is responsible for checking whether the 'Ternary' node is correctly functioning.
+// Here we check the ternary operator available in Bleach and its behavior.
+
+print 1 == 1 ? "1 is equal to 1." : "1 is not equal to 1.";
+
+print 1 != 1 ? "1 is not equal to 1." : "1 is equal to 1.";
