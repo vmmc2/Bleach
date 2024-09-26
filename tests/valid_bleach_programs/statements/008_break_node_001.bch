@@ -1,0 +1,16 @@
+// This test is responsible for checking whether the 'Break' node is correctly functioning. 
+// Here, we check a scenario whether a 'for' is interrupted by the use of a "break" statement.
+
+for(let i = 0; i <= 10; i = i + 1){
+  if(i == 10){
+    break;
+  }elif(i % 2 == 0){
+    print i + " is an even number.";
+  }else{
+    print i + " is an odd number.";
+  }
+}
+
+print "";
+
+print "Finished printing numbers.";

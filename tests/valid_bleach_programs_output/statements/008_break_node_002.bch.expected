@@ -1,0 +1,18 @@
+Value of i: 0 --- Value of j: 0
+Value of i: 0 --- Value of j: 1
+Ending inner loop.
+Value of i: 1 --- Value of j: 0
+Value of i: 1 --- Value of j: 1
+Ending inner loop.
+Value of i: 2 --- Value of j: 0
+Value of i: 2 --- Value of j: 1
+Ending inner loop.
+Value of i: 3 --- Value of j: 0
+Value of i: 3 --- Value of j: 1
+Ending inner loop.
+Value of i: 4 --- Value of j: 0
+Value of i: 4 --- Value of j: 1
+Ending inner loop.
+Value of i: 5 --- Value of j: 0
+Value of i: 5 --- Value of j: 1
+Ending inner loop.

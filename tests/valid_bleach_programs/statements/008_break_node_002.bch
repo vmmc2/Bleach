@@ -1,0 +1,10 @@
+for(let i = 0; i <= 5; i = i + 1){
+  for(let j = 0; j <= 4; j = j + 1){
+    if(j == 2){
+      print "Ending inner loop.";
+      break;
+    }else{
+      print "Value of i: " + i + " --- Value of j: " + j;
+    }
+  }
+}
