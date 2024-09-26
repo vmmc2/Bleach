@@ -303,7 +303,7 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Break
     - [ ] Class
     - [ ] Continue
-    - [ ] DoWhile
+    - [x] DoWhile
     - [ ] Expression
     - [ ] For
     - [ ] Function

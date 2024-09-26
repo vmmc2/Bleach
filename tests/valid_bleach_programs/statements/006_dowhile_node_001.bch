@@ -1,0 +1,11 @@
+// This test is responsible for checking whether the 'DoWhile' node is correctly functioning. 
+// Here, we check a scenario whether a 'do-while' loop is used to perform a countdown.
+
+let counter = 10;
+
+do{
+  print counter;
+  counter = counter - 1;
+}while(counter >= 0);
+
+print "Countdown Finished! BOOM!";
