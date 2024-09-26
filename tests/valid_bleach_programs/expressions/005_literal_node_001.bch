@@ -1,0 +1,18 @@
+// This test is responsible for checking whether the 'Literal' node is correctly functioning.
+// Here we check this by printing some literal values using the "print" statement.
+
+print nil;
+
+print true;
+
+print false;
+
+print 42;
+
+print -13;
+
+print 3.14159;
+
+print "Hello, World!";
+
+print "Recife is the best city in Brazil!";

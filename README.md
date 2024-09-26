@@ -289,8 +289,8 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Get
     - [ ] Grouping
     - [ ] LambdaFunction
-    - [ ] ListLiteral
-    - [ ] Literal
+    - [x] ListLiteral
+    - [x] Literal
     - [ ] Logical
     - [ ] Self
     - [ ] Set
