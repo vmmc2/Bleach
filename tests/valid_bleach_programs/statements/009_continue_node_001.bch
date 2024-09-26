@@ -1,0 +1,25 @@
+// This test is responsible for checking whether the 'Continue' node is correctly functioning. 
+// Here, we check a scenario whether a 'for' has its behavior changed by the use of a "continue"
+// statement.
+
+print "Printing only the even numbers from 0 - 10.";
+
+for(let i = 0; i <= 10; i = i + 1){
+  if(i % 2 == 0){
+    print i;
+  }else{
+    continue;
+  }
+}
+
+print "";
+
+print "Printing only the odd numbers from 0 - 10.";
+
+for(let i = 0; i <= 10; i = i + 1){
+  if(i % 2 == 1){
+    print i;
+  }else{
+    continue;
+  }
+}
