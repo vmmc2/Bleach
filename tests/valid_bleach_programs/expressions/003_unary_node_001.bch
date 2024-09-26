@@ -1,0 +1,18 @@
+// This test is responsible for checking whether the 'Unary' node is correctly functioning.
+// Here we check each of the unary operators available in Bleach and their behavior depending on the operands.
+
+// Unary operators when the operand is of type 'bool'.
+print !true;
+print !false;
+print !!true;
+print !!false;
+
+
+// Unary operators when the operand is of type 'num'.
+print -1;
+print --1;
+print ---1;
+print -3.14159;
+print --3.14159;
+print -0; // Does is make sense to print "-0"?
+print --0;
