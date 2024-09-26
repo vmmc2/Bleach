@@ -1,0 +1,18 @@
+// This test is responsible for checking whether the 'Class' node is correctly functioning. 
+// Here, we check a scenario whether a class declaration statements is performed.
+
+class Person{
+  method init(name, age, height, weight){
+    self.name = name;
+    self.age = age;
+    self.height = height;
+    self.weight = weight;
+  }
+
+  method str(){
+    return "Hello! My name is " + self.name + " and I am " + self.age + " years old. Also, I am " + self.height + "m tall and I have " + self.weight + "kg."; 
+  }
+}
+
+let p = Person("Victor", 26, 1.83, 68.5);
+print p;

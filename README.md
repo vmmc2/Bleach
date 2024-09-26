@@ -301,7 +301,7 @@ chmod +x bleach_test_pipeline.sh
   - Statements Nodes
     - [x] Block
     - [x] Break
-    - [ ] Class
+    - [x] Class
     - [x] Continue
     - [x] DoWhile
     - [ ] Expression
