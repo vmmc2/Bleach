@@ -9,7 +9,7 @@ print 3 - 4;
 print 3.14 - 2.71;
 
 print 3 * 4;
-print 3.14 * 2.71;
+print 3.14 * 2.71; // This operation suffers from floating-point arithmetic precision.
 
 print 3 / 4;
 print 3.14 / 2.71;
@@ -33,6 +33,40 @@ print 42 + " Hello";
 
 
 // Binary Comparison Operators when both operands are of type 'num'.
+print 1 > 2;
+print 3.14 > 3.1399999;
+
+print 1 >= 2;
+print 3.14 >= 3.1399999;
+
+print 1 < 2;
+print 3.14 < 3.1399999;
+
+print 1 <= 2;
+print 3.14 <= 3.1399999;
 
 
-// Binary Equality Operators when both operands are of type 'num'.
+// Binary Equality Operators.
+print true == true;
+print false == false;
+print true == false;
+
+print true != true;
+print false != false;
+print true != false;
+
+print nil == nil;
+
+print nil != nil;
+
+print 2 == 3;
+
+print 2 != 3;
+
+print 9.8 == 2.71;
+
+print 9.8 != 2.71;
+
+print "Anakin" == "Obi-Wan";
+
+print "Anakin" != "Obi-Wan";
