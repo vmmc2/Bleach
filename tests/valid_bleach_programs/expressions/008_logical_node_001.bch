@@ -1,0 +1,33 @@
+// This test is responsible for checking whether the 'Logical' node is correctly functioning.
+// Here we check each of the logical operators available in Bleach through the use of "print"
+// statements.
+
+print true and true;
+print true and false;
+print false and true;
+print false and false;
+
+print "";
+
+print true or true;
+print true or false;
+print false or true;
+print false or false;
+
+print "";
+
+print 1 and 2;
+print 1 and nil;
+print 1 and false;
+print 1 and true;
+print 1 and "hello";
+print 1 and [1,2,3,4,5];
+
+print "";
+
+print 1 or 2;
+print 1 or nil;
+print 1 or false;
+print 1 or true;
+print 1 or "hello";
+print 1 or [1,2,3,4,5];

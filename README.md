@@ -291,7 +291,7 @@ chmod +x bleach_test_pipeline.sh
     - [ ] LambdaFunction
     - [x] ListLiteral
     - [x] Literal
-    - [ ] Logical
+    - [x] Logical
     - [ ] Self
     - [ ] Set
     - [ ] Super

@@ -1,5 +1,6 @@
 // This test is responsible for checking whether the 'Binary' node is correctly functioning.
-// Here we check each of the binary operators available in Bleach and their behavior depending on the operands.
+// Here we check each of the binary operators available in Bleach and their behavior depending on the
+// operands.
 
 // Binary Arithmetic Operators when both operands are of type 'num'.
 print 3 + 4;
