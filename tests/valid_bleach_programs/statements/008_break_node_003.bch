@@ -1,0 +1,22 @@
+// This test is responsible for checking whether the 'Break' node is correctly functioning. 
+// Here, we check a scenario whether a nested 'for' is interrupted by the use of a "break" statement.
+
+let breakInner = false;
+
+for(let i = 1; i <= 5; i = i + 1){
+  for(let j = 1; j <= 5; j = j + 1){
+    for(let k = 1; k <= 5; k = k + 1){
+      print "i: " + i + " --- j: " + j + " --- k: " + k;
+      if(k == 2){
+        breakInner = true;
+        break;
+      }
+    }
+    if(breakInner){
+      break;
+    }
+  }
+  if(breakInner){
+    break;
+  }
+}

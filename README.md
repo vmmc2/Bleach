@@ -300,9 +300,9 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Variable
   - Statements Nodes
     - [x] Block
-    - [ ] Break
+    - [x] Break
     - [ ] Class
-    - [ ] Continue
+    - [x] Continue
     - [x] DoWhile
     - [ ] Expression
     - [x] For

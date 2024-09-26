@@ -1,3 +1,6 @@
+// This test is responsible for checking whether the 'Break' node is correctly functioning. 
+// Here, we check a scenario whether a nested 'for' is interrupted by the use of a "break" statement.
+
 for(let i = 0; i <= 5; i = i + 1){
   for(let j = 0; j <= 4; j = j + 1){
     if(j == 2){
