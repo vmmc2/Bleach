@@ -2,3 +2,24 @@
 // check whether this type of node is properly working in Bleach through the use of "print"
 // statements and method calls.
 
+class Animal{
+  method init(){
+    print "A new animal is being created... What kind of animal will it be?";
+  }
+}
+
+class Lion inherits Animal{
+  method init(name){
+    super.init();
+    self.name = name;
+    print "A lion has been created!";
+  }
+
+  method str(){
+    return "I am a lion and my name is " + self.name + ".";
+  }
+}
+
+let lion = Lion("Simba");
+
+print lion;

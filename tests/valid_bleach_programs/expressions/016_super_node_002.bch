@@ -1,3 +1,47 @@
 // This test is responsible for checking whether the 'Super' node is correctly functioning. Here we 
 // check whether this type of node is properly working in Bleach through the use of "print"
 // statements and method calls.
+
+class Shape {
+  method init(name){
+    self.name = name;
+  }
+
+  method area(){
+    return 0;
+  }
+
+  method describe() {
+    return "This is a " + self.name;
+  }
+}
+
+class Rectangle inherits Shape {
+  method init(width, height){
+    super.init("Rectangle");
+    self.width = width;
+    self.height = height;
+  }
+
+  method area(){
+    return self.width * self.height;
+  }
+}
+
+class Triangle inherits Shape {
+  method init(base, height) {
+    super.init("Triangle");
+    self.base = base;
+    self.height = height;
+  }
+
+  method area(){
+    return (self.base * self.height) / 2;
+  }
+}
+
+let rectangle = Rectangle(4, 6);
+let triangle = Triangle(3, 7);
+
+print rectangle.describe() + " with an area of: " + rectangle.area() + " units.";
+print triangle.describe() + " with an area of: " + triangle.area() + " units.";
