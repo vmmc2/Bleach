@@ -1,0 +1,13 @@
+// This test is responsible for checking whether the 'LambdaFunction' node is correctly functioning.
+// Here we check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default function calls.
+
+let saveName = lambda -> (name){
+  return name;
+};
+
+let greetWithName = lambda -> (f, name){
+  return "Hello! My name is " + f(name) + ". And I am very pleased to meet you.";
+};
+
+print greetWithName(saveName, "Victor");

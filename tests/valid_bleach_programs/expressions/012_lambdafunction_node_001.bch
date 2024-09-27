@@ -1,0 +1,13 @@
+// This test is responsible for checking whether the 'LambdaFunction' node is correctly functioning.
+// Here we check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default function calls.
+
+let add = lambda -> (x, y){ return x + y; };
+let sub = lambda -> (x, y){ return x - y; };
+let mul = lambda -> (x, y){ return x * y; };
+let div = lambda -> (x, y){ return x / y; };
+
+print add(2, 3);
+print sub(43, 4);
+print mul(2.5, 8);
+print div(10, 2.5);
