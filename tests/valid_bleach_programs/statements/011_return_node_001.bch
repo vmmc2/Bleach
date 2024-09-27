@@ -1,0 +1,29 @@
+// This test is responsible for checking whether the 'Return' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default function calls.
+
+function add(a, b){
+  return a + b;
+}
+
+function sub(a, b){
+  return a - b;
+}
+
+function mul(a, b){
+  return a * b;
+}
+
+function div(a, b){
+  return a / b;
+}
+
+function rem(a, b){
+  return a % b;
+}
+
+print add(15, 10);
+print sub(15, 10);
+print mul(15, 10);
+print div(15, 10);
+print rem(15, 10);
