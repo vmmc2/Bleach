@@ -1,0 +1,20 @@
+// This test is responsible for checking whether the 'Set' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and assignments to attributes of instances.
+
+class Shinigami{
+  method init(name){
+    self.name = name;
+  }
+
+  method castBankai(){
+    print self.bankaiCommand + " " + self.bankaiName + "!";
+  }
+}
+
+let byakuya = Shinigami("Byakuya Kuchiki");
+
+byakuya.bankaiCommand = "Scatter,";
+byakuya.bankaiName = "Senbonzakura Kageyoshi";
+
+byakuya.castBankai();

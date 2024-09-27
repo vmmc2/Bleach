@@ -80,7 +80,7 @@ done
 
 # Show summaries
 echo ""
-printf "${BLUE}Valid Tests Summary:${NC}\n"
+printf "${BLUE}Bleach Test Suite Execution Summary${NC}\n"
 printf "${BLUE}Total valid tests: $total_valid${NC}\n"
 printf "${GREEN}Passed valid tests: $passed_valid${NC}\n"
 printf "${RED}Failed valid tests: $((total_valid - passed_valid))${NC}\n"

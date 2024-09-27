@@ -1,0 +1,19 @@
+// This test is responsible for checking whether the 'Set' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and assignments to attributes of instances.
+
+class Dog{
+  method init(name){
+    self.name = name;
+  }
+
+  method str(){
+    return "My dog is a male and his name is " + self.name + ". He has " + self.age + " years.";
+  }
+}
+
+let d = Dog("Thor");
+
+d.age = 0.5;
+
+print d;
