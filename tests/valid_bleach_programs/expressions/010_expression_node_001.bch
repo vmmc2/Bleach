@@ -1,0 +1,19 @@
+// This test is responsible for checking whether the 'Expression' node is correctly functioning.
+// Here we check whether this type of node is properly working in Bleach through the use of "print"
+// statements.
+
+let a = true;
+let b = false;
+print a and b;
+
+let v;
+print v;
+
+let x = 43 + 5 - 13;
+print x;
+
+let y = "Hello" + ", World!" + " I am alive!";
+print y;
+
+let z = [1,2,3,4,5];
+print z + [6,7,8];

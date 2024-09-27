@@ -297,14 +297,14 @@ chmod +x bleach_test_pipeline.sh
     - [ ] Super
     - [x] Ternary
     - [x] Unary
-    - [ ] Variable
+    - [x] Variable
   - Statements Nodes
     - [x] Block
     - [x] Break
     - [x] Class
     - [x] Continue
     - [x] DoWhile
-    - [ ] Expression
+    - [x] Expression
     - [x] For
     - [x] Function
     - [x] If
