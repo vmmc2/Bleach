@@ -1,0 +1,40 @@
+// This unit test is responsible for testing the native functions present in the namespace std::math
+// of the Bleach standard library.
+
+print std::math::abs(0.25);
+print std::math::abs(-0.25);
+
+print "";
+
+print std::math::ceil(3.14159);
+print std::math::ceil(-3.14159);
+print std::math::ceil(1);
+print std::math::ceil(-1);
+
+print "";
+
+print std::math::floor(2.71);
+print std::math::floor(-2.71);
+print std::math::floor(2);
+print std::math::floor(-2);
+
+print "";
+
+print std::math::log(2, 8);
+print std::math::log(4, 1);
+print std::math::log(16, 2);
+print std::math::log(10, 10000);
+
+print "";
+
+print std::math::pow(2, 10);
+print std::math::pow(10, 0);
+print std::math::pow(0, 23);
+print std::math::pow(2.5, 2);
+
+print "";
+
+print std::math::sqrt(4);
+print std::math::sqrt(121);
+print std::math::sqrt(196);
+print std::math::sqrt(3);

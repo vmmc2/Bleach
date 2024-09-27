@@ -1,0 +1,23 @@
+// This unit test is responsible for testing the native functions present in the namespace std::utils
+// of the Bleach standard library.
+
+print std::utils::ord("a");
+print std::utils::ord("b");
+print std::utils::ord("A");
+print std::utils::ord("B");
+
+print "";
+
+print std::utils::strToNum("42");
+print std::utils::strToNum("-42");
+print std::utils::strToNum("3.14159");
+print std::utils::strToNum("-3.14159");
+
+print "";
+
+print std::utils::strToBool("true");
+print std::utils::strToBool("false");
+
+print "";
+
+print std::utils::strToNil("nil");

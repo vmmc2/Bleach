@@ -65,7 +65,7 @@ run_valid_test() {
 }
 
 # Run tests for valid Bleach files
-for subdir in "expressions" "statements"; do
+for subdir in "expressions" "native_functions" "statements"; do
     for file in "$VALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
         run_valid_test "$file" "$LOG_DIR/valid_bleach_programs/$subdir/$(basename "$file").log" "$EXPECTED_VALID_BLEACH_PROGRAMS_OUTPUT_DIR/$subdir/$(basename "$file").expected"
     done
