@@ -1,0 +1,19 @@
+// This test is responsible for checking whether the 'Self' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default method calls.
+
+class Cat{
+  method init(name, age, breed){
+    self.name = name;
+    self.age = age;
+    self.breed = breed;
+  }
+
+  method str(){
+    return "Hi! I am a cat. My name is " + self.name + ". I am " + self.age + " years old. My breed is " + self.breed + ".";
+  }
+}
+
+let c = Cat("Yoruichi", 12, "Scottish Fold");
+
+print c;

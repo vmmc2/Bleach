@@ -284,7 +284,6 @@ chmod +x bleach_test_pipeline.sh
 - [ ] Add the remaining unit tests that cover every single AST node of the Bleach language.
   - Expression Nodes
     - [ ] Get
-    - [ ] Self
     - [ ] Set
     - [ ] Super
 - [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
