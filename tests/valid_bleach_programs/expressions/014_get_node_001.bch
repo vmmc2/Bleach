@@ -1,0 +1,23 @@
+// This test is responsible for checking whether the 'Get' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default method calls.
+
+class Square{
+  method init(length){
+    self.length = length;
+  }
+
+  method calculateArea(){
+    return self.length * self.length;
+  }
+
+  method calculatePerimeter(){
+    return 4 * self.length;
+  }
+}
+
+let sq = Square(3);
+
+print "The area of the square 'sq' is: " + sq.calculateArea() + " m².";
+
+print "The perimeter of the square 'sq' is: " + sq.calculatePerimeter() + " m.";

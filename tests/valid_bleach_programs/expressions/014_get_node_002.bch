@@ -1,0 +1,30 @@
+// This test is responsible for checking whether the 'Get' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default method calls.
+
+class Champion{
+  method init(name, archetype, position){
+    self.name = name;
+    self.archetype = archetype;
+    self.position = position;
+  }
+
+  method sayName(){
+    print "My name is " + self.name + ".";
+    return self;
+  }
+
+  method sayArchetype(){
+    print "My archetype is " + self.archetype + ".";
+    return self;
+  }
+
+  method sayPosition(){
+    print "My position is " + self.position + ".";
+    return self;
+  }
+}
+
+let champion = Champion("Vi", "Brawler", "Jungle");
+
+champion.sayName().sayArchetype().sayPosition();
