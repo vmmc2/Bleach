@@ -285,7 +285,7 @@ chmod +x bleach_test_pipeline.sh
   - Expression Nodes
     - [x] Assign
     - [x] Binary
-    - [ ] Call
+    - [x] Call
     - [ ] Get
     - [x] Grouping
     - [ ] LambdaFunction

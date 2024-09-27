@@ -1,0 +1,9 @@
+// This test is responsible for checking whether the 'Call' node is correctly functioning. Here we 
+// check whether this type of node is properly working in Bleach through the use of "print"
+// statements and default function calls.
+
+function trivalFunction(){
+  print "Hello, World!";
+}
+
+trivalFunction();
