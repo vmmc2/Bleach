@@ -2,12 +2,133 @@
 Code that implements the Dijkstra's Shortest-Path Algorithm.
 */
 
-function dijkstra(){
-  
+class MinBinaryHeap{
+  method init(){
+    self.heap = [];
+  }
+
+  method empty(){
+    return self.size() == 0 ? true : false;
+  }
+
+  method size(){
+    return self.heap.size();
+  }
+
+  method top(){
+    if(self.size() == 0){
+      return "The Binary Heap is empty!";
+    }else{
+      return self.heap.getAt(0);
+    }
+  }
+
+  method pop(){
+    if(self.size() == 0){
+      return "The Binary Heap is empty!";
+    }else{
+      self.swap(0, self.size() - 1);
+
+      let minValue = self.heap.pop();
+      self.bubbleDown(0);
+
+      return minValue;
+    }
+  }
+
+  method push(value){
+    self.heap.append(value);
+    self.bubbleUp(self.size() - 1);
+
+    return;
+  }
+
+  method swap(i, j){
+    let temp = self.heap.getAt(i);
+    self.heap.setAt(i, self.heap.getAt(j));
+    self.heap.setAt(j, temp);
+
+    return;
+  }
+
+  method bubbleDown(index){
+    let smallest = index;
+    let leftChild = 2 * index + 1;
+    let rightChild = 2 * index + 2;
+
+    if(leftChild < self.heap.size() and self.heap.getAt(leftChild).getAt(0) < self.heap.getAt(smallest).getAt(0)){
+      smallest = leftChild;
+    }
+
+    if(rightChild < self.heap.size() and self.heap.getAt(rightChild).getAt(0) < self.heap.getAt(smallest).getAt(0)){
+      smallest = rightChild;
+    }
+
+    if(smallest != index){
+      self.swap(index, smallest);
+      self.bubbleDown(smallest);
+    }
+
+    return;
+  }
+
+  method bubbleUp(index){
+    let parentIndex = std::math::floor((index - 1) / 2);
+    if(index > 0 and self.heap.getAt(index).getAt(0) < self.heap.getAt(parentIndex).getAt(0)){
+      self.swap(index, parentIndex);
+      self.bubbleUp(parentIndex);
+    }
+
+    return;
+  }
+}
+
+function dijkstraAlgorithm(source, adjacencyList, distance){
+  let minHeap = MinBinaryHeap();
+  distance.setAt(source, 0);
+
+  minHeap.push([0, source]);
+
+  while(!minHeap.empty()){
+    let currNodeInfo = minHeap.pop();
+    let minPath = currNodeInfo.getAt(0);
+    let currNode = currNodeInfo.getAt(1);
+
+    for(let i = 0; i < adjacencyList.getAt(currNode).size(); i = i + 1){
+      let neighbour = adjacencyList.getAt(currNode).getAt(i).getAt(0);
+      let edge = adjacencyList.getAt(currNode).getAt(i).getAt(1);
+      if(distance.getAt(currNode) + edge < distance.getAt(neighbour)){
+        distance.setAt(neighbour, distance.getAt(currNode) + edge);
+        minHeap.push([distance.getAt(neighbour), neighbour]);
+      }
+    }
+  }
+
+  return;
 }
 
 function main(){
+  let adjacencyList = [
+    [[1, 7], [2, 9], [3, 4], [6, 5]], // Node 0
+    [[4, 15]],                        // Node 1
+    [[1, 3], [4, 2]],                 // Node 2
+    [[6, 10]],                        // Node 3
+    [[5, 3]],                         // Node 4
+    [[2, 2], [7, 10]],                // Node 5
+    [[5, 1]],                         // Node 6
+    []                               // Node 7
+  ];
 
+  let source = 0;
+  let distance = [];
+  distance.fill(9999, 8);
+
+  dijkstraAlgorithm(source, adjacencyList, distance);
+
+  std::io::print(" 0  1  2  3   4  5  6   7");
+  std::io::print(distance);
+
+  return;
 }
 
 main();
