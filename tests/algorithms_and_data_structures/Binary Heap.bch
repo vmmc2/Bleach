@@ -2,13 +2,106 @@
 Code that implements the Binary Heap data-structure.
 */
 
-class BinaryHeap{
+class MinBinaryHeap{
   method init(){
+    self.heap = [];
+  }
 
+  method empty(){
+    return self.size() == 0 ? true : false;
+  }
+
+  method size(){
+    return self.heap.size();
+  }
+
+  method top(){
+    if(self.size() == 0){
+      return "The Binary Heap is empty!";
+    }else{
+      return self.heap.getAt(0);
+    }
+  }
+
+  method pop(){
+    if(self.size() == 0){
+      return "The Binary Heap is empty!";
+    }else{
+      self.swap(0, self.size() - 1);
+
+      let minValue = self.heap.pop();
+      self.bubbleDown(0);
+
+      return minValue;
+    }
+  }
+
+  method push(value){
+    self.heap.append(value);
+    self.bubbleUp(self.size() - 1);
+
+    return;
+  }
+
+  method swap(i, j){
+    let temp = self.heap.getAt(i);
+    self.heap.setAt(i, self.heap.getAt(j));
+    self.heap.setAt(j, temp);
+
+    return;
+  }
+
+  method bubbleDown(index){
+    let smallest = index;
+    let leftChild = 2 * index + 1;
+    let rightChild = 2 * index + 2;
+
+    if(leftChild < self.heap.size() and self.heap.getAt(leftChild) < self.heap.getAt(smallest)){
+      smallest = leftChild;
+    }
+
+    if(rightChild < self.heap.size() and self.heap.getAt(rightChild) < self.heap.getAt(smallest)){
+      smallest = rightChild;
+    }
+
+    if(smallest != index){
+      self.swap(index, smallest);
+      self.bubbleDown(smallest);
+    }
+
+    return;
+  }
+
+  method bubbleUp(index){
+    let parentIndex = std::math::floor((index - 1) / 2);
+    if(index > 0 and self.heap.getAt(index) < self.heap.getAt(parentIndex)){
+      self.swap(index, parentIndex);
+      self.bubbleUp(parentIndex);
+    }
+
+    return;
   }
 }
 
 function main(){
+  let pq = MinBinaryHeap();
+  pq.push(10);
+  pq.push(13);
+  pq.push(2);
+  
+  print pq.size();
+
+  print pq.pop();
+  print pq.pop();
+
+  pq.push(1024);
+
+  print pq.size();
+
+  print pq.pop();
+  print pq.pop();
+
+  print pq.empty();
 
 }
 
