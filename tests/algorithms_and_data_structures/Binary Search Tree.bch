@@ -57,11 +57,22 @@ class BST{
       root.right = self.aux_delete(root.right, key);
     }else{
       // Scenario where the node to be deleted has one child or no child.
-      if(){
-
-      }elif(){
-
+      if(root.left == nil){
+        return root.right;
+      }elif(root.right == nil){
+        return root.left;
       }
+
+      // Scenario where the node to be deleted has two children.
+      // In this case, the inorder sucessor of the node to be deleted is retrieved:
+      let temp = self.findMinimum(root.right);
+
+      // Replacing the root's key and value with its inorder successor's key and value:
+      root.key = temp.key;
+      root.value = temp.value;
+
+      // Deleting the inorder successor:
+      root.right = self.aux_delete(root.right, temp.key);
     }
 
     return root;
@@ -69,7 +80,6 @@ class BST{
 
   method delete(key){
     self.root = self.aux_delete(self.root, key);
-
     self.length = self.length - 1;
 
     return;
@@ -137,7 +147,7 @@ class BST{
   }
 
   method str(){
-    return "BST representation.";
+    return "BST Instance";
   }
 }
 
@@ -149,7 +159,18 @@ function main(){
   bst.insert(23, 23);
   bst.insert(5, 5);
   bst.insert(14, 14);
+  bst.insert(52, 52);
 
+  bst.inorderTraversal(bst.root);
+
+  print "";
+
+  bst.delete(23);
+  bst.inorderTraversal(bst.root);
+
+  print "";
+
+  bst.delete(10);
   bst.inorderTraversal(bst.root);
 
   return;
