@@ -1,18 +1,64 @@
 /*
-Code that implements the Insertion Sort algorithm.
+Code that implements the Merge Sort algorithm.
 Assumes it is a list where every value is of type 'num'.
 */
 
-function merge(){
+function merge(a, b){
+  let n = a.size();
+  let m = b.size();
 
+  let i = 0;
+  let j = 0;
+  let k = 0;
+  
+  let c = [];
+  c.fill(nil, m + n);
+
+  while(i < n or j < m){
+    if(j == m or (i < n and a.getAt(i) < b.getAt(j))){
+      c.setAt(k, a.getAt(i));
+      k = k + 1;
+      i = i + 1;  
+    }else{
+      c.setAt(k, b.getAt(j));
+      k = k + 1;
+      j = j + 1;
+    }
+  }
+
+  return c;
 }
 
-function mergeSort(l){
+function mergeSort(a){
+  if(a.size() <= 1){
+    return a;
+  }else{
+    let b = [];
+    let c = [];
+    let n = a.size();
+    let mid = std::math::floor(n/2 - 1);
 
+    for(let i = 0; i <= mid; i = i + 1){
+      b.append(a.getAt(i));
+    }
+
+    for(let i = mid + 1; i <= n - 1; i = i + 1){
+      c.append(a.getAt(i));
+    }
+
+    b = mergeSort(b);
+    c = mergeSort(c);
+
+    return merge(b, c);
+  }
 }
 
 function main(){
+  let list = [3, 1, 4, 10, 42, 23, 5, 100, -9, 0, -13, 625];
+  let sortedList = mergeSort(list);
 
+  std::io::print("Original List:", list);
+  std::io::print("Sorted List:", sortedList);
 }
 
 main();
