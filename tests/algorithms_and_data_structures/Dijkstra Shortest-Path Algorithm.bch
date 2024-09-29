@@ -1,3 +1,13 @@
 /*
-Code that implements the .Dijkstra's Shortest-Path Algorithm.
+Code that implements the Dijkstra's Shortest-Path Algorithm.
 */
+
+function dijkstra(){
+  
+}
+
+function main(){
+
+}
+
+main();

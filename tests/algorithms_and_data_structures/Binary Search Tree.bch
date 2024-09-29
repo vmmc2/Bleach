@@ -46,14 +46,33 @@ class BST{
     return;
   }
 
-  method delete(key){
-    // TODO: Finish implementation of this.
-    let deletedNode;
+  method aux_delete(root, key){
+    if(root == nil){
+      return root;
+    }
 
+    if(key < root.key){
+      root.left = self.aux_delete(root.left, key);
+    }elif(key > root.key){
+      root.right = self.aux_delete(root.right, key);
+    }else{
+      // Scenario where the node to be deleted has one child or no child.
+      if(){
+
+      }elif(){
+
+      }
+    }
+
+    return root;
+  }
+
+  method delete(key){
+    self.root = self.aux_delete(self.root, key);
 
     self.length = self.length - 1;
 
-    return deletedNode;
+    return;
   }
 
   method find(key){
@@ -74,28 +93,14 @@ class BST{
     return self.length;
   }
 
-  method findMaximum(){
-    let curr = self.root;
-    if(curr == nil){
-      return "The BST is empty.";
-    }
-    while(curr.right != nil){
-      curr = curr.right;
-    }
+  method findMinimum(node){
+    let curr = node;
 
-    return curr.value;
-  }
-
-  method findMinimum(){
-    let curr = self.root;
-    if(curr == nil){
-      return "The BST is empty";
-    }
     while(curr.left != nil){
       curr = curr.left;
     }
 
-    return curr.value;
+    return curr;
   }
 
   method preorderTraversal(curr){
@@ -113,9 +118,9 @@ class BST{
     if(curr == nil){
       return;
     }
-    self.preorderTraversal(curr.left);
+    self.inorderTraversal(curr.left);
     std::io::print(curr);
-    self.preorderTraversal(curr.right);
+    self.inorderTraversal(curr.right);
   
     return;
   }
@@ -124,8 +129,8 @@ class BST{
     if(curr == nil){
       return;
     }
-    self.preorderTraversal(curr.left);
-    self.preorderTraversal(curr.right);
+    self.postorderTraversal(curr.left);
+    self.postorderTraversal(curr.right);
     std::io::print(curr);
 
     return;
@@ -142,6 +147,8 @@ function main(){
   bst.insert(10, 10);
   bst.insert(2, 2);
   bst.insert(23, 23);
+  bst.insert(5, 5);
+  bst.insert(14, 14);
 
   bst.inorderTraversal(bst.root);
 
