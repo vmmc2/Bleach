@@ -1,0 +1,50 @@
+/*
+Code that implements the Quick Sort algorithm.
+Assumes it is a list where every value is of type 'num'.
+*/
+
+function swap(list, a, b){
+  let temp = list.getAt(a);
+  list.setAt(a, list.getAt(b));
+  list.setAt(b, temp);
+
+  return;
+}
+
+function partition(list, low, high){
+  let pivot = list.getAt(high);
+  let i = low - 1;
+
+  for(let j = low; j <= high - 1; j = j + 1){
+    if(list.getAt(j) <= pivot){
+      i = i + 1;
+      swap(list, i, j);
+    }
+  }
+  swap(list, i + 1, high);
+
+  return i + 1;
+}
+
+function quickSort(list, low, high){
+  if(low < high){
+    let q = partition(list, low, high);
+    quickSort(list, low, q - 1);
+    quickSort(list, q + 1, high);
+  }
+
+  return;
+}
+
+function main(){
+  let list = [3, 1, 4, 10, 42, 23, 5, 100, -9, 0, -13, 625];
+  let n = list.size();
+
+  std::io::print("Original List:", list);
+  quickSort(list, 0, n - 1);
+  std::io::print("Sorted List:", list);
+
+  return;
+}
+
+main();
