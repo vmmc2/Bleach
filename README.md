@@ -1,9 +1,7 @@
 # Bleach
-* A programming language aimed at teaching compilers. 
-
 
 ## Intro
-* __The implementation of my undergraduate thesis to obtain my Bachelor's degree in Computer Engineering: "Bleach: A programming language aimed for teaching introductory 'Compilers' courses at universities."__ 
+* __The implementation of my undergraduate thesis to obtain my Bachelor's degree in Computer Engineering at Universidade Federal de Pernambuco (UFPE), located in Brazil: "Bleach: A programming language aimed for teaching Compilers."__ 
   * __Author/Student: Victor Miguel de Morais Costa__
   * __Advisor: Leopoldo Motta Teixeira__
 
@@ -20,6 +18,7 @@
   08. Resolving and Binding
   09. Classes
   10. Inheritance
+
 
 ## Who is the target audience of this project?
 * The main audience are professors, instructors and teaching assistants that are responsible for lecturing any undergraduate level 'Compilers' course.
@@ -280,12 +279,8 @@ chmod +x bleach_test_pipeline.sh
 ```
 
 
-## To Do
-- [ ] Verify Bleach's performance by using the "The Computer Languages Benchmark Game".
-
-
 ## The undergraduate thesis
-* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: __Insert link later on.__
+* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: [Bleach Thesis Repo](https://github.com/vmmc2/Bleach-Thesis)
 
 
 ## Current State of the Bleach Language Context-Free Grammar
