@@ -71,22 +71,9 @@ for subdir in "expressions" "native_functions" "statements"; do
     done
 done
 
-# Run tests for invalid Bleach files
-# for subdir in "lexer" "parser" "resolver" "runtime"; do
-#     for file in "$INVALID_BLEACH_PROGRAMS_DIR/$subdir"/*.bch; do
-#         run_invalid_test "$file" "$subdir"
-#     done
-# done
-
 # Show summaries
 echo ""
 printf "${BLUE}Bleach Test Suite Execution Summary${NC}\n"
 printf "${BLUE}Total valid tests: $total_valid${NC}\n"
 printf "${GREEN}Passed valid tests: $passed_valid${NC}\n"
 printf "${RED}Failed valid tests: $((total_valid - passed_valid))${NC}\n"
-
-# echo ""
-# printf "${BLUE}Invalid Tests Summary:${NC}\n"
-# printf "${BLUE}Total invalid tests: $total_invalid${NC}\n"
-# printf "${GREEN}Failed invalid tests: $passed_invalid${NC}\n"
-# printf "${RED}Passed invalid tests (unexpected success): $((total_invalid - passed_invalid))${NC}\n"
