@@ -1302,16 +1302,16 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
           throw BleachRuntimeError{expr->paren, "Expected the second argument to be of type 'num' for the 'fill' method."};
         }
 
-        double indexObject = std::any_cast<double>(arguments[1]);
+        double amountObject = std::any_cast<double>(arguments[1]);
 
-        if(std::floor(indexObject) != indexObject){
+        if(std::floor(amountObject) != amountObject){
           throw BleachRuntimeError{expr->paren, "The value of the second argument must be an integer of type 'num' for the 'fill' method."};
         }
 
-        int index = std::floor(indexObject);
+        int amount = std::floor(amountObject);
         std::any value = arguments[0];
 
-        listMethod(value, index);
+        listMethod(value, amount);
 
         return nullptr;
       }
