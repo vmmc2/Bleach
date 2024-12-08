@@ -78,21 +78,37 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
      * This method is responsible for checking whether the operands of the following binary operators ("-", 
      * "*", "/", ">", ">=", "<", "<=") are of type double.
      * 
-     * @param op: The token that represents any binary operator that is not "==" or "!=".
      * @param left: The value of the left operand of the binary operator.
      * @param right: The value of the right operand of the binary operator.
      * 
-     * @return Nothing (void).
-     * 
-     * @note If the provided operands do not satisfy the conditions explained above, then an instance of a 
-     * BleachRuntimeError is thrown by the interpreter.
+     * @return A bool.
      */
-    void checkNumberOperands(const Token &op, const std::any& left, const std::any& right){
+    bool checkNumberOperands(const std::any& left, const std::any& right){
       if(left.type() == typeid(double) && right.type() == typeid(double)){
-        return;
+        return true;
+      }else{
+        return false;
       }
+    }
 
-      throw BleachRuntimeError{op, "Operands must be numbers."};
+    /**
+     * @brief Checks whether the provided operands of the following binary operators (">", ">=", "<", "<=")
+     * are values of type std::string.
+     *
+     * This method is responsible for checking whether the operands of the following binary operators (">",
+     * ">=", "<", "<=") are of type std::string.
+     * 
+     * @param left: The value of the left operand of the binary operator.
+     * @param right: The value of the right operand of the binary operator.
+     * 
+     * @return A bool.
+     */
+    bool checkStringOperands(const std::any& left, const std::any& right){
+      if(left.type() == typeid(std::string) && right.type() == typeid(std::string)){
+        return true;
+      }else{
+        return false;
+      }
     }
 
     /**
@@ -899,17 +915,37 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
       switch(expr->op.type){
         case(TokenType::GREATER):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) > std::any_cast<double>(right);
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) > std::any_cast<double>(right);
+          }else if(checkStringOperands(left, right)){
+            return std::any_cast<std::string>(left) > std::any_cast<std::string>(right);
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers or 2 strings."};
         case(TokenType::GREATER_EQUAL):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) >= std::any_cast<double>(right);
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) >= std::any_cast<double>(right);
+          }else if(checkStringOperands(left, right)){
+            return std::any_cast<std::string>(left) >= std::any_cast<std::string>(right);
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers or 2 strings."};
         case(TokenType::LESS):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) < std::any_cast<double>(right);
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) < std::any_cast<double>(right);
+          }else if(checkStringOperands(left, right)){
+            return std::any_cast<std::string>(left) < std::any_cast<std::string>(right);
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers or 2 strings."};
         case(TokenType::LESS_EQUAL):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) <= std::any_cast<double>(right);
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) <= std::any_cast<double>(right);
+          }else if(checkStringOperands(left, right)){
+            return std::any_cast<std::string>(left) <= std::any_cast<std::string>(right);
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers or 2 strings."};
         case(TokenType::BANG_EQUAL):
           return !isEqual(left, right);
         case(TokenType::EQUAL_EQUAL):
@@ -944,21 +980,33 @@ class Interpreter : public ExprVisitor, public StmtVisitor{
 
           throw BleachRuntimeError{expr->op, "Operands must be two numbers, or two strings, or two lists, or one number and one string."};
         case(TokenType::MINUS):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) - std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) - std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers."};
         case(TokenType::STAR):
-          checkNumberOperands(expr->op, left, right);
-          return std::any_cast<double>(left) * std::any_cast<double>(right); // Evaluate the case of iteracting nums and strings in order to extend the language.
+          if(checkNumberOperands(left, right)){
+            return std::any_cast<double>(left) * std::any_cast<double>(right); // Evaluate the case of iteracting nums and strings in order to extend the language.
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers."};
         case(TokenType::SLASH):
-          checkNumberOperands(expr->op, left, right);
-          checkZeroDivisor(right, expr->op);
-          return std::any_cast<double>(left) / std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
+          if(checkNumberOperands(left, right)){
+            checkZeroDivisor(right, expr->op);
+            return std::any_cast<double>(left) / std::any_cast<double>(right); // If the cast does not work, it will throw a bad_cast error.
+          }
+      
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers."};
         case(TokenType::REMAINDER):
-          checkNumberOperands(expr->op, left, right);
-          checkZeroDivisor(right, expr->op);
-          double dividend = std::any_cast<double>(left);
-          double divisor = std::any_cast<double>(right);
-          return std::fmod(dividend, divisor);
+          if(checkNumberOperands(left, right)){
+            checkZeroDivisor(right, expr->op);
+            double dividend = std::any_cast<double>(left);
+            double divisor = std::any_cast<double>(right);
+            return std::fmod(dividend, divisor);
+          }
+
+          throw BleachRuntimeError{expr->op, "Operands must be 2 numbers."};
       }
 
       // Unreachable

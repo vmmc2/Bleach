@@ -36,15 +36,23 @@ print 42 + " Hello";
 // Binary Comparison Operators when both operands are of type 'num'.
 print 1 > 2;
 print 3.14 > 3.1399999;
+print "z" > "a";
+print "a" > "z";
 
 print 1 >= 2;
 print 3.14 >= 3.1399999;
+print "aa" >= "aa";
+print "za" >= "zz";
 
 print 1 < 2;
 print 3.14 < 3.1399999;
+print "a" < "z";
+print "z" < "a";
 
 print 1 <= 2;
 print 3.14 <= 3.1399999;
+print "z" <= "z";
+print "zz" <= "az";
 
 
 // Binary Equality Operators.
