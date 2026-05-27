@@ -319,7 +319,7 @@ factor → unary ( ( "/" | "*" | "%" ) unary )*
 unary → ( "!" | "-" ) unary | call
 call → primary ( "(" arguments? ")" | "." IDENTIFIER )*
 arguments → expression ( "," expression )*
-primary → "true" | "false" | "nil" | NUMBER | STRING | "(" expression ")" | "[" (expression ( "," expression )*)? "]" | lambdaFunctionExpr | IDENTIFIER | "super" . IDENTIFIER
+primary → "true" | "false" | "nil" | "self" | NUMBER | STRING | "(" expression ")" | "[" (expression ( "," expression )*)? "]" | lambdaFunctionExpr | IDENTIFIER | "super" . IDENTIFIER
 lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
 ```
 
