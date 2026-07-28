@@ -233,8 +233,43 @@ std::io::print(triangle.describe(), "with area:", triangle.area());
 * You can install the official Bleach Syntax Highlight extension for Visual Studio Code here: [Bleach Official Syntax Highlight Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=VictorMigueldeMoraisCosta.bleach-language-syntax-highlight)
 * __Remember that a Bleach file must have the ```.bch``` extension. Otherwise, the extension won't work properly.__
 
+## Using Bleach
+* You can use Bleach by leveraging Docker or you can build the project yourself.
 
-## How to build the Bleach Tree-Walk Interpreter?
+### Docker
+* This repository contains a `Dockerfile` at its root. Which means one can easily run the project.
+
+#### Building the Docker Image
+1. Clone this repository in your local machine.
+2. Navigate to the root of this project.
+3. Execute the following command to create the project image:
+```sh
+docker build -t bleach-interpreter .
+```
+
+#### Running the Docker Image
+1. Once this command has finished, you can run the command below to start up a Docker container based on this created image:
+```sh
+docker run -it bleach-interpreter
+```
+2. After this, you will be in a directory called ```/app``` and you can navigate to the ```/scripts``` directory by executing the command ```cd scripts```. Finally, you can execute any of the scripts present there:
+```sh
+# (1) To Build the Bleach Interpreter:
+./bleach_build.sh
+
+# (2) To Run the Bleach Interpreter:
+./bleach_run.sh # Executes the interpreter in the interactive mode (REPL mode).
+./bleach_run.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+
+# (3) To Clean a Built Bleach Interpreter:
+./bleach_clean.sh
+
+# (4) To Run The Test Suite of The Bleach Interpreter
+./bleach_test_pipeline.sh
+```
+
+### Building it Yourself
+#### The Build Process
 1. Clone this repository in your local machine.
 2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
@@ -246,16 +281,14 @@ chmod +x bleach_build.sh
 ./bleach_build.sh
 ```
 
-
-## How to run the Bleach Tree-Walk Interpreter?
+#### Running the Bleach Tree-Walk Interpreter
 1. Execute the script that starts up the Bleach Tree-Walk Interpreter:
 ```sh
 ./bleach_run.sh # Executes the interpreter in the interactive mode (REPL mode).
 ./bleach_run.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
 ```
 
-
-## How to clean the built Bleach Tree-Walk Interpreter?
+#### Cleaning the Built Bleach Tree-Walk Interpreter
 1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
 cd scripts
@@ -266,14 +299,13 @@ chmod +x bleach_clean.sh
 ./bleach_clean.sh
 ```
 
-
-## How to run the unit tests of the Bleach Tree-Walk Interpreter?
+#### Running the Test Suite of the Bleach Tree-Walk Interpreter
 1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
 ```sh
 cd scripts
 chmod +x bleach_test_pipeline.sh
 ```
-3. Execute the script that run all of the unit tests related to the Bleach Tree-Walk Interpreter:
+2. Execute the script that run all of the unit tests related to the Bleach Tree-Walk Interpreter:
 ```sh
 ./bleach_test_pipeline.sh
 ```
