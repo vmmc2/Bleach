@@ -50,6 +50,8 @@ run_valid_test() {
     log_file=$2 # file with the produced result by the executed file
     expected_result_file=$3 # file with the expected result to be generated the executed file
 
+    mkdir -p "$(dirname "$log_file")"
+
     printf "${YELLOW}Running valid test: $bleach_file${NC}\n"
     if $INTERPRETER "$bleach_file" > "$log_file" 2>&1; then
         if diff -q "$log_file" "$expected_result_file" > /dev/null; then
