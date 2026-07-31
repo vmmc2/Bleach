@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Check if a file path is provided as an argument
 if [ $# -eq 0 ]; then
     # No arguments provided, start the REPL

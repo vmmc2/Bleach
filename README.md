@@ -3,7 +3,33 @@
 ## Intro
 * __The implementation of my undergraduate thesis to obtain my Bachelor's degree in Computer Engineering at Universidade Federal de Pernambuco (UFPE), located in Brazil: "Bleach: A programming language aimed for teaching Compilers."__ 
   * __Author/Student: Victor Miguel de Morais Costa__
-  * __Advisor: Leopoldo Motta Teixeira__
+  * __Advisor: Leopoldo Teixeira__
+
+
+## Paper
+* This repository is the reference implementation (research artifact) accompanying the paper __"Bleach: A Programming Language for Teaching Compilers"__, submitted to SBLP 2026 (30th Brazilian Symposium on Programming Languages), part of CBSoft 2026.
+* Paper link: **TODO — add the link to the camera-ready/published paper (SBLP 2026 proceedings or a preprint) once it is available.**
+
+## Repository Structure
+```
+Bleach/
+├─ src/                              # C++17 interpreter source (single translation unit, main.cpp)
+│  ├─ lexer/                         # Scanner
+│  ├─ parser/                        # Recursive-descent parser
+│  ├─ resolver/                      # Static resolver (variable binding, error checks)
+│  ├─ interpreter/                   # Tree-walk evaluator and runtime
+│  ├─ error/                         # Error types
+│  ├─ utils/                         # Shared runtime data structures
+│  └─ Makefile                       # Builds the `BleachInterpreter` executable
+├─ scripts/                          # Build/run/clean/test entry points (see Installation)
+├─ tests/                            # 44-case test suite + 11 algorithm/data-structure programs
+│  ├─ valid_bleach_programs/         # .bch test inputs (expressions, native_functions, statements)
+│  ├─ valid_bleach_programs_output/  # Expected stdout for each test input
+│  └─ algorithms_and_data_structures/ # Larger .bch programs (sorting, search, graph algorithms, etc.)
+├─ Dockerfile                        # Reproducible build/run environment (see Installation)
+├─ LICENSE                           # MIT License
+└─ README.md                         # This file
+```
 
 
 ## What is Bleach?
@@ -233,86 +259,98 @@ std::io::print(triangle.describe(), "with area:", triangle.area());
 * You can install the official Bleach Syntax Highlight extension for Visual Studio Code here: [Bleach Official Syntax Highlight Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=VictorMigueldeMoraisCosta.bleach-language-syntax-highlight)
 * __Remember that a Bleach file must have the ```.bch``` extension. Otherwise, the extension won't work properly.__
 
-## Using Bleach
-* You can use Bleach by leveraging Docker or you can build the project yourself.
+## Requirements
+Bleach can be used either through Docker (no local toolchain needed) or by building it natively.
 
-### Docker
-* This repository contains a `Dockerfile` at its root. Which means one can easily run the project.
+* __Hardware:__ No special hardware. The interpreter is a single-threaded tree-walk interpreter compiled from one translation unit; any machine able to run a C++ compiler and hold well under 1&nbsp;GB of RAM and 100&nbsp;MB of disk space is sufficient.
+* __Operating system:__ Linux and macOS are supported natively. On Windows, use Docker or WSL2 — the build/run scripts are Bash scripts and rely on a POSIX shell.
+* __Software (native build):__
+  * A C++17-capable compiler exposed as `g++` (GCC 9 or newer; the Docker image pins GCC 13).
+  * `make` (GNU Make).
+  * `bash`.
+  * No external libraries: the interpreter has zero third-party dependencies (C++ standard library only), so there is no `requirements.txt`/package manifest to install.
+* __Software (Docker route):__ Docker Engine 20.10 or newer. This is the recommended, most reproducible route since it pins the exact compiler version (`gcc:13-bookworm`) used to validate this artifact.
 
-#### Building the Docker Image
-1. Clone this repository in your local machine.
-2. Navigate to the root of this project.
-3. Execute the following command to create the project image:
+
+## Installation
+Both routes below end with the exact same `BleachInterpreter` executable; use whichever is more convenient.
+
+### Option A — Docker (recommended)
+1. Clone this repository and move into it:
+```sh
+git clone https://github.com/vmmc2/Bleach.git
+cd Bleach
+```
+2. Build the image (this compiles the interpreter as part of the image build):
 ```sh
 docker build -t bleach-interpreter .
 ```
-
-#### Running the Docker Image
-1. Once this command has finished, you can run the command below to start up a Docker container based on this created image:
+3. Run a container. It starts an interactive shell already positioned inside `scripts/`, with a working `BleachInterpreter` build, so the scripts below can be invoked directly:
 ```sh
 docker run -it bleach-interpreter
 ```
-2. After this, you will be in a directory called ```/app``` and you can navigate to the ```/scripts``` directory by executing the command ```cd scripts```. Finally, you can execute any of the scripts present there:
 ```sh
-# (1) To Build the Bleach Interpreter:
+# (1) Rebuild the interpreter (already built once during `docker build`):
 ./bleach_build.sh
 
-# (2) To Run the Bleach Interpreter:
-./bleach_run.sh # Executes the interpreter in the interactive mode (REPL mode).
-./bleach_run.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+# (2) Run the interpreter:
+./bleach_run.sh                                   # Interactive REPL mode.
+./bleach_run.sh relative_or_absolute_path_to.bch   # Execute a Bleach file (".bch" extension).
 
-# (3) To Clean a Built Bleach Interpreter:
+# (3) Remove the build artifacts:
 ./bleach_clean.sh
 
-# (4) To Run The Test Suite of The Bleach Interpreter
+# (4) Run the full test suite:
 ./bleach_test_pipeline.sh
 ```
-
-### Building it Yourself
-#### The Build Process
-1. Clone this repository in your local machine.
-2. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
+4. To run a `.bch` file that lives on your host machine, mount it into the container, e.g.:
 ```sh
-cd scripts
-chmod +x bleach_build.sh
+docker run -it -v "$(pwd)/my_program.bch:/app/scripts/my_program.bch" bleach-interpreter ./bleach_run.sh my_program.bch
 ```
-3. Execute the script that builds the Bleach Tree-Walk Interpreter:
+
+### Option B — Build from source
+1. Clone this repository and move into its `scripts` directory:
+```sh
+git clone https://github.com/vmmc2/Bleach.git
+cd Bleach/scripts
+chmod +x *.sh
+```
+2. Build the interpreter:
 ```sh
 ./bleach_build.sh
 ```
-
-#### Running the Bleach Tree-Walk Interpreter
-1. Execute the script that starts up the Bleach Tree-Walk Interpreter:
+3. Run it:
 ```sh
-./bleach_run.sh # Executes the interpreter in the interactive mode (REPL mode).
-./bleach_run.sh absolute_or_relative_path_to_a_bch_file # Executes the interpreter with the code written inside a Bleach file (".bch" extension).
+./bleach_run.sh                                   # Interactive REPL mode.
+./bleach_run.sh relative_or_absolute_path_to.bch   # Execute a Bleach file (".bch" extension).
 ```
-
-#### Cleaning the Built Bleach Tree-Walk Interpreter
-1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
-```sh
-cd scripts
-chmod +x bleach_clean.sh
-```
-2. Execute the script that cleans the build of the Bleach Tree-Walk Interpreter (if any is present):
+4. Remove build artifacts, when needed:
 ```sh
 ./bleach_clean.sh
 ```
 
-#### Running the Test Suite of the Bleach Tree-Walk Interpreter
-1. Go to the ```Bleach``` root directory. Then, execute the following commands inside it at the console/terminal:
-```sh
-cd scripts
-chmod +x bleach_test_pipeline.sh
-```
-2. Execute the script that run all of the unit tests related to the Bleach Tree-Walk Interpreter:
+### Verifying the installation
+Run the automated test suite (works identically under Docker or a native build; from the `scripts/` directory):
 ```sh
 ./bleach_test_pipeline.sh
+```
+This builds the interpreter and runs the 44 test cases discussed in the paper (`tests/valid_bleach_programs/{expressions,native_functions,statements}`), diffing actual output against the `.expected` files under `tests/valid_bleach_programs_output/`. A correctly installed interpreter ends with the following summary:
+```
+Bleach Test Suite Execution Summary
+Total valid tests: 44
+Passed valid tests: 44
+Failed valid tests: 0
+```
+As a minimal smoke test, you can also run the REPL directly and evaluate a single expression:
+```sh
+./bleach_run.sh
+> print "Hello, World!";
+Hello, World!
 ```
 
 
 ## The undergraduate thesis
-* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at: [Bleach Thesis Repo](https://github.com/vmmc2/Bleach-Thesis)
+* If you are interested in checking out what motivated me to do this project, the thought process to make the project decisions during the whole thing, then you are more than welcomed to take a look at the full [Bleach Undergraduate Thesis Repo](https://github.com/vmmc2/Bleach-Thesis)
 
 
 ## Current State of the Bleach Language Context-Free Grammar
@@ -355,52 +393,5 @@ primary → "true" | "false" | "nil" | "self" | NUMBER | STRING | "(" expression
 lambdaFunctionExpr → "lambda" "->" "(" parameters? ")" block
 ```
 
-
-## Why was Bleach written in C++?
-* The implementation of the Bleach Interpreter was written in C++ due to a couple of reasons which include, but are not restricted to:
-  * __Educational Value:__  C++ provides a solid foundation in many concepts of Computer Science, such as: memory management, data structures, and low-level programming concepts. These concepts are transferable to many other languages and also deepen one's understanding of programming in general.
-  * __Execution Speed:__ While the interpreter itself might not need to execute code as quickly as an application built for real-time processing or high-performance computing, it's still desirable for it to be efficient. This efficiency can manifest in faster parsing, optimization, and execution of the code written in the interpreted language. Since C++ is a high-performance language, it can contribute to faster execution of these tasks, resulting in quicker interpretation of code.
-  * __Familiarity:__ One could argue that another language like Haskell, OCaml, Racket, Scheme or SML is more suitable for this task. However I don't consider myself proficient enough in such language to tackle a project of this scope. Moreover, in my point of view, implementing Bleach in C++ is a good idea because most students have already worked with either in their "Introduction to Programming", "Algorithms & Data Structures" or "Operating Systems" course. Thus, they don't need to learn a new language just to understand the code written here. Also, the performance of an implementation is an important aspect, so it makes sense for, me at least, to use C++.
-  * __Industry Adoption:__ This reason is specially aimed to those that, like me, want to work in this field of Computer Science. Nowadays, C++ is the 'lingua franca' in it. Some examples to highlight this are:
-    * __Clang:__ C, C++, and Objective-C compiler front-end for the LLVM compiler infrastructure. Known for its fast compile times and excelent error diagnostics.
-    * __Chromium V8:__ Google's open-source JavaScript runtime engine, used in the Chrome browser and Node.js.
-    * __g++:__ The C++ front-end of the GCC compiler, also written in C++.
-    * __LLVM (Low Level Virtual Machine):__ A compiler infrastructure project that includes a collection of modular and reusable compiler and toolchain components. While LLVM itself is written in C++, it provides support for multiple programming languages.
-    * __MSVC (Microsoft Visual C++ Compiler):__ A part of the famous Visual Studio IDE.
-
-
-<!--
-## LLVM Version of the Bleach Language (Not priority right now)
-### Initial Setup
-1. On the root folder of your machine:
-```shell
-git clone git@github.com:llvm/llvm-project.git
-```
-2. Then run the following commands:
-```shell
-cd llvm-project
-mkdir build
-cd build
-```
-3. Run the following build command: 
-```shell
-cmake ../llvm -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=~/llvm-project/build -DBUILD_SHARED_LIBS=on -DLLVM_ENABLE_PROJECTS=clang -DCMAKE_BUILD_TYPE=Release
-```
-4. Finally:
-```shell
-make
-```
--->
-
-<!--
-## Doubts
-* __What is the diference between using a variable and refering to a variable?__
-* __Is it really okay to let a variable be re-declared in the global scope? Not convinced by the author.__
-* __Differences between scopes and environments (the author says they are "close cousins"). Also, the author later mentions that scope is a concept/idea and environment is something concrete that implements such concept.__
-* __What is necessary to claim that a programming language is Turing-Complete? In other words, what exactly is Turing-Completeness? According to the author, the programming language needs to have the following features implemented:__
-  * __Arithmetic__
-  * __A little control-flow (what does "little" even mean in this context?)__
-  * __The ability to allocate arbitrary amounts of memory__
-* __What is the formal and precise definition of scope in the programming language field? The author, Bob Nystrom, says, in chapter 11, that scope is a set of declarations. Therefore, if two sets don't have the same declarations, then they are not the same scope. Is this correct?__
-* When dealing with "Get" expression, the author says the following: "Since properties are looked up dynamically, they don’t get resolved". What does this mean?
--->
+## License
+* This project is licensed under the MIT License — see [LICENSE](./LICENSE) for the full text.
