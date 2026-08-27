@@ -8,7 +8,7 @@
 
 ## Paper
 * This repository is the reference implementation (research artifact) accompanying the paper __"Bleach: A Programming Language for Teaching Compilers"__, submitted to SBLP 2026 (30th Brazilian Symposium on Programming Languages), part of CBSoft 2026.
-* Paper link: **TODO — add the link to the camera-ready/published paper (SBLP 2026 proceedings or a preprint) once it is available.**
+* Paper: **[SBLP 2026: Bleach - A Programming Language for Teaching Compilers](./bleach_paper.pdf)**
 
 ## Repository Structure
 ```
